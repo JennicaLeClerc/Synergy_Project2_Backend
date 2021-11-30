@@ -18,6 +18,7 @@ public class AmenityWrapper {
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private int id;
 
+	@Enumerated
 	@Column(unique = true,nullable = false)
 	Amenities amenity;
 }

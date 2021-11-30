@@ -20,9 +20,9 @@ public class Cleaning {
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	int id;
 
-	@OneToOne
+	@OneToOne(cascade = CascadeType.ALL)
 	Room room;
-	@ManyToOne
+	@ManyToOne(cascade = CascadeType.ALL)
 	Employee employee;
 
 	@Column(nullable = false)
