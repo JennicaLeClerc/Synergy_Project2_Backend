@@ -6,7 +6,8 @@ Synergy's Project 2 Repository
 - Commits should be logical and/or informative.
 
 ## Steps from new branch to merge
-1. Create new local branch:
+1. `$ git init`
+2. Create new local branch:
    ```
    $ git checkout -b <new_branch_name>
    ```
