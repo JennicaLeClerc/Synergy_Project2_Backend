@@ -6,11 +6,44 @@ Synergy's Project 2 Repository
 - Commits should be logical and/or informative.
 
 ## Steps from new branch to merge
-1. Create new branch:
+1. Create new local branch:
    ```
    $ git checkout -b <new_branch_name>
    ```
-2. 
+2. Pull the current GitHub main branch locally:
+   ```
+   $ git pull https://github.com/JennicaLeClerc/Synergy_Project2.git <new_branch_name>
+   ```
+4. DO WHAT YOU NEED TO DO! (your current task) Committing as you go... I see you Ryan and John...
+5. Checkout the your local main branch:
+   ```
+   $ git checkout main
+   ```
+7. Pull the current GitHub main branch to your local main branch:
+   ```
+   $ git pull https://github.com/JennicaLeClerc/Synergy_Project2.git main
+   ```
+9. Go to your local new branch:
+   ```
+   $ git checkout <new_branch_name>
+   ```
+11. From your local new branch, merge your two local branches:
+   ```
+   $ git merge main
+   ```
+13. FIX ALL MERGING PROBLEMS!
+14. Commit all changes to your local new branch:
+   ```
+   $ git add .
+   $ git commit -m "Merged to main branch"
+   ```
+16. Push to your local new branch branch to your branch on the repo: (this is where you should be committing during 4)
+   ```
+   $ git push --set-upstream https://github.com/JennicaLeClerc/Synergy_Project2.git <new_branch name>
+   ```
+18. Submit a pull request on GitHub asking to merge the branch into main.
+19. A teammate reviews the code for quality and functionality.
+20. The teammate merges the pull request.
 
 ### Some ways to not run into merging problems:
 - `git status`: displays the state of the working directory and the staging area.
