@@ -24,5 +24,4 @@ public class Employee {
 
 	@Column(nullable = false)
 	EmployeeType employeeType;
-
 }

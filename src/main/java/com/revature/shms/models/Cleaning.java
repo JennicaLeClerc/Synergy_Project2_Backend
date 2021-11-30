@@ -1,24 +1,33 @@
 package com.revature.shms.models;
 
-import com.revature.shms.enums.Amenities;
+
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.*;
+import java.util.Calendar;
+import java.util.Date;
 
 @Entity
 @AllArgsConstructor
 @NoArgsConstructor
 @Getter
 @Setter
-public class AmenityWrapper {
-
+public class Cleaning {
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
-	private int id;
+	int id;
+	@OneToOne
+	Room room;
+	@OneToOne
+	Employee employee;
 
-	@Column(unique = true,nullable = false)
-	Amenities amenity;
+	@Column(nullable = false)
+	Long dateAdded;
+	@Column(nullable = false)
+	int priority;
+
+
 }

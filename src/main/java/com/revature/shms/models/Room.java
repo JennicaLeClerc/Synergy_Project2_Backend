@@ -1,6 +1,7 @@
 package com.revature.shms.models;
 
 import com.revature.shms.enums.Amenities;
+import com.revature.shms.enums.CleaningStatus;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -17,12 +18,6 @@ import java.util.List;
 @Setter
 public class Room {
 
-
-
-
-
-
-
 	@Id
 	@Column(name = "roomNumber")
 	@GeneratedValue(strategy = GenerationType.AUTO)
@@ -30,19 +25,11 @@ public class Room {
 
 	int currentOccupants;
 
-
 	@OneToOne
 	User CurrentUser;
 
-
-
-
-
-
-
-
 	@Column(nullable = false)
-	boolean isClean;
+	CleaningStatus status;
 	@Column(nullable = false)
 	boolean isOccupied;
 	@Column(nullable = false)
@@ -51,8 +38,7 @@ public class Room {
 	@OneToMany
 	List<AmenityWrapper> amenitiesList;
 
-
-
+	/*
 	boolean isAvailable(){
 		return !(!isClean || isOccupied || needsService);
 		//		 !true = false|	true		|	true		|returns !(true) = false
@@ -61,5 +47,5 @@ public class Room {
 		//		 !true = false|	true		|	false		|returns !(true) = false
 		//		 !true = false|	false		|	false		|returns !(false) = true
 	}
-
+	 */
 }
