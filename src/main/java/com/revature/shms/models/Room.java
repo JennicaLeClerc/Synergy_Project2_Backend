@@ -17,7 +17,6 @@ import java.util.List;
 @Getter
 @Setter
 public class Room {
-
 	@Id
 	@Column(name = "roomNumber")
 	@GeneratedValue(strategy = GenerationType.AUTO)
