@@ -21,5 +21,4 @@ public class User {
 	String userName;
 	@Column(nullable = false)
 	String password;
-
 }

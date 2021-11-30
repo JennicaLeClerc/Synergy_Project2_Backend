@@ -5,6 +5,5 @@ public class RoomService {
 		isAvailable
 		isClean
 		needWork
-
 	 */
 }
