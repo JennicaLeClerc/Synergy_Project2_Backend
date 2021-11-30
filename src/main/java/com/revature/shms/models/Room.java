@@ -37,4 +37,15 @@ public class Room {
 
 	@OneToMany
 	List<AmenityWrapper> amenitiesList;
+
+	/*
+	boolean isAvailable(){
+		return !(!isClean || isOccupied || needsService);
+		//		 !true = false|	true		|	true		|returns !(true) = false
+		//		 !false =true |	true		|	true		|returns !(true) = false
+		//		 !true = false|	false		|	true		|returns !(true) = false
+		//		 !true = false|	true		|	false		|returns !(true) = false
+		//		 !true = false|	false		|	false		|returns !(false) = true
+	}
+	 */
 }
