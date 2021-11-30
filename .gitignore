@@ -56,5 +56,6 @@ build/
 .vscode/
 
 ### Jennica has a Mac ###
+/.DS_Store
 .DS_Store
 src/.DS_Store
