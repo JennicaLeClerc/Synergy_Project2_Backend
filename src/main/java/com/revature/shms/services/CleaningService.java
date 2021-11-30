@@ -29,7 +29,7 @@ public class CleaningService {
 	 * @return all Cleanings sorted that are assigned to employee.
 	 */
 	public List<Cleaning> GetAllCleaningsByEmployee(Employee employee){
-		return cleaningRepository.findByEmployeeOrderByPriorityDescDateAddedAsc(employee);
+		return cleaningRepository.findAllByEmployeeOrderByPriorityDescDateAddedAsc(employee);
 	}
 
 	/**

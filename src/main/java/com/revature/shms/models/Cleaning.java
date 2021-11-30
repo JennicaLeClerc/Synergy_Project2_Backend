@@ -22,7 +22,7 @@ public class Cleaning {
 
 	@OneToOne
 	Room room;
-	@OneToOne
+	@ManyToOne
 	Employee employee;
 
 	@Column(nullable = false)

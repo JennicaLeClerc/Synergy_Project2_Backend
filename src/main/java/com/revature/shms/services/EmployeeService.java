@@ -32,23 +32,49 @@ public class EmployeeService {
 	@Autowired
 	private UserService userService;
 
+	/**
+	 * Gets All Cleanings assigned to a specific employee.
+	 * @param employee the employee to match.
+	 * @return all Cleanings sorted that are assigned to employee.
+	 */
 	public List<Cleaning> employeeCleaningToDo(Employee employee){
 		return cleaningService.GetAllCleaningsByEmployee(employee);
 	}
+
+	/**
+	 *
+	 * @param employee
+	 * @param employeeTarget
+	 * @param room the room being worked on.
+	 * @param priority how quickly should the room be cleaned.
+	 * @return Room scheduled to be cleaned.
+	 */
 	public Room scheduleCleaningRoom(Employee employee, Employee employeeTarget, Room room, int priority){
 		if (employeeTarget.getEmployeeType().equals(EmployeeType.RECEPTIONIST)) return null;
 		cleaningService.schedule(new Cleaning(0,room,employeeTarget,Instant.now().toEpochMilli(),priority));
 		return roomService.scheduleCleaning(room);
 	}
+
+	/**
+	 *
+	 * @param employee the employee doing the cleaning
+	 * @param room the room to be worked on.
+	 * @return Room started being cleaned.
+	 */
 	public Room startCleanRoom(Employee employee, Room room){
 		if (employee.getEmployeeType().equals(EmployeeType.RECEPTIONIST)) return null;
 		 cleaningService.remove(cleaningService.getByRoom(room));
 		 return roomService.startCleaning(room);
 	}
+
+	/**
+	 *
+	 * @param employee the employee doing the cleaning
+	 * @param room the room to be worked on.
+	 * @return Room now finished being cleaned.
+	 */
 	public Room finishCleaningRoom(Employee employee, Room room){
 		if (employee.getEmployeeType().equals(EmployeeType.RECEPTIONIST)) return null;
 		return roomService.finishCleaning(room);
 	}
-
-
 }
