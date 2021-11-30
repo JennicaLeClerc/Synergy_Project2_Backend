@@ -25,7 +25,7 @@ public class Cleaning {
 	Employee employee;
 
 	@Column(nullable = false)
-	Long dateAddedEpochMilli;
+	Long dateAdded;
 	@Column(nullable = false)
 	int priority;
 

@@ -16,7 +16,7 @@ public interface CleaningRepository  extends JpaRepository<Cleaning,Integer> {
 	 * Gets All Cleanings by Priority then DateAdded
 	 * @return List<Cleaning> Sorted by Priority and DateAdded
 	 */
-	List<Cleaning> findAllOrderByPriorityDescDateAddedAsc();
+	List<Cleaning> findAllByOrderByPriorityDescDateAddedAsc();
 
 	/**
 	 * Gets All Cleanings assigned to a specific employee

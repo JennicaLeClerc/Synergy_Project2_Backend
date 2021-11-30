@@ -3,7 +3,9 @@ package com.revature.shms.services;
 
 import com.revature.shms.enums.CleaningStatus;
 import com.revature.shms.models.Room;
+import org.springframework.stereotype.Service;
 
+@Service
 public class RoomService {
 	/*TODO
 		isAvailable

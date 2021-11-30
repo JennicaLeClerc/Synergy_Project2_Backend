@@ -9,6 +9,7 @@ import javax.persistence.*;
 @NoArgsConstructor
 @Getter
 @Setter
+@Table(name="users")
 public class User {
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)

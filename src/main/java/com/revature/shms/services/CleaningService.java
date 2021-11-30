@@ -16,7 +16,7 @@ public class CleaningService {
 	private CleaningRepository cleaningRepository;
 
 	public List<Cleaning> GetAllCleanings(){
-		return cleaningRepository.findAllOrderByPriorityDescDateAddedAsc();
+		return cleaningRepository.findAllByOrderByPriorityDescDateAddedAsc();
 	}
 
 	public List<Cleaning> GetAllCleaningsByEmployee(Employee employee){
