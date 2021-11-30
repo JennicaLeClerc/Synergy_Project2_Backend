@@ -19,9 +19,9 @@ public class Cleaning {
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	int id;
-	@OneToOne
+	@OneToOne(cascade = CascadeType.ALL)
 	Room room;
-	@OneToOne
+	@OneToOne(cascade = CascadeType.ALL)
 	Employee employee;
 
 	@Column(nullable = false)

@@ -25,7 +25,7 @@ public class Room {
 
 	int currentOccupants;
 
-	@OneToOne
+	@OneToOne(cascade = CascadeType.ALL)
 	User CurrentUser;
 
 	@Column(nullable = false)
@@ -35,7 +35,7 @@ public class Room {
 	@Column(nullable = false)
 	boolean needsService;
 
-	@OneToMany
+	@OneToMany(cascade = CascadeType.ALL)
 	List<AmenityWrapper> amenitiesList;
 
 	/*
