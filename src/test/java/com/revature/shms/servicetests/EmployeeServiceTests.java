@@ -25,7 +25,6 @@ import static org.mockito.Mockito.when;
 @ExtendWith(MockitoExtension.class)
 public class EmployeeServiceTests {
 
-
 	@Mock EmployeeRepository employeeRepository;
 	@Mock CleaningService cleaningService;
 	@Mock UserService userService;
@@ -43,7 +42,6 @@ public class EmployeeServiceTests {
 		employee.setEmployeeType(EmployeeType.MAINTENANCE);
 		room.setStatus(CleaningStatus.NOT_SCHEDULED);
 		Assertions.assertEquals(room,employeeService.scheduleCleaningRoom(null,employee,room,0));
-
 	}
 
 	@Test
@@ -56,8 +54,8 @@ public class EmployeeServiceTests {
 		employee.setEmployeeType(EmployeeType.MAINTENANCE);
 		room.setStatus(CleaningStatus.NOT_SCHEDULED);
 		Assertions.assertEquals(room,employeeService.startCleanRoom(employee,room));
-
 	}
+
 	@Test
 	public void finishCleaningRoomTest(){
 		Employee employee = new Employee();
@@ -69,13 +67,13 @@ public class EmployeeServiceTests {
 		room.setStatus(CleaningStatus.NOT_SCHEDULED);
 		Assertions.assertEquals(room,employeeService.finishCleaningRoom(employee,room));
 	}
+
 	@Test
 	public void settersGettersTest(){
 		EmployeeService employeeService = new EmployeeService();
 		CleaningService cleaningService = new CleaningService();
 		RoomService roomService = new RoomService();
 		UserService userService = new UserService();
-
 
 		employeeService.setCleaningService(cleaningService);
 		employeeService.setRoomService(roomService);

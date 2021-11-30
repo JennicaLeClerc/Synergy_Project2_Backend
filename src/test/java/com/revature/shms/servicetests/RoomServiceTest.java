@@ -18,18 +18,21 @@ public class RoomServiceTest {
 			Assertions.assertEquals(cleaningStatus,roomService.setRoomStatus(room,cleaningStatus).getStatus());
 		}
 	}
+
 	@Test
 	public void scheduleCleaningTest(){
 		RoomService roomService = new RoomService();
 		Room room = new Room();
 		Assertions.assertEquals(CleaningStatus.SCHEDULED,roomService.scheduleCleaning(room).getStatus());
 	}
+
 	@Test
 	public void startCleaningTest(){
 		RoomService roomService = new RoomService();
 		Room room = new Room();
 		Assertions.assertEquals(CleaningStatus.IN_PROGRESS,roomService.startCleaning(room).getStatus());
 	}
+
 	@Test
 	public void finishCleaning(){
 		RoomService roomService = new RoomService();

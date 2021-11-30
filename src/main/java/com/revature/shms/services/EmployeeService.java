@@ -32,9 +32,6 @@ public class EmployeeService {
 	@Autowired
 	private UserService userService;
 
-
-
-
 	public List<Cleaning> employeeCleaningToDo(Employee employee){
 		return cleaningService.GetAllCleaningsByEmployee(employee);
 	}
@@ -43,7 +40,7 @@ public class EmployeeService {
 		cleaningService.schedule(new Cleaning(0,room,employeeTarget,Instant.now().toEpochMilli(),priority));
 		return roomService.scheduleCleaning(room);
 	}
-	public Room startCleanRoom(Employee employee,Room room){
+	public Room startCleanRoom(Employee employee, Room room){
 		if (employee.getEmployeeType().equals(EmployeeType.RECEPTIONIST)) return null;
 		 cleaningService.remove(cleaningService.getByRoom(room));
 		 return roomService.startCleaning(room);

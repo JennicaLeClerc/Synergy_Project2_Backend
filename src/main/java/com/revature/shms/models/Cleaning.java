@@ -19,6 +19,7 @@ public class Cleaning {
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	int id;
+
 	@OneToOne
 	Room room;
 	@OneToOne
@@ -28,6 +29,4 @@ public class Cleaning {
 	Long dateAdded;
 	@Column(nullable = false)
 	int priority;
-
-
 }
