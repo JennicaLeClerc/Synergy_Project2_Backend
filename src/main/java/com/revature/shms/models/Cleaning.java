@@ -19,15 +19,14 @@ public class Cleaning {
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	int id;
+
 	@OneToOne(cascade = CascadeType.ALL)
 	Room room;
-	@OneToOne(cascade = CascadeType.ALL)
+	@ManyToOne(cascade = CascadeType.ALL)
 	Employee employee;
 
 	@Column(nullable = false)
 	Long dateAdded;
 	@Column(nullable = false)
 	int priority;
-
-
 }
