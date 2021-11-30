@@ -10,11 +10,11 @@ import java.util.List;
 @Repository
 public interface EmployeeRepository extends JpaRepository<Employee,Integer> {
 
-    List<Employee> findAllByOrderEmployeeType();
+    List<Employee> findAllByOrderByEmployeeType();
 
     List<Employee> findByEmployeeType(EmployeeType employeeType);
 
-    Employee findByUsername(String username);
+    Employee findByUserName(String userName);
 
     Employee findByEmployeeID(int employeeID);
 }
