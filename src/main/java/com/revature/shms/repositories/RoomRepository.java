@@ -11,7 +11,7 @@ import java.util.List;
 @Repository
 public interface RoomRepository extends JpaRepository<Room,Integer> {
 
-    List<Room> findAllOrderByRoomNumberDesc();
+    List<Room> findAllByOrderByRoomNumberDesc();
 
     List<Room> findAllByStatus(CleaningStatus status);
 
