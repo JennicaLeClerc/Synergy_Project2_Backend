@@ -21,7 +21,4 @@ public class AmenityWrapper {
 
 	@Column(unique = true,nullable = false)
 	Amenities amenity;
-
-
-
 }

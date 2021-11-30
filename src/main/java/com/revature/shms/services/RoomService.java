@@ -11,7 +11,6 @@ public class RoomService {
 		isAvailable
 		isClean
 		needWork
-
 	 */
 	public Room setRoomStatus(Room room, CleaningStatus cleaningStatus){
 		room.setStatus(cleaningStatus);

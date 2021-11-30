@@ -18,12 +18,6 @@ import java.util.List;
 @Setter
 public class Room {
 
-
-
-
-
-
-
 	@Id
 	@Column(name = "roomNumber")
 	@GeneratedValue(strategy = GenerationType.AUTO)
@@ -31,16 +25,8 @@ public class Room {
 
 	int currentOccupants;
 
-
 	@OneToOne
 	User CurrentUser;
-
-
-
-
-
-
-
 
 	@Column(nullable = false)
 	CleaningStatus status;
@@ -52,7 +38,6 @@ public class Room {
 	@OneToMany
 	List<AmenityWrapper> amenitiesList;
 
-
 	/*
 	boolean isAvailable(){
 		return !(!isClean || isOccupied || needsService);
@@ -63,5 +48,4 @@ public class Room {
 		//		 !true = false|	false		|	false		|returns !(false) = true
 	}
 	 */
-
 }
