@@ -54,3 +54,7 @@ build/
 
 ### VS Code ###
 .vscode/
+
+### Jennica has a Mac ###
+.DS_Store
+src/.DS_Store
