@@ -13,7 +13,7 @@ Synergy's Project 2 Repository
    ```
 2. Pull the current GitHub main branch locally:
    ```
-   $ git pull https://github.com/JennicaLeClerc/Synergy_Project2.git <new_branch_name>
+   $ git pull https://github.com/JennicaLeClerc/Synergy_Project2.git
    ```
 4. DO WHAT YOU NEED TO DO! (your current task) Committing as you go... I see you Ryan and John...
 5. Checkout the your local main branch:
