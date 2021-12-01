@@ -32,10 +32,37 @@ public class EmployeeService {
 	@Autowired
 	private UserService userService;
 
+	/**
+	 * List of All Employees ordered by Employee Type.
+	 * @return List<Employee> of All employees.
+	 */
+	public List<Employee> getAllEmployees(){
+		return employeeRepository.findAllByOrderByEmployeeType();
+	} // Tested
+
+	/**
+	 * List of All Employees with the given Employee Type.
+	 * @param employeeType the employeeType to be matched.
+	 * @return List<Employee> of All employees with the given employeeType.
+	 */
+	public List<Employee> getAllEmployeesByType(EmployeeType employeeType){
+		return employeeRepository.findByEmployeeType(employeeType);
+	} // Tested
+
+	/**
+	 * Gets the Employee with the matching employeeID.
+	 * @param employeeID the employeeID to match.
+	 * @return Employee with the given employeeID.
+	 */
 	public Employee getEmployeeByID(int employeeID){
 		return employeeRepository.findByEmployeeID(employeeID);
 	} // Tested
 
+	/**
+	 * Gets the Employee with the matching userName.
+	 * @param userName the username to match.
+	 * @return Employee with the given username.
+	 */
 	public Employee getEmployeeByUserName(String userName){
 		return employeeRepository.findByUserName(userName);
 	} // Tested
