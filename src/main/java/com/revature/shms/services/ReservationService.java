@@ -32,7 +32,6 @@ public class  ReservationService {
      */
     public Reservation getReservationWithReservationId(String reservationId){
         return reservationRepository.findByUserReserveUserId(Integer.parseInt(reservationId));
-
     }
 
     /**
@@ -40,9 +39,8 @@ public class  ReservationService {
      * @return a list of reservations
      */
     public List <Reservation> getAll(){
- return reservationRepository.findAll();
+        return reservationRepository.findAll();
     }
-
 
     /**
      * This creates a reservation
@@ -65,6 +63,7 @@ public class  ReservationService {
     public Reservation changeStatusOfReservation(String id, Reservation reservation){
         return reservationRepository.save(reservation);
     }
+    
     /**
      * This toggles the date
      */
