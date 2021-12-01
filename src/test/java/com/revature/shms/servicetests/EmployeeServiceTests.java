@@ -18,6 +18,7 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.omg.CosNaming.NamingContextPackage.NotFound;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -55,17 +56,17 @@ public class EmployeeServiceTests {
 	}
 
 	@Test
-	public void getEmployeeByIDTest(){
+	public void getEmployeeByIDTest() throws NotFound {
 		Employee employee = new Employee();
-		when(employeeRepository.findByEmployeeID(anyInt())).thenReturn(employee);
+		when(employeeRepository.findByEmployeeID(anyInt())).thenReturn(java.util.Optional.of(employee));
 		Assertions.assertEquals(employee, employeeService.getEmployeeByID(0));
 	}
 
 	@Test
-	public void getEmployeeByUserNameTest(){
+	public void getEmployeeByUserNameTest() throws NotFound {
 		String username = null;
 		Employee employee = new Employee();
-		when(employeeRepository.findByUserName(any())).thenReturn(employee);
+		when(employeeRepository.findByUsername(any())).thenReturn(java.util.Optional.of(employee));
 		Assertions.assertEquals(employee, employeeService.getEmployeeByUserName(username));
 	}
 

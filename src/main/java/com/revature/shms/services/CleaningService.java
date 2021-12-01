@@ -10,6 +10,7 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.omg.CosNaming.NamingContextPackage.NotFound;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -57,7 +58,7 @@ public class CleaningService {
 	 * @param room the room to be worked on.
 	 * @return Room started being cleaned.
 	 */
-	public Room startCleanRoom(Employee employee, Room room){
+	public Room startCleanRoom(Employee employee, Room room) throws NotFound {
 		if (employee.getEmployeeType().equals(EmployeeType.RECEPTIONIST)) return null;
 		remove(getByRoom(room));
 		return roomService.startCleaning(room);
@@ -96,8 +97,8 @@ public class CleaningService {
 	 * @param room the room to match.
 	 * @return Cleaning corresponding to the room.
 	 */
-	public Cleaning getByRoom(Room room){
-		return cleaningRepository.findByRoom(room);
+	public Cleaning getByRoom(Room room) throws NotFound {
+		return cleaningRepository.findByRoom(room).orElseThrow(NotFound::new);
 	} // Tested
 
 	/**

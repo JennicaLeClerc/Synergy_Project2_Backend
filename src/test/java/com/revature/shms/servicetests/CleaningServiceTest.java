@@ -15,6 +15,7 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.omg.CosNaming.NamingContextPackage.NotFound;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -48,7 +49,7 @@ public class CleaningServiceTest {
 	}
 
 	@Test
-	public void startCleanRoomTest(){
+	public void startCleanRoomTest() throws NotFound {
 		Employee employee = new Employee();
 		employee.setEmployeeType(EmployeeType.RECEPTIONIST);
 		Assertions.assertNull( cleaningService.startCleanRoom(employee,null));
@@ -56,6 +57,7 @@ public class CleaningServiceTest {
 		when(roomService.startCleaning(any())).thenReturn(room);
 		employee.setEmployeeType(EmployeeType.MAINTENANCE);
 		room.setStatus(CleaningStatus.NOT_SCHEDULED);
+		when(cleaningRepository.findByRoom(any())).thenReturn(java.util.Optional.of(new Cleaning()));
 		Assertions.assertEquals(room, cleaningService.startCleanRoom(employee,room));
 	}
 
@@ -93,10 +95,10 @@ public class CleaningServiceTest {
 	}
 
 	@Test
-	public void getByRoomTest(){
+	public void getByRoomTest() throws NotFound {
 		Room room = new Room();
 		Cleaning cleaning = new Cleaning();
-		when(cleaningRepository.findByRoom(any())).thenReturn(cleaning);
+		when(cleaningRepository.findByRoom(any())).thenReturn(java.util.Optional.of(cleaning));
 		Assertions.assertEquals(cleaning, cleaningService.getByRoom(room));
 	}
 

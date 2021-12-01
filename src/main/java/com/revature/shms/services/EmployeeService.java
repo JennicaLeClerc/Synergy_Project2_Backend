@@ -3,19 +3,18 @@ package com.revature.shms.services;
 import com.revature.shms.enums.Amenities;
 import com.revature.shms.enums.CleaningStatus;
 import com.revature.shms.enums.EmployeeType;
-import com.revature.shms.models.AmenityWrapper;
-import com.revature.shms.models.Cleaning;
-import com.revature.shms.models.Employee;
-import com.revature.shms.models.Room;
+import com.revature.shms.models.*;
 import com.revature.shms.repositories.EmployeeRepository;
 import com.revature.shms.repositories.RoomRepository;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.omg.CosNaming.NamingContextPackage.NotFound;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.nio.file.AccessDeniedException;
 import java.time.Instant;
 import java.util.*;
 
@@ -35,22 +34,19 @@ public class EmployeeService {
 	@Autowired
 	private UserService userService;
 	@Autowired
-	private Employee employee;
-	@Autowired
 	private RoomRepository roomRepository;
 	List<Integer> rooms;
 
-	public void createEmployee(Integer employeeId){
-		if(!employeeRepository.existsById(employeeId)){
-			employeeRepository.save(employee);
-		}
+	public Employee createEmployee(Employee employee){
+		return employeeRepository.save(employee);
 	}
 
-	public Employee loginEmployee(Integer employeeId){
-		if (!employeeRepository.existsById(employeeId)){
-			System.out.println("Employee does not exist");
-		}
-		return employee;
+	public Employee loginEmployee(String username, String password) throws AccessDeniedException, NotFound {
+		try {
+			Employee employee = getEmployeeByUserName(username);
+			if (employee.getPassword().equals(password)) return employee;
+		} catch (NotFound e) { throw new org.springframework.security.access.AccessDeniedException("Incorrect username/password");}
+		throw new org.springframework.security.access.AccessDeniedException("Incorrect username/password");
 	}
 
 	public Room addRoom(Room room){
@@ -83,8 +79,8 @@ public class EmployeeService {
 	 * @param employeeID the employeeID to match.
 	 * @return Employee with the given employeeID.
 	 */
-	public Employee getEmployeeByID(int employeeID){
-		return employeeRepository.findByEmployeeID(employeeID);
+	public Employee getEmployeeByID(int employeeID) throws NotFound {
+		return employeeRepository.findByEmployeeID(employeeID).orElseThrow(NotFound::new);
 	} // Tested
 
 	/**
@@ -92,8 +88,8 @@ public class EmployeeService {
 	 * @param userName the username to match.
 	 * @return Employee with the given username.
 	 */
-	public Employee getEmployeeByUserName(String userName){
-		return employeeRepository.findByUserName(userName);
+	public Employee getEmployeeByUserName(String userName) throws NotFound {
+		return employeeRepository.findByUsername(userName).orElseThrow(NotFound::new);
 	} // Tested
 
 	/**
@@ -125,7 +121,7 @@ public class EmployeeService {
 	 * @param room the room to be worked on.
 	 * @return Room started being cleaned.
 	 */
-	public Room startCleanRoom(Employee employee, Room room){
+	public Room startCleanRoom(Employee employee, Room room) throws NotFound {
 		if (employee.getEmployeeType().equals(EmployeeType.RECEPTIONIST)) return null;
 		cleaningService.remove(cleaningService.getByRoom(room));
 		return roomService.startCleaning(room);

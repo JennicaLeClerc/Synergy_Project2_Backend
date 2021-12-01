@@ -6,12 +6,21 @@ import com.revature.shms.enums.CleaningStatus;
 import com.revature.shms.models.Room;
 import com.revature.shms.repositories.EmployeeRepository;
 import com.revature.shms.repositories.RoomRepository;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+import org.omg.CosNaming.NamingContextPackage.NotFound;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 
 @Service
+@NoArgsConstructor
+@Getter
+@Setter
+@AllArgsConstructor
 public class RoomService {
 
 	@Autowired
@@ -80,7 +89,7 @@ public class RoomService {
 		return roomRepository.findAllByAmenitiesList_Amenity(amenity);
 	}
 
-	public Room getByRoomNumber(int roomNumber){
-		return roomRepository.findByRoomNumber(roomNumber);
+	public Room getByRoomNumber(int roomNumber) throws NotFound {
+		return roomRepository.findByRoomNumber(roomNumber).orElseThrow(NotFound::new);
 	}
 }

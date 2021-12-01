@@ -15,13 +15,12 @@ import java.util.List;
 public class User {
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
-	int userId;
+	int userID;
 
 	String firstName;
 	String lastName;
-
 	@Column(nullable = false, unique = true)
-	String userName;
+	String username;
 	@Column(nullable = false)
 	String password;
 

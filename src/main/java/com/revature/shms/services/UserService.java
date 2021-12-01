@@ -1,23 +1,25 @@
 package com.revature.shms.services;
 
+import com.revature.shms.models.Employee;
 import com.revature.shms.models.User;
-import com.revature.shms.repositories.RoomRepository;
 import com.revature.shms.repositories.UserRepository;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+import org.omg.CosNaming.NamingContextPackage.NotFound;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.web.authentication.logout.SecurityContextLogoutHandler;
-
+import org.springframework.security.access.AccessDeniedException;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-
 import java.util.List;
-import javax.servlet.http.HttpServletRequest;
 
-@AllArgsConstructor
-@NoArgsConstructor
 @Service // this annotation is to denote that this is a service class for user
+@NoArgsConstructor
+@Getter
+@Setter
+@AllArgsConstructor
 public class UserService{
     
     @Autowired
@@ -32,12 +34,13 @@ public class UserService{
     * if the userName and password exists in the repository return true and log in the user
     * otherwise return false
      */
-    public boolean login(String userName,String password){
-        if(userRepository.existsbyUserNameAndPassword(userName, password)){
-          return true;
-        }
-        return false;
-    }
+    public User login(String userName,String password) throws AccessDeniedException {
+		try {
+			User user = getUserByUserName(userName);
+			if (user.getPassword().equals(password)) return user;
+		} catch (NotFound e) { throw new AccessDeniedException("Incorrect username/password");}
+		throw new AccessDeniedException("Incorrect username/password");
+	}
 
     /*
     when the user click via link or button via a get request to logout
@@ -49,15 +52,15 @@ public class UserService{
     }
 
     public List<User> getAllUsers(){
-        return userRepository.findAllByOrderByUserIdDesc();
+        return userRepository.findAllByOrderByUserIDDesc();
     }
 
-    public User getUserByUserName(String userName){
-        return userRepository.findByUserName(userName);
+    public User getUserByUserName(String userName) throws NotFound {
+        return userRepository.findByUsername(userName).orElseThrow(NotFound::new);
     }
 
-    public User getUserByUserId(int userId){
-        return userRepository.findByUserId(userId);
+    public User getUserByUserId(int userId) throws NotFound {
+        return userRepository.findByUserID(userId).orElseThrow(NotFound::new);
     }
 }
 
