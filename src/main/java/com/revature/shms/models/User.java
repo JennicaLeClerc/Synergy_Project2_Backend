@@ -25,7 +25,7 @@ public class User {
 	@Column(nullable = false)
 	String password;
 
-  @OneToMany(mappedBy = "userReserve")
-  @JsonManagedReference
-  private List<Reservation> reservations;
+  	@OneToMany(mappedBy = "userReserve")
+	@JsonManagedReference
+	private List<Reservation> reservations;
 }

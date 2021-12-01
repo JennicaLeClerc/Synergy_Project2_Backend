@@ -91,27 +91,4 @@ public class EmployeeService {
 		cleaningService.schedule(new Cleaning(0,room,employeeTarget,Instant.now().toEpochMilli(),priority));
 		return roomService.scheduleCleaning(room);
 	} // Tested
-
-	/**
-	 *
-	 * @param employee the employee doing the cleaning
-	 * @param room the room to be worked on.
-	 * @return Room started being cleaned.
-	 */
-	public Room startCleanRoom(Employee employee, Room room){
-		if (employee.getEmployeeType().equals(EmployeeType.RECEPTIONIST)) return null;
-		 cleaningService.remove(cleaningService.getByRoom(room));
-		 return roomService.startCleaning(room);
-	} // Tested
-
-	/**
-	 *
-	 * @param employee the employee doing the cleaning
-	 * @param room the room to be worked on.
-	 * @return Room now finished being cleaned.
-	 */
-	public Room finishCleaningRoom(Employee employee, Room room){
-		if (employee.getEmployeeType().equals(EmployeeType.RECEPTIONIST)) return null;
-		return roomService.finishCleaning(room);
-	} // Tested
 }

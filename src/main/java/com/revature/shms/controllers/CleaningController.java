@@ -21,5 +21,4 @@ public class CleaningController {
 	public List<Cleaning> getCleaning(@RequestParam("id") int employee){
 		return service.employeeCleaningToDo(employeeService.getEmployeeRepository().getById(employee));
 	}
-
 }
