@@ -8,6 +8,7 @@ import com.revature.shms.models.Cleaning;
 import com.revature.shms.models.Employee;
 import com.revature.shms.models.Room;
 import com.revature.shms.repositories.EmployeeRepository;
+import com.revature.shms.repositories.RoomRepository;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -16,7 +17,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.time.Instant;
-import java.util.List;
+import java.util.*;
 
 @Service
 @Getter
@@ -33,6 +34,39 @@ public class EmployeeService {
 	private RoomService roomService;
 	@Autowired
 	private UserService userService;
+	@Autowired
+	private Employee employee;
+
+	@Autowired
+	private RoomRepository roomRepository;
+	List<Integer> rooms;
+
+	public void createEmployee(Integer employeeId)
+	{
+		if(!employeeRepository.existsById(employeeId))
+		{
+			employeeRepository.save(employee);
+		}
+	}
+
+	public Employee loginEmployee(Integer employeeId)
+	{
+		if (!employeeRepository.existsById(employeeId))
+		{
+			System.out.println("Employee does not exist");
+		}
+		return employee;
+	}
+
+	public Room addRoom(Room room)
+	{
+		return roomRepository.save(room);
+	}
+
+	public List<Room> addRooms(List<Room> rooms)
+	{
+		return roomRepository.saveAll(rooms);
+	}
 
 	/**
 	 * List of All Employees ordered by Employee Type.
