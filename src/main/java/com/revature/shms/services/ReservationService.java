@@ -2,7 +2,7 @@ package com.revature.shms.services;
 
 import com.revature.shms.enums.ReservationStatus;
 import com.revature.shms.models.Reservation;
-import com.revature.shms.repositories.ReservationRepoistory;
+import com.revature.shms.repositories.ReservationRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -14,7 +14,7 @@ import java.util.List;
 @Service
 public class  ReservationService {
     @Autowired
-    ReservationRepoistory reservationRepoistory;
+    ReservationRepository reservationRepository;
 
     /**
      * Get a reservation with a userId
@@ -22,7 +22,7 @@ public class  ReservationService {
      * @return Reservation
      */
     public Reservation getReservationOfUser(String id){
-        return reservationRepoistory.findByUserReserveUserId(Integer.parseInt(id));
+        return reservationRepository.findByUserReserveUserId(Integer.parseInt(id));
     }
 
     /**
@@ -31,7 +31,7 @@ public class  ReservationService {
      * @return Reservation
      */
     public Reservation getReservationWithReservationId(String reservationId){
-        return reservationRepoistory.findByUserReserveUserId(Integer.parseInt(reservationId));
+        return reservationRepository.findByUserReserveUserId(Integer.parseInt(reservationId));
 
     }
 
@@ -39,35 +39,36 @@ public class  ReservationService {
      * Get all reservations
      * @return a list of reservations
      */
-    public List<Reservation> getAllReservations(){
-        return reservationRepoistory.findAll();
+    public List <Reservation> getAll(){
+ return reservationRepository.findAll();
     }
+
 
     /**
      * This creates a reservation
      * @return Reservation.
      */
     public Reservation createReservation(Reservation reservation){
-        return reservationRepoistory.save(reservation);
+        return reservationRepository.save(reservation);
     }
 
     /**
      * This deletes a reservation by a userId
      */
     public Reservation deleteReservation(String id) {
-        return reservationRepoistory.deleteByUserReserveUserId(Integer.parseInt(id));
+        return reservationRepository.deleteByUserReserveUserId(Integer.parseInt(id));
     }
 
     /**
      * This toggles the reservation status
      */
     public Reservation changeStatusOfReservation(String id, Reservation reservation){
-        return reservationRepoistory.save(reservation);
+        return reservationRepository.save(reservation);
     }
     /**
      * This toggles the date
      */
     public Reservation changeDateOfReservation(String id, Reservation reservation){
-        return reservationRepoistory.save(reservation);
+        return reservationRepository.save(reservation);
     }
 }

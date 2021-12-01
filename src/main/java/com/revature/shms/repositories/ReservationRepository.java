@@ -11,8 +11,10 @@ import org.springframework.stereotype.Repository;
 import java.util.List;
 
 
+
 @Repository
-public interface ReservationRepository extends JpaRepository<Reservation, Integer> {
+public interface ReservationRepository extends JpaRepository<Reservation,Integer> {
+
     /**
      * gets Reservation by userId
      */
