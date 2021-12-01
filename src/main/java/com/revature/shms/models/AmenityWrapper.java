@@ -14,11 +14,11 @@ import javax.persistence.*;
 @Getter
 @Setter
 public class AmenityWrapper {
-	@Id
-	@GeneratedValue(strategy = GenerationType.AUTO)
-	private int id;
 
+	@Id
 	@Enumerated
 	@Column(unique = true,nullable = false)
 	Amenities amenity;
+	@Column(nullable = false)
+	double priceWeight;
 }

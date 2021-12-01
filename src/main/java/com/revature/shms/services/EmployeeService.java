@@ -1,7 +1,9 @@
 package com.revature.shms.services;
 
 
+import com.revature.shms.enums.Amenities;
 import com.revature.shms.enums.EmployeeType;
+import com.revature.shms.models.AmenityWrapper;
 import com.revature.shms.models.Cleaning;
 import com.revature.shms.models.Employee;
 import com.revature.shms.models.Room;
@@ -40,7 +42,6 @@ public class EmployeeService {
 	public List<Cleaning> employeeCleaningToDo(Employee employee){
 		return cleaningService.GetAllCleaningsByEmployee(employee);
 	}
-
 	/**
 	 *
 	 * @param employee
@@ -54,7 +55,6 @@ public class EmployeeService {
 		cleaningService.schedule(new Cleaning(0,room,employeeTarget,Instant.now().toEpochMilli(),priority));
 		return roomService.scheduleCleaning(room);
 	}
-
 	/**
 	 *
 	 * @param employee the employee doing the cleaning
@@ -66,7 +66,6 @@ public class EmployeeService {
 		 cleaningService.remove(cleaningService.getByRoom(room));
 		 return roomService.startCleaning(room);
 	}
-
 	/**
 	 *
 	 * @param employee the employee doing the cleaning
@@ -77,4 +76,7 @@ public class EmployeeService {
 		if (employee.getEmployeeType().equals(EmployeeType.RECEPTIONIST)) return null;
 		return roomService.finishCleaning(room);
 	}
+
+
+
 }

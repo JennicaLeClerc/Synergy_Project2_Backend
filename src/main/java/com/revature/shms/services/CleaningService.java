@@ -33,7 +33,7 @@ public class CleaningService {
 	}
 
 	/**
-	 * Saves the cleaning information to the database and returns the orginal object
+	 * Saves the cleaning information to the database and returns the original object
 	 * @param cleaning the cleaning information to match.
 	 * @return the cleaning information with it saved to the database.
 	 */
