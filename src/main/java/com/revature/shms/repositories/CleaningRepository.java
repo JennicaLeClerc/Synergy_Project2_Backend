@@ -1,6 +1,5 @@
 package com.revature.shms.repositories;
 
-
 import com.revature.shms.models.Cleaning;
 import com.revature.shms.models.Employee;
 import com.revature.shms.models.Room;
