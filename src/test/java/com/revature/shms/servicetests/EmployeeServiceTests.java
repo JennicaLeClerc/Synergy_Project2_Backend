@@ -63,10 +63,10 @@ public class EmployeeServiceTests {
 
 	@Test
 	public void getEmployeeByUserNameTest(){
-		String userName = null;
+		String username = null;
 		Employee employee = new Employee();
 		when(employeeRepository.findByUserName(any())).thenReturn(employee);
-		Assertions.assertEquals(employee, employeeService.getEmployeeByUserName(userName));
+		Assertions.assertEquals(employee, employeeService.getEmployeeByUserName(username));
 	}
 
 	@Test
@@ -91,30 +91,6 @@ public class EmployeeServiceTests {
 		employee.setEmployeeType(EmployeeType.MAINTENANCE);
 		room.setStatus(CleaningStatus.NOT_SCHEDULED);
 		Assertions.assertEquals(room,employeeService.scheduleCleaningRoom(null,employee,room,0));
-	}
-
-	@Test
-	public void startCleanRoomTest(){
-		Employee employee = new Employee();
-		employee.setEmployeeType(EmployeeType.RECEPTIONIST);
-		Assertions.assertNull( employeeService.startCleanRoom(employee,null));
-		Room room = new Room();
-		when(roomService.startCleaning(any())).thenReturn(room);
-		employee.setEmployeeType(EmployeeType.MAINTENANCE);
-		room.setStatus(CleaningStatus.NOT_SCHEDULED);
-		Assertions.assertEquals(room,employeeService.startCleanRoom(employee,room));
-	}
-
-	@Test
-	public void finishCleaningRoomTest(){
-		Employee employee = new Employee();
-		employee.setEmployeeType(EmployeeType.RECEPTIONIST);
-		Assertions.assertNull( employeeService.finishCleaningRoom(employee,null));
-		Room room = new Room();
-		when(roomService.finishCleaning(any())).thenReturn(room);
-		employee.setEmployeeType(EmployeeType.MAINTENANCE);
-		room.setStatus(CleaningStatus.NOT_SCHEDULED);
-		Assertions.assertEquals(room,employeeService.finishCleaningRoom(employee,room));
 	}
 
 	@Test

@@ -1,7 +1,9 @@
 package com.revature.shms.services;
 
 
+import com.revature.shms.enums.Amenities;
 import com.revature.shms.enums.EmployeeType;
+import com.revature.shms.models.AmenityWrapper;
 import com.revature.shms.models.Cleaning;
 import com.revature.shms.models.Employee;
 import com.revature.shms.models.Room;
