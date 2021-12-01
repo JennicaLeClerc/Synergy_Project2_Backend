@@ -31,42 +31,9 @@ public class EmployeeServiceTests {
 	@Mock RoomService roomService;
 	@InjectMocks EmployeeService employeeService;
 
-	@Test
-	public void scheduleCleaningRoomTest(){
-		Employee employee = new Employee();
-		employee.setEmployeeType(EmployeeType.RECEPTIONIST);
-		Assertions.assertNull( employeeService.scheduleCleaningRoom(null,employee,null,0));
-		when(cleaningService.schedule(any())).thenReturn(new Cleaning());
-		Room room = new Room();
-		when(roomService.scheduleCleaning(any())).thenReturn(room);
-		employee.setEmployeeType(EmployeeType.MAINTENANCE);
-		room.setStatus(CleaningStatus.NOT_SCHEDULED);
-		Assertions.assertEquals(room,employeeService.scheduleCleaningRoom(null,employee,room,0));
-	}
 
-	@Test
-	public void startCleanRoomTest(){
-		Employee employee = new Employee();
-		employee.setEmployeeType(EmployeeType.RECEPTIONIST);
-		Assertions.assertNull( employeeService.startCleanRoom(employee,null));
-		Room room = new Room();
-		when(roomService.startCleaning(any())).thenReturn(room);
-		employee.setEmployeeType(EmployeeType.MAINTENANCE);
-		room.setStatus(CleaningStatus.NOT_SCHEDULED);
-		Assertions.assertEquals(room,employeeService.startCleanRoom(employee,room));
-	}
 
-	@Test
-	public void finishCleaningRoomTest(){
-		Employee employee = new Employee();
-		employee.setEmployeeType(EmployeeType.RECEPTIONIST);
-		Assertions.assertNull( employeeService.finishCleaningRoom(employee,null));
-		Room room = new Room();
-		when(roomService.finishCleaning(any())).thenReturn(room);
-		employee.setEmployeeType(EmployeeType.MAINTENANCE);
-		room.setStatus(CleaningStatus.NOT_SCHEDULED);
-		Assertions.assertEquals(room,employeeService.finishCleaningRoom(employee,room));
-	}
+
 
 	@Test
 	public void settersGettersTest(){
@@ -84,10 +51,5 @@ public class EmployeeServiceTests {
 		Assertions.assertEquals(userService,employeeService.getUserService());
 	}
 
-	@Test
-	public void employeeCleaningToDoTest(){
-		when(cleaningService.GetAllCleaningsByEmployee(any())).thenReturn(null);
-		Assertions.assertNull(employeeService.employeeCleaningToDo(new Employee()));
-	}
 
 }
