@@ -74,7 +74,6 @@ public class CleaningService {
 		return roomService.finishCleaning(room);
 	}
 
-
 	/**
 	 * Gets All Cleanings by Priority then DateAdded.
 	 * @return List<Cleaning> Sorted by Priority and DateAdded.
