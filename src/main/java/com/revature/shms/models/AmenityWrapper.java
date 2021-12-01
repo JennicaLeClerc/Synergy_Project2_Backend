@@ -16,12 +16,9 @@ import javax.persistence.*;
 public class AmenityWrapper {
 
 	@Id
-	@GeneratedValue(strategy = GenerationType.AUTO)
-	private int id;
-
+	@Enumerated
 	@Column(unique = true,nullable = false)
 	Amenities amenity;
-
-
-
+	@Column(nullable = false)
+	double priceWeight;
 }

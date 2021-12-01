@@ -54,3 +54,11 @@ build/
 
 ### VS Code ###
 .vscode/
+
+### Jennica has a Mac ###
+/.DS_Store
+.DS_Store
+src/.DS_Store
+
+### added for luis -> no data breaches for us ###
+src/main/resources/application.properties

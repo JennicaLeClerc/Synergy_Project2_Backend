@@ -15,6 +15,5 @@ public enum Amenities {
 	NO_VIEW,
 	FULL_KITCHEN,
 	SMALL_KITCHEN,
-	ADA;
-
+	ADA
 }
