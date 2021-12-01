@@ -12,9 +12,9 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.omg.CosNaming.NamingContextPackage.NotFound;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.AccessDeniedException;
 import org.springframework.stereotype.Service;
 
-import java.nio.file.AccessDeniedException;
 import java.time.Instant;
 import java.util.*;
 
@@ -35,18 +35,18 @@ public class EmployeeService {
 	private UserService userService;
 	@Autowired
 	private RoomRepository roomRepository;
-	List<Integer> rooms;
+
 
 	public Employee createEmployee(Employee employee){
 		return employeeRepository.save(employee);
 	}
 
-	public Employee loginEmployee(String username, String password) throws AccessDeniedException, NotFound {
+	public Employee loginEmployee(String username, String password) throws AccessDeniedException {
 		try {
 			Employee employee = getEmployeeByUserName(username);
 			if (employee.getPassword().equals(password)) return employee;
-		} catch (NotFound e) { throw new org.springframework.security.access.AccessDeniedException("Incorrect username/password");}
-		throw new org.springframework.security.access.AccessDeniedException("Incorrect username/password");
+		} catch (NotFound e) { throw new AccessDeniedException("Incorrect username/password");}
+		throw new AccessDeniedException("Incorrect username/password");
 	}
 
 	public Room addRoom(Room room){
@@ -101,48 +101,4 @@ public class EmployeeService {
 		return cleaningService.GetAllCleaningsByEmployee(employee);
 	} // Tested
 
-	/**
-	 *
-	 * @param employee
-	 * @param employeeTarget
-	 * @param room the room being worked on.
-	 * @param priority how quickly should the room be cleaned.
-	 * @return Room scheduled to be cleaned.
-	 */
-	public Room scheduleCleaningRoom(Employee employee, Employee employeeTarget, Room room, int priority){
-		if (employeeTarget.getEmployeeType().equals(EmployeeType.RECEPTIONIST)) return null;
-		cleaningService.schedule(new Cleaning(0,room,employeeTarget,Instant.now().toEpochMilli(),priority));
-		return roomService.scheduleCleaning(room);
-	}
-	
-	/**
-	 *
-	 * @param employee the employee doing the cleaning
-	 * @param room the room to be worked on.
-	 * @return Room started being cleaned.
-	 */
-	public Room startCleanRoom(Employee employee, Room room) throws NotFound {
-		if (employee.getEmployeeType().equals(EmployeeType.RECEPTIONIST)) return null;
-		cleaningService.remove(cleaningService.getByRoom(room));
-		return roomService.startCleaning(room);
-	}
-	
-	/**
-	 *
-	 * @param employee the employee doing the cleaning
-	 * @param room the room to be worked on.
-	 * @return Room now finished being cleaned.
-	 */
-	public Room finishCleaningRoom(Employee employee, Room room){
-		if (employee.getEmployeeType().equals(EmployeeType.RECEPTIONIST)) return null;
-		return roomService.finishCleaning(room);
-	}
-
-	/*
-	 This method allows the employees to see all the rooms status
-	 */
-	public List<Room> findAllByStatus(CleaningStatus status){
-		return findAllByStatus(status);
-
-	}
 }

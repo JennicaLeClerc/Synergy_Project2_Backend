@@ -6,6 +6,7 @@ import com.revature.shms.models.Cleaning;
 import com.revature.shms.models.Employee;
 import com.revature.shms.models.Room;
 import com.revature.shms.repositories.EmployeeRepository;
+import com.revature.shms.repositories.RoomRepository;
 import com.revature.shms.services.CleaningService;
 import com.revature.shms.services.EmployeeService;
 import com.revature.shms.services.RoomService;
@@ -15,6 +16,7 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
 import org.junit.jupiter.api.extension.ExtendWith;
+import org.junit.jupiter.api.function.Executable;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
@@ -34,7 +36,48 @@ public class EmployeeServiceTests {
 	@Mock CleaningService cleaningService;
 	@Mock UserService userService;
 	@Mock RoomService roomService;
+	@Mock RoomRepository roomRepository;
 	@InjectMocks EmployeeService employeeService;
+
+
+	@Test
+	public void createEmployeeTest(){
+		Employee employee = new Employee();
+		when(employeeRepository.save(employee)).thenReturn(employee);
+		Assertions.assertEquals(employee,employeeService.createEmployee(employee));
+	}
+	@Test
+	public void loginEmployeeTests() {
+		Employee employee = new Employee();
+		employee.setUsername("RPH");
+		employee.setPassword("RPH123");
+		when(employeeRepository.findByUsername(any())).thenReturn(java.util.Optional.of(employee));
+		Assertions.assertEquals(employee,employeeService.loginEmployee("RPH","RPH123"));
+		try {
+			Exception exception = Assertions.assertThrows(org.springframework.security.access.AccessDeniedException.class, (Executable) employeeService.loginEmployee("RPH","123"));
+			Assertions.assertTrue(exception.getMessage().contains("Incorrect username/password"));
+		} catch (Exception ignored){}
+
+	}
+
+	@Test
+	public void addRoomTest(){
+		Room room = new Room();
+		when(roomRepository.save(any())).thenReturn(room);
+		Assertions.assertEquals(room,employeeService.addRoom(room));
+	}
+	@Test
+	public void addRoomsTest(){
+		List<Room> rooms = new ArrayList<>();
+		rooms.add(new Room());
+		rooms.add(new Room());
+		rooms.add(new Room());
+		rooms.add(new Room());
+		rooms.add(new Room());
+		rooms.add(new Room());
+		when(roomRepository.saveAll(any())).thenReturn(rooms);
+		Assertions.assertEquals(rooms,employeeService.addRooms(rooms));
+	}
 
 	@Test
 	public void getAllEmployeesTest(){
@@ -80,23 +123,13 @@ public class EmployeeServiceTests {
 		Assertions.assertEquals(cleaningList, employeeService.employeeCleaningToDo(employee));
 	}
 
-	@Test
-	public void scheduleCleaningRoomTest(){
-		Employee employee = new Employee();
-		Cleaning cleaning = new Cleaning();
-		Room room = new Room();
-		employee.setEmployeeType(EmployeeType.RECEPTIONIST);
-		Assertions.assertNull( employeeService.scheduleCleaningRoom(null,employee,null,0));
-		when(cleaningService.schedule(any())).thenReturn(cleaning);
-		when(roomService.scheduleCleaning(any())).thenReturn(room);
-		employee.setEmployeeType(EmployeeType.MAINTENANCE);
-		room.setStatus(CleaningStatus.NOT_SCHEDULED);
-		Assertions.assertEquals(room,employeeService.scheduleCleaningRoom(null,employee,room,0));
-	}
 
 	@Test
 	public void settersGettersTest(){
 		EmployeeService employeeService = new EmployeeService();
+
+		EmployeeRepository employeeRepository = null;
+		RoomRepository roomRepository = null;
 		CleaningService cleaningService = new CleaningService();
 		RoomService roomService = new RoomService();
 		UserService userService = new UserService();
@@ -104,9 +137,13 @@ public class EmployeeServiceTests {
 		employeeService.setCleaningService(cleaningService);
 		employeeService.setRoomService(roomService);
 		employeeService.setUserService(userService);
+		employeeService.setEmployeeRepository(employeeRepository);
+		employeeService.setRoomRepository(roomRepository);
 
 		Assertions.assertEquals(cleaningService,employeeService.getCleaningService());
 		Assertions.assertEquals(roomService,employeeService.getRoomService());
 		Assertions.assertEquals(userService,employeeService.getUserService());
+		Assertions.assertNull(employeeService.getEmployeeRepository());
+		Assertions.assertNull(employeeService.getRoomRepository());
 	}
 }
