@@ -6,6 +6,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
+import java.util.Optional;
 
 @Repository
 public interface EmployeeRepository extends JpaRepository<Employee,Integer> {
@@ -14,7 +15,7 @@ public interface EmployeeRepository extends JpaRepository<Employee,Integer> {
 
     List<Employee> findByEmployeeType(EmployeeType employeeType);
 
-    Employee findByUserName(String username);
+    Optional<Employee> findByUsername(String username);
 
-    Employee findByEmployeeID(int employeeID);
+	Optional<Employee> findByEmployeeID(int employeeID);
 }

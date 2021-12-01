@@ -1,8 +1,12 @@
 package com.revature.shms.services;
 
-import com.revature.shms.enums.ReservationStatus;
 import com.revature.shms.models.Reservation;
-import com.revature.shms.repositories.ReservationRepoistory;
+import com.revature.shms.repositories.ReservationRepository;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+import org.omg.CosNaming.NamingContextPackage.NotFound;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -12,17 +16,21 @@ import java.util.List;
  * This class handles the reservation logic
  */
 @Service
+@NoArgsConstructor
+@Getter
+@Setter
+@AllArgsConstructor
 public class  ReservationService {
     @Autowired
-    ReservationRepoistory reservationRepository;
+	ReservationRepository reservationRepository;
 
     /**
      * Get a reservation with a userId
      * @param id
      * @return Reservation
      */
-    public Reservation getReservationOfUser(String id){
-        return reservationRepository.findByUserReserveUserId(Integer.parseInt(id));
+    public Reservation getReservationOfUser(String id) throws NotFound {
+        return reservationRepository.findByUserReserve_UserID(Integer.parseInt(id)).orElseThrow(NotFound::new);
     }
 
     /**
@@ -30,8 +38,8 @@ public class  ReservationService {
      * @param reservationId
      * @return Reservation
      */
-    public Reservation getReservationWithReservationId(String reservationId){
-        return reservationRepository.findByUserReserveUserId(Integer.parseInt(reservationId));
+    public Reservation getReservationWithReservationId(String reservationId) throws NotFound {
+        return reservationRepository.findByUserReserve_UserID(Integer.parseInt(reservationId)).orElseThrow(NotFound::new);
     }
 
     /**
@@ -54,7 +62,7 @@ public class  ReservationService {
      * This deletes a reservation by a userId
      */
     public Reservation deleteReservation(String id) {
-        return reservationRepository.deleteByUserReserveUserId(Integer.parseInt(id));
+        return reservationRepository.deleteByUserReserve_UserID(Integer.parseInt(id));
     }
 
     /**
