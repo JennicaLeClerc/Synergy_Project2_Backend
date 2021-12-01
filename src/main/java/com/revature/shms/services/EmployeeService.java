@@ -1,6 +1,5 @@
 package com.revature.shms.services;
 
-
 import com.revature.shms.enums.Amenities;
 import com.revature.shms.enums.CleaningStatus;
 import com.revature.shms.enums.EmployeeType;
@@ -37,35 +36,28 @@ public class EmployeeService {
 	private UserService userService;
 	@Autowired
 	private Employee employee;
-
 	@Autowired
 	private RoomRepository roomRepository;
 	List<Integer> rooms;
 
-	public void createEmployee(Integer employeeId)
-	{
-		if(!employeeRepository.existsById(employeeId))
-		{
+	public void createEmployee(Integer employeeId){
+		if(!employeeRepository.existsById(employeeId)){
 			employeeRepository.save(employee);
 		}
 	}
 
-	public Employee loginEmployee(Integer employeeId)
-	{
-		if (!employeeRepository.existsById(employeeId))
-		{
+	public Employee loginEmployee(Integer employeeId){
+		if (!employeeRepository.existsById(employeeId)){
 			System.out.println("Employee does not exist");
 		}
 		return employee;
 	}
 
-	public Room addRoom(Room room)
-	{
+	public Room addRoom(Room room){
 		return roomRepository.save(room);
 	}
 
-	public List<Room> addRooms(List<Room> rooms)
-	{
+	public List<Room> addRooms(List<Room> rooms){
 		return roomRepository.saveAll(rooms);
 	}
 
@@ -125,8 +117,8 @@ public class EmployeeService {
 		if (employeeTarget.getEmployeeType().equals(EmployeeType.RECEPTIONIST)) return null;
 		cleaningService.schedule(new Cleaning(0,room,employeeTarget,Instant.now().toEpochMilli(),priority));
 		return roomService.scheduleCleaning(room);
-<<<<<<< HEAD
 	}
+	
 	/**
 	 *
 	 * @param employee the employee doing the cleaning
@@ -135,9 +127,10 @@ public class EmployeeService {
 	 */
 	public Room startCleanRoom(Employee employee, Room room){
 		if (employee.getEmployeeType().equals(EmployeeType.RECEPTIONIST)) return null;
-		 cleaningService.remove(cleaningService.getByRoom(room));
-		 return roomService.startCleaning(room);
+		cleaningService.remove(cleaningService.getByRoom(room));
+		return roomService.startCleaning(room);
 	}
+	
 	/**
 	 *
 	 * @param employee the employee doing the cleaning
@@ -149,8 +142,6 @@ public class EmployeeService {
 		return roomService.finishCleaning(room);
 	}
 
-
-
 	/*
 	 This method allows the employees to see all the rooms status
 	 */
@@ -158,8 +149,4 @@ public class EmployeeService {
 		return findAllByStatus(status);
 
 	}
-
-=======
-	} // Tested
->>>>>>> main
 }
