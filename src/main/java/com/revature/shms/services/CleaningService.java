@@ -21,7 +21,7 @@ public class CleaningService {
 	 */
 	public List<Cleaning> GetAllCleanings(){
 		return cleaningRepository.findAllByOrderByPriorityDescDateAddedAsc();
-	}
+	} // Tested
 
 	/**
 	 * Gets All Cleanings assigned to a specific employee.
@@ -30,24 +30,7 @@ public class CleaningService {
 	 */
 	public List<Cleaning> GetAllCleaningsByEmployee(Employee employee){
 		return cleaningRepository.findAllByEmployeeOrderByPriorityDescDateAddedAsc(employee);
-	}
-
-	/**
-	 * Saves the cleaning information to the database and returns the orginal object
-	 * @param cleaning the cleaning information to match.
-	 * @return the cleaning information with it saved to the database.
-	 */
-	public Cleaning schedule(Cleaning cleaning){
-		return cleaningRepository.save(cleaning);
-	}
-
-	/**
-	 * Deletes the cleaning information from the database
-	 * @param cleaning the cleaning information to match
-	 */
-	public void remove(Cleaning cleaning){
-		cleaningRepository.delete(cleaning);
-	}
+	} // Tested
 
 	/**
 	 * Gets Cleaning assigned to a specific room.
@@ -56,5 +39,22 @@ public class CleaningService {
 	 */
 	public Cleaning getByRoom(Room room){
 		return cleaningRepository.findByRoom(room);
-	}
+	} // Tested
+
+	/**
+	 * Saves the cleaning information to the database and returns the orginal object
+	 * @param cleaning the cleaning information to match.
+	 * @return the cleaning information with it saved to the database.
+	 */
+	public Cleaning schedule(Cleaning cleaning){
+		return cleaningRepository.save(cleaning);
+	} // Tested
+
+	/**
+	 * Deletes the cleaning information from the database
+	 * @param cleaning the cleaning information to match
+	 */
+	public void remove(Cleaning cleaning){
+		cleaningRepository.delete(cleaning);
+	}// Tested
 }

@@ -23,7 +23,7 @@ public class RoomService {
 	public Room setRoomStatus(Room room, CleaningStatus cleaningStatus){
 		room.setStatus(cleaningStatus);
 		return room;
-	}
+	} // Tested
 
 	/**
 	 *
@@ -32,7 +32,7 @@ public class RoomService {
 	 */
 	public Room scheduleCleaning(Room room){
 		return setRoomStatus(room, CleaningStatus.SCHEDULED);
-	}
+	} // Tested
 
 	/**
 	 *
@@ -41,7 +41,7 @@ public class RoomService {
 	 */
 	public Room startCleaning(Room room){
 		return setRoomStatus(room, CleaningStatus.IN_PROGRESS);
-	}
+	} // Tested
 
 	/**
 	 *
@@ -50,5 +50,5 @@ public class RoomService {
 	 */
 	public Room finishCleaning(Room room){
 		return setRoomStatus(room, CleaningStatus.CLEAN);
-	}
+	} // Tested
 }

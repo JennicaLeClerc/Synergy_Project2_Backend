@@ -32,6 +32,14 @@ public class EmployeeService {
 	@Autowired
 	private UserService userService;
 
+	public Employee getEmployeeByID(int employeeID){
+		return employeeRepository.findByEmployeeID(employeeID);
+	} // Tested
+
+	public Employee getEmployeeByUserName(String userName){
+		return employeeRepository.findByUserName(userName);
+	} // Tested
+
 	/**
 	 * Gets All Cleanings assigned to a specific employee.
 	 * @param employee the employee to match.
@@ -39,7 +47,7 @@ public class EmployeeService {
 	 */
 	public List<Cleaning> employeeCleaningToDo(Employee employee){
 		return cleaningService.GetAllCleaningsByEmployee(employee);
-	}
+	} // Tested
 
 	/**
 	 *
@@ -53,7 +61,7 @@ public class EmployeeService {
 		if (employeeTarget.getEmployeeType().equals(EmployeeType.RECEPTIONIST)) return null;
 		cleaningService.schedule(new Cleaning(0,room,employeeTarget,Instant.now().toEpochMilli(),priority));
 		return roomService.scheduleCleaning(room);
-	}
+	} // Tested
 
 	/**
 	 *
@@ -65,7 +73,7 @@ public class EmployeeService {
 		if (employee.getEmployeeType().equals(EmployeeType.RECEPTIONIST)) return null;
 		 cleaningService.remove(cleaningService.getByRoom(room));
 		 return roomService.startCleaning(room);
-	}
+	} // Tested
 
 	/**
 	 *
@@ -76,5 +84,5 @@ public class EmployeeService {
 	public Room finishCleaningRoom(Employee employee, Room room){
 		if (employee.getEmployeeType().equals(EmployeeType.RECEPTIONIST)) return null;
 		return roomService.finishCleaning(room);
-	}
+	} // Tested
 }

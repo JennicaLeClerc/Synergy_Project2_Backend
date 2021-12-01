@@ -20,6 +20,7 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyInt;
 import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
@@ -30,6 +31,26 @@ public class EmployeeServiceTests {
 	@Mock UserService userService;
 	@Mock RoomService roomService;
 	@InjectMocks EmployeeService employeeService;
+
+	@Test
+	public void getEmployeeByIDTest(){
+		Employee employee = new Employee();
+		when(employeeRepository.findByEmployeeID(anyInt())).thenReturn(employee);
+		Assertions.assertEquals(employee, employeeService.getEmployeeByID(0));
+	}
+
+	@Test
+	public void getEmployeeByUserNameTest(){
+		Employee employee = new Employee();
+		when(employeeRepository.findByUserName(any())).thenReturn(employee);
+		Assertions.assertEquals(employee, employeeService.getEmployeeByUserName(null));
+	}
+
+	@Test
+	public void employeeCleaningToDoTest(){
+		when(cleaningService.GetAllCleaningsByEmployee(any())).thenReturn(null);
+		Assertions.assertNull(employeeService.employeeCleaningToDo(new Employee()));
+	}
 
 	@Test
 	public void scheduleCleaningRoomTest(){
@@ -83,11 +104,4 @@ public class EmployeeServiceTests {
 		Assertions.assertEquals(roomService,employeeService.getRoomService());
 		Assertions.assertEquals(userService,employeeService.getUserService());
 	}
-
-	@Test
-	public void employeeCleaningToDoTest(){
-		when(cleaningService.GetAllCleaningsByEmployee(any())).thenReturn(null);
-		Assertions.assertNull(employeeService.employeeCleaningToDo(new Employee()));
-	}
-
 }
