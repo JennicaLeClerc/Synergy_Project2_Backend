@@ -2,7 +2,7 @@ package com.revature.shms.services;
 
 import com.revature.shms.enums.ReservationStatus;
 import com.revature.shms.models.Reservation;
-import com.revature.shms.repositories.ReservationRepository;
+import com.revature.shms.repositories.ReservationRepoistory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -14,7 +14,7 @@ import java.util.List;
 @Service
 public class  ReservationService {
     @Autowired
-    ReservationRepository reservationRepository;
+    ReservationRepoistory reservationRepository;
 
     /**
      * Get a reservation with a userId

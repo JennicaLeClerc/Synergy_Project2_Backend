@@ -11,7 +11,7 @@ import java.util.List;
 public interface UserRepository extends JpaRepository<User,Integer> {
 
     List<User> findAllByOrderByUserIdDesc();
-
+  
     User findByUserName(String username);
 
     User findByUserId(int userID);

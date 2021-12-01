@@ -5,7 +5,7 @@ import com.revature.shms.enums.ReservationStatus;
 import com.revature.shms.models.AmenityWrapper;
 import com.revature.shms.models.Reservation;
 import com.revature.shms.models.User;
-import com.revature.shms.repositories.ReservationRepository;
+import com.revature.shms.repositories.ReservationRepoistory;
 import com.revature.shms.services.ReservationService;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
@@ -28,7 +28,7 @@ public class ReservationServiceTests {
     @InjectMocks
     ReservationService reservationService ;
     @Mock
-    ReservationRepository reservationRepository;
+    ReservationRepoistory reservationRepository;
 
     /**
      *

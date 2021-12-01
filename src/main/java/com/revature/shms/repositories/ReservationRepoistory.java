@@ -13,7 +13,7 @@ import java.util.List;
 
 
 @Repository
-public interface ReservationRepository extends JpaRepository<Reservation,Integer> {
+public interface ReservationRepoistory extends JpaRepository<Reservation,Integer> {
 
     /**
      * gets Reservation by userId
