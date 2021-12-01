@@ -19,11 +19,9 @@ import java.util.List;
 @Getter
 @Setter
 public class Reservation {
-
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     int reservationId;
-
 
     @Column
     String status;
@@ -34,6 +32,4 @@ public class Reservation {
     @ManyToOne(cascade = CascadeType.ALL)
     @JsonBackReference
     private User userReserve;
-
-
 }
