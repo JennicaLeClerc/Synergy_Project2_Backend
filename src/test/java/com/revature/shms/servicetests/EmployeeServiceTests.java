@@ -19,7 +19,11 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyInt;
 import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
@@ -31,9 +35,63 @@ public class EmployeeServiceTests {
 	@Mock RoomService roomService;
 	@InjectMocks EmployeeService employeeService;
 
+	@Test
+	public void getAllEmployeesTest(){
+		Employee employee = new Employee();
+		List<Employee> employeeList = new ArrayList<>();
+		employeeList.add(employee);
+		when(employeeRepository.findAllByOrderByEmployeeType()).thenReturn(employeeList);
+		Assertions.assertEquals(employeeList, employeeService.getAllEmployees());
+	}
 
+	@Test
+	public void getAllEmployeesByTypeTest(){
+		EmployeeType employeeType = null;
+		Employee employee = new Employee();
+		List<Employee> employeeList = new ArrayList<>();
+		employeeList.add(employee);
+		when(employeeRepository.findByEmployeeType(any())).thenReturn(employeeList);
+		Assertions.assertEquals(employeeList, employeeService.getAllEmployeesByType(employeeType));
+	}
 
+	@Test
+	public void getEmployeeByIDTest(){
+		Employee employee = new Employee();
+		when(employeeRepository.findByEmployeeID(anyInt())).thenReturn(employee);
+		Assertions.assertEquals(employee, employeeService.getEmployeeByID(0));
+	}
 
+	@Test
+	public void getEmployeeByUserNameTest(){
+		String username = null;
+		Employee employee = new Employee();
+		when(employeeRepository.findByUserName(any())).thenReturn(employee);
+		Assertions.assertEquals(employee, employeeService.getEmployeeByUserName(username));
+	}
+
+	@Test
+	public void employeeCleaningToDoTest(){
+		Employee employee = new Employee();
+		Cleaning cleaning = new Cleaning();
+		List<Cleaning> cleaningList = new ArrayList<>();
+		cleaningList.add(cleaning);
+		when(cleaningService.GetAllCleaningsByEmployee(any())).thenReturn(cleaningList);
+		Assertions.assertEquals(cleaningList, employeeService.employeeCleaningToDo(employee));
+	}
+
+	@Test
+	public void scheduleCleaningRoomTest(){
+		Employee employee = new Employee();
+		Cleaning cleaning = new Cleaning();
+		Room room = new Room();
+		employee.setEmployeeType(EmployeeType.RECEPTIONIST);
+		Assertions.assertNull( employeeService.scheduleCleaningRoom(null,employee,null,0));
+		when(cleaningService.schedule(any())).thenReturn(cleaning);
+		when(roomService.scheduleCleaning(any())).thenReturn(room);
+		employee.setEmployeeType(EmployeeType.MAINTENANCE);
+		room.setStatus(CleaningStatus.NOT_SCHEDULED);
+		Assertions.assertEquals(room,employeeService.scheduleCleaningRoom(null,employee,room,0));
+	}
 
 	@Test
 	public void settersGettersTest(){
@@ -50,6 +108,4 @@ public class EmployeeServiceTests {
 		Assertions.assertEquals(roomService,employeeService.getRoomService());
 		Assertions.assertEquals(userService,employeeService.getUserService());
 	}
-
-
 }
