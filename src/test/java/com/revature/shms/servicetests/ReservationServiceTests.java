@@ -21,7 +21,6 @@ import java.util.List;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.when;
 
-
 @ExtendWith(MockitoExtension.class)
 public class ReservationServiceTests {
 
@@ -53,8 +52,6 @@ public class ReservationServiceTests {
        when(reservationRepository.findByUserReserveUserId(1)).thenReturn(reservation);
         assertEquals(reservationService.getReservationOfUser("1").getReservationId(), id);
     }
-
-
 
     @Test
     public void createUserTest(){
