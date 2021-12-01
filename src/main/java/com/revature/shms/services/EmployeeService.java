@@ -2,12 +2,14 @@ package com.revature.shms.services;
 
 
 import com.revature.shms.enums.Amenities;
+import com.revature.shms.enums.CleaningStatus;
 import com.revature.shms.enums.EmployeeType;
 import com.revature.shms.models.AmenityWrapper;
 import com.revature.shms.models.Cleaning;
 import com.revature.shms.models.Employee;
 import com.revature.shms.models.Room;
 import com.revature.shms.repositories.EmployeeRepository;
+import com.revature.shms.repositories.RoomRepository;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -78,5 +80,13 @@ public class EmployeeService {
 	}
 
 
+
+	/*
+	 This method allows the employees to see all the rooms status
+	 */
+	public List<Room> findAllByStatus(CleaningStatus status){
+		return findAllByStatus(status);
+
+	}
 
 }
