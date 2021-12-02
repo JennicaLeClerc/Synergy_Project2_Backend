@@ -32,7 +32,7 @@ public class RoomService {
 	public boolean isAvailable(Room room){
 		return room.getStatus().equals(CleaningStatus.CLEAN) && room.getWorkStatus().equals(WorkStatus.NO_ISSUES)
 				&& !room.isOccupied();
-	} // Tested
+	}
 
 	// --- isOccupied ---
 	/**
@@ -44,7 +44,7 @@ public class RoomService {
 	public Room setOccupationStatus(Room room, boolean isOccupied){
 		room.setOccupied(isOccupied);
 		return room;
-	} // Tested
+	}
 
 	/**
 	 * Set the room Occupation status to false, aka. not Occupied.
@@ -53,7 +53,7 @@ public class RoomService {
 	 */
 	public Room notOccupied(Room room){
 		return setOccupationStatus(room, false);
-	} // Tested
+	}
 
 	/**
 	 * Set the room Occupation status to true, aka. Occupied.
@@ -62,7 +62,7 @@ public class RoomService {
 	 */
 	public Room Occupied(Room room){
 		return setOccupationStatus(room, true);
-	} // Tested
+	}
 
 	// --- isClean portion ---
 	/**
@@ -74,7 +74,7 @@ public class RoomService {
 	public Room setRoomStatus(Room room, CleaningStatus cleaningStatus){
 		room.setStatus(cleaningStatus);
 		return room;
-	} // Tested
+	}
 
 	/**
 	 * Sets the room cleaning status to being Scheduled.
@@ -83,7 +83,7 @@ public class RoomService {
 	 */
 	public Room scheduleCleaning(Room room){
 		return setRoomStatus(room, CleaningStatus.SCHEDULED);
-	} // Tested
+	}
 
 	/**
 	 * Sets the room cleaning status to Not Scheduled.
@@ -92,7 +92,7 @@ public class RoomService {
 	 */
 	public Room notScheduleCleaning(Room room){
 		return setRoomStatus(room, CleaningStatus.NOT_SCHEDULED);
-	} // Tested
+	}
 
 	/**
 	 * Sets the room cleaning status to In Progress.
@@ -101,7 +101,7 @@ public class RoomService {
 	 */
 	public Room startCleaning(Room room){
 		return setRoomStatus(room, CleaningStatus.IN_PROGRESS);
-	} // Tested
+	}
 
 	/**
 	 * Sets the room cleaning status to Clean.
@@ -110,7 +110,7 @@ public class RoomService {
 	 */
 	public Room finishCleaning(Room room){
 		return setRoomStatus(room, CleaningStatus.CLEAN);
-	} // Tested
+	}
 
 	// --- WorkStatus ---
 	/**
@@ -122,23 +122,22 @@ public class RoomService {
 	public Room setWorkStatus(Room room, WorkStatus workStatus){
 		room.setWorkStatus(workStatus);
 		return room;
-	} // Tested
+	}
 
 	public Room startWorking(Room room){
 		return setWorkStatus(room, WorkStatus.IN_PROGRESS);
-	} // Tested
+	}
 
 	public Room scheduleWorking(Room room){
-		return setWorkStatus(room, WorkStatus.SCHEDULED);
-	} // Tested
+		return setWorkStatus(room, WorkStatus.SCHEDULED);}
 
 	public Room notScheduleWorking(Room room){
 		return setWorkStatus(room, WorkStatus.NOT_SCHEDULED);
-	} // Tested
+	}
 
 	public Room finishWorking(Room room){
 		return setWorkStatus(room, WorkStatus.NO_ISSUES);
-	} // Tested
+	}
 
 	// --- Finds ---
 	/**
@@ -146,7 +145,7 @@ public class RoomService {
 	 */
 	public List<Room> getAllRooms(){
 		return roomRepository.findAllByOrderByRoomNumberDesc();
-	} //Tested
+	}
 
 	/**
 	 * Gets all Rooms with the given Cleaning Status.
@@ -155,7 +154,7 @@ public class RoomService {
 	 */
 	public List<Room> getAllByStatus(CleaningStatus status){
 		return roomRepository.findAllByStatus(status);
-	} // Tested
+	}
 
 	/**
 	 * Gets all Rooms with the given Occupation status.
@@ -164,7 +163,7 @@ public class RoomService {
 	 */
 	public List<Room> getAllByIsOccupied(boolean isOccupied){
 		return roomRepository.findAllByIsOccupied(isOccupied);
-	} // Tested
+	}
 
 	/**
 	 * Gets all Rooms with the given Needs Service status.
@@ -173,7 +172,7 @@ public class RoomService {
 	 */
 	public List<Room> getAllByNeedsService(WorkStatus workStatus){
 		return roomRepository.findAllByWorkStatus(workStatus);
-	} // Tested
+	}
 
 	/**
 	 * Gets all Rooms with the given Amenity.
@@ -182,7 +181,7 @@ public class RoomService {
 	 */
 	public List<Room> getAllByAmenity(Amenities amenity){
 		return roomRepository.findAllByAmenitiesList_Amenity(amenity);
-	} // Tested
+	}
 
 	/**
 	 * A Room with the given Room Number.
@@ -192,5 +191,5 @@ public class RoomService {
 	 */
 	public Room getByRoomNumber(int roomNumber) throws NotFound {
 		return roomRepository.findByRoomNumber(roomNumber).orElseThrow(NotFound::new);
-	} // Tested
+	}
 }
