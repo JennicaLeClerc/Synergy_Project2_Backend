@@ -20,14 +20,14 @@ import java.util.List;
 @Setter
 public class AmenityWrapperService {
 	@Autowired
-	private AmenityWrapperRepository repo;
+	private AmenityWrapperRepository amenityWrapperRepository;
 
 	/**
 	 * gets all amenityWrappers
 	 * @return List<AmenityWrapper>
 	 */
 	public List<AmenityWrapper> getAllAmenities(){
-		return repo.findAll();
+		return amenityWrapperRepository.findAll();
 	}
 
 	/**
@@ -37,7 +37,7 @@ public class AmenityWrapperService {
 	 * @return the amenityWrapper
 	 */
 	public AmenityWrapper setAmenityPrice(Amenities amenity, double price){
-		return repo.save(new AmenityWrapper(amenity,price));
+		return amenityWrapperRepository.save(new AmenityWrapper(amenity,price));
 	}
 
 	/**
@@ -46,7 +46,7 @@ public class AmenityWrapperService {
 	 * @return AmenityWrapper
 	 */
 	public AmenityWrapper getAmenityWrapper(Amenities amenity){
-		return repo.getById(amenity);
+		return amenityWrapperRepository.getById(amenity);
 	}
 
 	/**
@@ -55,7 +55,7 @@ public class AmenityWrapperService {
 	 * @return double price
 	 */
 	public Double getAmenityPrice(Amenities amenity) {
-		return repo.getById(amenity).getPriceWeight();
+		return amenityWrapperRepository.getById(amenity).getPriceWeight();
 	}
 
 	/**
@@ -70,6 +70,6 @@ public class AmenityWrapperService {
 	 * Generates all AmenityWrappers with 0 price
 	 */
 	public void GenerateAllAmenityWrappers(){
-		Arrays.stream(Amenities.values()).forEach(amenities -> repo.save(new AmenityWrapper(amenities,0)));
+		Arrays.stream(Amenities.values()).forEach(amenities -> amenityWrapperRepository.save(new AmenityWrapper(amenities,0)));
 	}
 }

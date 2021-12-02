@@ -1,4 +1,5 @@
 package com.revature.shms.servicetests;
+
 import com.revature.shms.enums.CleaningStatus;
 import com.revature.shms.enums.EmployeeType;
 import com.revature.shms.models.Cleaning;
@@ -117,11 +118,15 @@ public class CleaningServiceTest {
 	public void gettersSetters(){
 		CleaningRepository cleaningRepository = null;
 		RoomService roomService = new RoomService();
+
 		CleaningService cleaningService = new CleaningService(cleaningRepository,roomService);
+
 		Assertions.assertNull(cleaningService.getCleaningRepository());
 		Assertions.assertEquals(cleaningService.getRoomService(),roomService);
+
 		cleaningService.setRoomService(null);
 		cleaningService.setCleaningRepository(null);
+
 		Assertions.assertNull(cleaningService.getCleaningRepository());
 		Assertions.assertNull(cleaningService.getRoomService());
 	}

@@ -38,9 +38,9 @@ public class CleaningService {
 	}
 
 	/**
-	 *
-	 * @param employee
-	 * @param employeeTarget
+	 * Ryan wanted to still work on this
+	 * @param employee ?
+	 * @param employeeTarget ?
 	 * @param room the room being worked on.
 	 * @param priority how quickly should the room be cleaned.
 	 * @return Room scheduled to be cleaned.
@@ -51,9 +51,9 @@ public class CleaningService {
 		return roomService.scheduleCleaning(room);
 	}
 
-
 	/**
-	 *
+	 * If you aren't a Receptionist, then you delete the previous Cleaning ID for that room number and start another
+	 * with the Cleaning status of In Progress.
 	 * @param employee the employee doing the cleaning
 	 * @param room the room to be worked on.
 	 * @return Room started being cleaned.
@@ -65,7 +65,7 @@ public class CleaningService {
 	}
 
 	/**
-	 *
+	 * If you aren't a Receptionist, then you set the Cleaning status of the given room to Clean.
 	 * @param employee the employee doing the cleaning
 	 * @param room the room to be worked on.
 	 * @return Room now finished being cleaned.
