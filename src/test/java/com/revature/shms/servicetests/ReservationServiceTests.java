@@ -31,9 +31,6 @@ public class ReservationServiceTests {
 	@Mock
 	ReservationRepository reservationRepository;
 
-	/**
-	 *
-	 */
 	@Test
 	public void returnAllReservationsTest(){
 		List<Reservation> test = new ArrayList<>();
@@ -79,6 +76,7 @@ public class ReservationServiceTests {
         when(reservationRepository.save(any())).thenReturn(reservation);
         Assertions.assertEquals( reservationService.changeStatusOfReservation("1", update),reservation);
     }
+
 	@Test void changeDateOfReservationTest(){
 		Reservation reservation = new Reservation();
 		reservation.setReservationID(1);
@@ -88,6 +86,7 @@ public class ReservationServiceTests {
 		when(reservationRepository.save(any())).thenReturn(reservation);
 		Assertions.assertEquals( reservationService.changeDateOfReservation("1", update),reservation);
 	}
+
 	@Test void getReservationWithReservationIdTest () throws NotFound {
 		int id = 1;
 		Reservation reservation = new Reservation();
@@ -95,11 +94,12 @@ public class ReservationServiceTests {
 		when(reservationRepository.findByReservationID(1)).thenReturn(java.util.Optional.of(reservation));
 		assertEquals(reservationService.getReservationWithReservationId("1").getReservationID(), id);
 	}
+
 	@Test
-	public void gettersSetters() throws NotFound {
+	public void gettersSetters(){
 		ReservationRepository reservationRepository = null;
 		ReservationService reservationService = new ReservationService();
-		reservationService = new ReservationService(reservationRepository);
+		reservationService.setReservationRepository(reservationRepository);
 		Assertions.assertNull(reservationService.getReservationRepository());
 		reservationService.setReservationRepository(null);
 	}

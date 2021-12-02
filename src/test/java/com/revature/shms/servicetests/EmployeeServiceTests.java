@@ -124,7 +124,6 @@ public class EmployeeServiceTests {
 		Assertions.assertEquals(cleaningList, employeeService.employeeCleaningToDo(employee));
 	}
 
-
 	@Test
 	public void settersGettersTest(){
 		EmployeeService employeeService = new EmployeeService();

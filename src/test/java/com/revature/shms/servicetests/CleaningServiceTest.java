@@ -119,7 +119,9 @@ public class CleaningServiceTest {
 		CleaningRepository cleaningRepository = null;
 		RoomService roomService = new RoomService();
 
-		CleaningService cleaningService = new CleaningService(cleaningRepository,roomService);
+		CleaningService cleaningService = new CleaningService();
+		cleaningService.setCleaningRepository(cleaningRepository);
+		cleaningService.setRoomService(roomService);
 
 		Assertions.assertNull(cleaningService.getCleaningRepository());
 		Assertions.assertEquals(cleaningService.getRoomService(),roomService);

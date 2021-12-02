@@ -146,7 +146,8 @@ public class RoomServiceTest {
 	@Test
 	public void getterAndSetterTest(){
 		RoomRepository roomRepository = null;
-		RoomService roomService = new RoomService(roomRepository);
+		RoomService roomService = new RoomService();
+		roomService.setRoomRepository(roomRepository);
 		Assertions.assertNull(roomService.getRoomRepository());
 
 		roomService.setRoomRepository(null);

@@ -4,6 +4,7 @@ import com.revature.shms.enums.Amenities;
 import com.revature.shms.models.AmenityWrapper;
 import com.revature.shms.repositories.AmenityWrapperRepository;
 import com.revature.shms.services.AmenityWrapperService;
+import com.revature.shms.services.ReservationService;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -70,7 +71,8 @@ public class AmenityWrapperServiceTest {
 	@Test
 	public void getterAndSetterTest(){
 		AmenityWrapperRepository amenityWrapperRepository = null;
-		AmenityWrapperService amenityWrapperService = new AmenityWrapperService(amenityWrapperRepository);
+		AmenityWrapperService amenityWrapperService = new AmenityWrapperService();
+		amenityWrapperService.setAmenityWrapperRepository(amenityWrapperRepository);
 		Assertions.assertNull(amenityWrapperService.getAmenityWrapperRepository());
 
 		amenityWrapperService.setAmenityWrapperRepository(null);
