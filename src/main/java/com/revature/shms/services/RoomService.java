@@ -25,8 +25,8 @@ public class RoomService {
 	private RoomRepository roomRepository;
 	/*TODO
 		isAvailable
-			- Occupied
-			- Clean // Done???
+			- Occupied // Done
+			- Clean // Done
 			- Work
 	 */
 
@@ -38,8 +38,9 @@ public class RoomService {
 	public boolean isAvailable(Room room){
 		return room.getStatus().equals(CleaningStatus.CLEAN) && room.getWorkStatus().equals(WorkStatus.NO_ISSUES)
 				&& !room.isOccupied();
-	}
+	} // Tested
 
+	// --- isOccupied ---
 	/**
 	 * Sets the room Occupation status of the given room to the given staus.
 	 * @param room the room to be worked on.
@@ -49,7 +50,7 @@ public class RoomService {
 	public Room setOccupationStatus(Room room, boolean isOccupied){
 		room.setOccupied(isOccupied);
 		return room;
-	}
+	} // Tested
 
 	/**
 	 * Set the room Occupation status to false, aka. not Occupied.
@@ -58,7 +59,7 @@ public class RoomService {
 	 */
 	public Room notOccupied(Room room){
 		return setOccupationStatus(room, false);
-	}
+	} // Tested
 
 	/**
 	 * Set the room Occupation status to true, aka. Occupied.
@@ -67,7 +68,7 @@ public class RoomService {
 	 */
 	public Room Occupied(Room room){
 		return setOccupationStatus(room, true);
-	}
+	} // Tested
 
 	// --- isClean portion ---
 	/**
@@ -91,6 +92,15 @@ public class RoomService {
 	} // Tested
 
 	/**
+	 * Sets the room cleaning status to Not Scheduled.
+	 * @param room the room to be worked on.
+	 * @return Room with no scheduled cleaning.
+	 */
+	public Room notScheduleCleaning(Room room){
+		return setRoomStatus(room, CleaningStatus.NOT_SCHEDULED);
+	} // Tested
+
+	/**
 	 * Sets the room cleaning status to In Progress.
 	 * @param room the room to be worked on.
 	 * @return Room with an in progress cleaning status.
@@ -108,6 +118,35 @@ public class RoomService {
 		return setRoomStatus(room, CleaningStatus.CLEAN);
 	} // Tested
 
+	// --- WorkStatus ---
+	/**
+	 * Set the room with the given work status.
+	 * @param room the room to be worked on.
+	 * @param workStatus the status of the work on the room.
+	 * @return the room with the selected work status.
+	 */
+	public Room setWorkStatus(Room room, WorkStatus workStatus){
+		room.setWorkStatus(workStatus);
+		return room;
+	} // Tested
+
+	public Room startWorking(Room room){
+		return setWorkStatus(room, WorkStatus.IN_PROGRESS);
+	}
+
+	public Room scheduleWorking(Room room){
+		return setWorkStatus(room, WorkStatus.SCHEDULED);
+	}
+
+	public Room notScheduleWorking(Room room){
+		return setWorkStatus(room, WorkStatus.NOT_SCHEDULED);
+	}
+
+	public Room finishWorking(Room room){
+		return setWorkStatus(room, WorkStatus.NO_ISSUES);
+	}
+
+	// --- Finds ---
 	/**
 	 * @return List<Room> Ordered by Room Number in descending order.
 	 */

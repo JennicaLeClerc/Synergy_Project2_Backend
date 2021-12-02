@@ -24,7 +24,6 @@ import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
 public class RoomServiceTest {
-
 	@Mock RoomRepository roomRepository;
 	@InjectMocks RoomService roomService;
 
@@ -68,13 +67,45 @@ public class RoomServiceTest {
 	}
 
 	@Test
+	public void notScheduleCleaningTest(){
+		Assertions.assertEquals(CleaningStatus.NOT_SCHEDULED, roomService.notScheduleCleaning(new Room()).getStatus());
+	}
+
+	@Test
 	public void startCleaningTest(){
 		Assertions.assertEquals(CleaningStatus.IN_PROGRESS,roomService.startCleaning(new Room()).getStatus());
 	}
 
 	@Test
-	public void finishCleaning(){
-		Assertions.assertEquals(CleaningStatus.CLEAN,roomService.finishCleaning(new Room()).getStatus());
+	public void finishCleaningTest(){
+		Assertions.assertEquals(CleaningStatus.CLEAN, roomService.finishCleaning(new Room()).getStatus());
+	}
+
+	@Test
+	public void setWorkStatusTest(){
+		for(WorkStatus workStatus: WorkStatus.values()){
+			Assertions.assertEquals(workStatus, roomService.setWorkStatus(new Room(), workStatus).getWorkStatus());
+		}
+	}
+
+	@Test
+	public void startWorkingTest(){
+		Assertions.assertEquals(WorkStatus.IN_PROGRESS, roomService.startWorking(new Room()).getWorkStatus());
+	}
+
+	@Test
+	public void finishWorkingTest(){
+		Assertions.assertEquals(WorkStatus.NO_ISSUES, roomService.finishWorking(new Room()).getWorkStatus());
+	}
+
+	@Test
+	public void scheduleWorkingTest(){
+		Assertions.assertEquals(WorkStatus.SCHEDULED, roomService.scheduleWorking(new Room()).getWorkStatus());
+	}
+
+	@Test
+	public void notScheduleWorkingTest(){
+		Assertions.assertEquals(WorkStatus.NOT_SCHEDULED, roomService.notScheduleWorking(new Room()).getWorkStatus());
 	}
 
 	@Test
