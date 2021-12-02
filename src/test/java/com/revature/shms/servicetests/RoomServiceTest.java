@@ -38,12 +38,28 @@ public class RoomServiceTest {
 	}
 
 	@Test
-	public void setRoomStatusTest(){
+	public void setOccupationStatusTest(){
+		boolean isOccupied = true;
 		Room room = new Room();
-		room.setStatus(CleaningStatus.NOT_SCHEDULED);
+		room.setOccupied(isOccupied);
+		Assertions.assertEquals(room, roomService.setOccupationStatus(room, isOccupied));
+	}
+
+	@Test
+	public void setRoomStatusTest(){
 		for (CleaningStatus cleaningStatus:CleaningStatus.values()) {
-			Assertions.assertEquals(cleaningStatus,roomService.setRoomStatus(room,cleaningStatus).getStatus());
+			Assertions.assertEquals(cleaningStatus,roomService.setRoomStatus(new Room(),cleaningStatus).getStatus());
 		}
+	}
+
+	@Test
+	public void notOccupiedTest(){
+		Assertions.assertFalse(roomService.notOccupied(new Room()).isOccupied());
+	}
+
+	@Test
+	public void OccupiedTest(){
+		Assertions.assertTrue(roomService.Occupied(new Room()).isOccupied());
 	}
 
 	@Test
@@ -78,9 +94,7 @@ public class RoomServiceTest {
 			List<Room> roomList = new ArrayList<>();
 			roomList.add(room);
 			roomList.add(room);
-
 			when(roomRepository.findAllByStatus(any(CleaningStatus.class))).thenReturn(roomList);
-
 			Assertions.assertEquals(cleaningStatus, roomService.getAllByStatus(cleaningStatus).get(0).getStatus());
 		}
 	}
@@ -94,9 +108,7 @@ public class RoomServiceTest {
 			List<Room> roomList = new ArrayList<>();
 			roomList.add(room);
 			roomList.add(room);
-
 			when(roomRepository.findAllByIsOccupied(anyBoolean())).thenReturn(roomList);
-
 			Assertions.assertEquals(roomList, roomService.getAllByIsOccupied(testing));
 			testing = false;
 		}
@@ -110,9 +122,7 @@ public class RoomServiceTest {
 			List<Room> roomList = new ArrayList<>();
 			roomList.add(room);
 			roomList.add(room);
-
 			when(roomRepository.findAllByWorkStatus(any())).thenReturn(roomList);
-
 			Assertions.assertEquals(roomList, roomService.getAllByNeedsService(workStatus));
 		}
 	}
@@ -132,7 +142,6 @@ public class RoomServiceTest {
 			roomList.add(room);
 
 			when(roomRepository.findAllByAmenitiesList_Amenity(amenities)).thenReturn(roomList);
-
 			Assertions.assertEquals(roomList, roomService.getAllByAmenity(amenities));
 		}
 	}
@@ -142,9 +151,7 @@ public class RoomServiceTest {
 		int roomNumber = 102;
 		Room room = new Room();
 		room.setRoomNumber(roomNumber);
-
 		when(roomRepository.findByRoomNumber(roomNumber)).thenReturn(java.util.Optional.of(room));
-
 		Assertions.assertEquals(room, roomService.getByRoomNumber(roomNumber));
 	}
 

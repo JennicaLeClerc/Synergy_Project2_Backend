@@ -40,9 +40,38 @@ public class RoomService {
 				&& !room.isOccupied();
 	}
 
+	/**
+	 * Sets the room Occupation status of the given room to the given staus.
+	 * @param room the room to be worked on.
+	 * @param isOccupied is the room occupied or not.
+	 * @return the room with the new occupation status.
+	 */
+	public Room setOccupationStatus(Room room, boolean isOccupied){
+		room.setOccupied(isOccupied);
+		return room;
+	}
+
+	/**
+	 * Set the room Occupation status to false, aka. not Occupied.
+	 * @param room the room to be worked on.
+	 * @return the room with the occupation status set to false.
+	 */
+	public Room notOccupied(Room room){
+		return setOccupationStatus(room, false);
+	}
+
+	/**
+	 * Set the room Occupation status to true, aka. Occupied.
+	 * @param room the room to be worked on.
+	 * @return the room with the occupation status set to true.
+	 */
+	public Room Occupied(Room room){
+		return setOccupationStatus(room, true);
+	}
+
 	// --- isClean portion ---
 	/**
-	 * Sets the room cleaning status to the given room to the given status.
+	 * Sets the room cleaning status of the given room to the given status.
 	 * @param room the room to be worked on.
 	 * @param cleaningStatus the status of the cleaning.
 	 * @return Room with the current cleaning status.
