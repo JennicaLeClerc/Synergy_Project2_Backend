@@ -19,6 +19,7 @@ public class User {
 
 	String firstName;
 	String lastName;
+
 	@Column(nullable = false, unique = true)
 	String username;
 	@Column(nullable = false)
