@@ -132,19 +132,19 @@ public class RoomService {
 
 	public Room startWorking(Room room){
 		return setWorkStatus(room, WorkStatus.IN_PROGRESS);
-	}
+	} // Tested
 
 	public Room scheduleWorking(Room room){
 		return setWorkStatus(room, WorkStatus.SCHEDULED);
-	}
+	} // Tested
 
 	public Room notScheduleWorking(Room room){
 		return setWorkStatus(room, WorkStatus.NOT_SCHEDULED);
-	}
+	} // Tested
 
 	public Room finishWorking(Room room){
 		return setWorkStatus(room, WorkStatus.NO_ISSUES);
-	}
+	} // Tested
 
 	// --- Finds ---
 	/**
