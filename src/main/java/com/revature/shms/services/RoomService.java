@@ -25,9 +25,21 @@ public class RoomService {
 	private RoomRepository roomRepository;
 	/*TODO
 		isAvailable
-		isClean // Done???
-		needWork
+			- Occupied
+			- Clean // Done???
+			- Work
 	 */
+
+	/**
+	 * Returns a boolean if the room is clean with no work being done and is not occupied.
+	 * @param room the room to be worked on.
+	 * @return boolean of if the room is avaliable or not.
+	 */
+	public boolean isAvailable(Room room){
+		return room.getStatus().equals(CleaningStatus.CLEAN) && room.getWorkStatus().equals(WorkStatus.NO_ISSUES)
+				&& !room.isOccupied();
+	}
+
 	// --- isClean portion ---
 	/**
 	 * Sets the room cleaning status to the given room to the given status.

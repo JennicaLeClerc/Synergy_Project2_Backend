@@ -29,6 +29,15 @@ public class RoomServiceTest {
 	@InjectMocks RoomService roomService;
 
 	@Test
+	public void isAvailableTest(){
+		Room room = new Room();
+		room.setStatus(CleaningStatus.CLEAN);
+		room.setWorkStatus(WorkStatus.NO_ISSUES);
+		room.setOccupied(false);
+		Assertions.assertTrue(roomService.isAvailable(room));
+	}
+
+	@Test
 	public void setRoomStatusTest(){
 		Room room = new Room();
 		room.setStatus(CleaningStatus.NOT_SCHEDULED);
