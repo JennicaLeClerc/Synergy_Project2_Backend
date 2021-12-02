@@ -2,6 +2,7 @@ package com.revature.shms.servicetests;
 
 import com.revature.shms.enums.Amenities;
 import com.revature.shms.enums.CleaningStatus;
+import com.revature.shms.exceptions.EntityNotFound;
 import com.revature.shms.models.AmenityWrapper;
 import com.revature.shms.models.Room;
 import com.revature.shms.repositories.CleaningRepository;
@@ -133,7 +134,7 @@ public class RoomServiceTest {
 	}
 
 	@Test
-	public void getByRoomNumberTest() throws NotFound {
+	public void getByRoomNumberTest() throws EntityNotFound {
 		int roomNumber = 102;
 		Room room = new Room();
 		room.setRoomNumber(roomNumber);

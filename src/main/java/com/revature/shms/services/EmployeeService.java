@@ -3,6 +3,7 @@ package com.revature.shms.services;
 import com.revature.shms.enums.Amenities;
 import com.revature.shms.enums.CleaningStatus;
 import com.revature.shms.enums.EmployeeType;
+import com.revature.shms.exceptions.EntityNotFound;
 import com.revature.shms.models.*;
 import com.revature.shms.repositories.EmployeeRepository;
 import com.revature.shms.repositories.RoomRepository;
@@ -45,7 +46,7 @@ public class EmployeeService {
 		try {
 			Employee employee = getEmployeeByUserName(username);
 			if (employee.getPassword().equals(password)) return employee;
-		} catch (NotFound e) { throw new AccessDeniedException("Incorrect username/password");}
+		} catch (EntityNotFound e) { throw new AccessDeniedException("Incorrect username/password");}
 		throw new AccessDeniedException("Incorrect username/password");
 	}
 
@@ -79,8 +80,8 @@ public class EmployeeService {
 	 * @param employeeID the employeeID to match.
 	 * @return Employee with the given employeeID.
 	 */
-	public Employee getEmployeeByID(int employeeID) throws NotFound {
-		return employeeRepository.findByEmployeeID(employeeID).orElseThrow(NotFound::new);
+	public Employee getEmployeeByID(int employeeID) throws EntityNotFound {
+		return employeeRepository.findByEmployeeID(employeeID).orElseThrow(EntityNotFound::new);
 	} // Tested
 
 	/**
@@ -88,8 +89,8 @@ public class EmployeeService {
 	 * @param userName the username to match.
 	 * @return Employee with the given username.
 	 */
-	public Employee getEmployeeByUserName(String userName) throws NotFound {
-		return employeeRepository.findByUsername(userName).orElseThrow(NotFound::new);
+	public Employee getEmployeeByUserName(String userName) throws EntityNotFound {
+		return employeeRepository.findByUsername(userName).orElseThrow(EntityNotFound::new);
 	} // Tested
 
 	/**

@@ -2,6 +2,7 @@ package com.revature.shms.servicetests;
 
 import com.revature.shms.enums.CleaningStatus;
 import com.revature.shms.enums.EmployeeType;
+import com.revature.shms.exceptions.EntityNotFound;
 import com.revature.shms.models.Cleaning;
 import com.revature.shms.models.Employee;
 import com.revature.shms.models.Room;
@@ -100,14 +101,14 @@ public class EmployeeServiceTests {
 	}
 
 	@Test
-	public void getEmployeeByIDTest() throws NotFound {
+	public void getEmployeeByIDTest() throws EntityNotFound {
 		Employee employee = new Employee();
 		when(employeeRepository.findByEmployeeID(anyInt())).thenReturn(java.util.Optional.of(employee));
 		Assertions.assertEquals(employee, employeeService.getEmployeeByID(0));
 	}
 
 	@Test
-	public void getEmployeeByUserNameTest() throws NotFound {
+	public void getEmployeeByUserNameTest() throws EntityNotFound {
 		String username = "username";
 		Employee employee = new Employee();
 		when(employeeRepository.findByUsername(any())).thenReturn(java.util.Optional.of(employee));

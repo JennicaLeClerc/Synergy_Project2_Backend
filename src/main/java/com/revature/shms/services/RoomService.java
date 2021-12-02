@@ -3,6 +3,7 @@ package com.revature.shms.services;
 
 import com.revature.shms.enums.Amenities;
 import com.revature.shms.enums.CleaningStatus;
+import com.revature.shms.exceptions.EntityNotFound;
 import com.revature.shms.models.Room;
 import com.revature.shms.repositories.EmployeeRepository;
 import com.revature.shms.repositories.RoomRepository;
@@ -10,7 +11,6 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import org.omg.CosNaming.NamingContextPackage.NotFound;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -116,9 +116,9 @@ public class RoomService {
 	 * A Room with the given Room Number.
 	 * @param roomNumber the Room Number to be matched.
 	 * @return Room with the given Room Number.
-	 * @throws NotFound
+	 * @throws EntityNotFound
 	 */
-	public Room getByRoomNumber(int roomNumber) throws NotFound {
-		return roomRepository.findByRoomNumber(roomNumber).orElseThrow(NotFound::new);
+	public Room getByRoomNumber(int roomNumber) throws EntityNotFound {
+		return roomRepository.findByRoomNumber(roomNumber).orElseThrow(EntityNotFound::new);
 	} // Tested
 }

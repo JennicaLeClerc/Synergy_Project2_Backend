@@ -1,6 +1,7 @@
 package com.revature.shms.servicetests;
 
 import com.revature.shms.enums.ReservationStatus;
+import com.revature.shms.exceptions.EntityNotFound;
 import com.revature.shms.models.Reservation;
 import com.revature.shms.repositories.CleaningRepository;
 import com.revature.shms.repositories.ReservationRepository;
@@ -42,7 +43,7 @@ public class ReservationServiceTests {
 	}
 
 	@Test
-	public void getSpecificReservation() throws NotFound {
+	public void getSpecificReservation() throws EntityNotFound {
 		int id = 1;
 		Reservation reservation = new Reservation();
 		reservation.setReservationID(id);
@@ -87,7 +88,7 @@ public class ReservationServiceTests {
 		Assertions.assertEquals( reservationService.changeDateOfReservation("1", update),reservation);
 	}
 
-	@Test void getReservationWithReservationIdTest () throws NotFound {
+	@Test void getReservationWithReservationIdTest () throws EntityNotFound {
 		int id = 1;
 		Reservation reservation = new Reservation();
 		reservation.setReservationID(id);

@@ -1,6 +1,7 @@
 package com.revature.shms.servicetests;
 
 import com.revature.shms.enums.Amenities;
+import com.revature.shms.exceptions.EntityNotFound;
 import com.revature.shms.models.AmenityWrapper;
 import com.revature.shms.repositories.AmenityWrapperRepository;
 import com.revature.shms.services.AmenityWrapperService;
@@ -41,16 +42,16 @@ public class AmenityWrapperServiceTest {
 	}
 
 	@Test
-	public void getAmenityWrapperTest(){
+	public void getAmenityWrapperTest() throws EntityNotFound {
 		AmenityWrapper wrapper = new AmenityWrapper(Amenities.SMALL_KITCHEN, 100);
-		when(repo.getById(any())).thenReturn(wrapper);
+		when(repo.findById(any())).thenReturn(java.util.Optional.of(wrapper));
 		assertEquals(service.getAmenityWrapper(Amenities.SMALL_KITCHEN),wrapper);
 	}
 
 	@Test
-	public void getAmenityPriceTest(){
+	public void getAmenityPriceTest() throws EntityNotFound {
 		AmenityWrapper wrapper = new AmenityWrapper(Amenities.SMALL_KITCHEN, 100);
-		when(repo.getById(any())).thenReturn(wrapper);
+		when(repo.findById(any())).thenReturn(java.util.Optional.of(wrapper));
 		assertEquals(service.getAmenityPrice(Amenities.SMALL_KITCHEN),100);
 	}
 

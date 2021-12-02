@@ -1,12 +1,12 @@
 package com.revature.shms.services;
 
+import com.revature.shms.exceptions.EntityNotFound;
 import com.revature.shms.models.Reservation;
 import com.revature.shms.repositories.ReservationRepository;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import org.omg.CosNaming.NamingContextPackage.NotFound;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -29,8 +29,8 @@ public class  ReservationService {
      * @param id
      * @return Reservation
      */
-    public Reservation getReservationOfUser(String id) throws NotFound {
-        return reservationRepository.findByUserReserve_UserID(Integer.parseInt(id)).orElseThrow(NotFound::new);
+    public Reservation getReservationOfUser(String id) throws EntityNotFound {
+        return reservationRepository.findByUserReserve_UserID(Integer.parseInt(id)).orElseThrow(EntityNotFound::new);
     }
 
     /**
@@ -38,8 +38,8 @@ public class  ReservationService {
      * @param reservationId
      * @return Reservation
      */
-    public Reservation getReservationWithReservationId(String reservationId) throws NotFound {
-        return reservationRepository.findByReservationID(Integer.parseInt(reservationId)).orElseThrow(NotFound::new);
+    public Reservation getReservationWithReservationId(String reservationId) throws EntityNotFound {
+        return reservationRepository.findByReservationID(Integer.parseInt(reservationId)).orElseThrow(EntityNotFound::new);
     }
 
     /**

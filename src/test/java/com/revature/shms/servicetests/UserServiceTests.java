@@ -1,22 +1,18 @@
 package com.revature.shms.servicetests;
 
+import com.revature.shms.exceptions.EntityNotFound;
 import com.revature.shms.models.User;
 import com.revature.shms.repositories.UserRepository;
 import com.revature.shms.services.UserService;
-import lombok.Getter;
-import lombok.Setter;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.junit.jupiter.api.function.Executable;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
-import org.omg.CosNaming.NamingContextPackage.NotFound;
-
 import java.nio.file.AccessDeniedException;
 import java.util.ArrayList;
 import java.util.List;
-
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
@@ -51,7 +47,7 @@ public class UserServiceTests {
 		assertEquals("redirect:logoutPage",userService.logout());
 	}
 	@Test
-	public void getUserByUserNameTest() throws NotFound {
+	public void getUserByUserNameTest() throws EntityNotFound {
 		User user = new User();
 		user.setUsername("Ryan");
 		user.setPassword("123123");
@@ -71,7 +67,7 @@ public class UserServiceTests {
 		assertEquals(users,userService.getAllUsers());
 	}
 	@Test
-	public void getUserByUserId() throws NotFound {
+	public void getUserByUserId() throws EntityNotFound {
 		User user = new User();
 		user.setUserID(123);
 		when(userRepository.findByUserID(user.getUserID())).thenReturn(java.util.Optional.of(user));

@@ -2,6 +2,7 @@ package com.revature.shms.servicetests;
 
 import com.revature.shms.enums.CleaningStatus;
 import com.revature.shms.enums.EmployeeType;
+import com.revature.shms.exceptions.EntityNotFound;
 import com.revature.shms.models.Cleaning;
 import com.revature.shms.models.Employee;
 import com.revature.shms.models.Room;
@@ -16,7 +17,6 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
-import org.omg.CosNaming.NamingContextPackage.NotFound;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -50,7 +50,7 @@ public class CleaningServiceTest {
 	}
 
 	@Test
-	public void startCleanRoomTest() throws NotFound {
+	public void startCleanRoomTest() throws EntityNotFound {
 		Employee employee = new Employee();
 		employee.setEmployeeType(EmployeeType.RECEPTIONIST);
 		Assertions.assertNull( cleaningService.startCleanRoom(employee,null));
@@ -94,7 +94,7 @@ public class CleaningServiceTest {
 	}
 
 	@Test
-	public void getByRoomTest() throws NotFound {
+	public void getByRoomTest() throws EntityNotFound {
 		Cleaning cleaning = new Cleaning();
 		when(cleaningRepository.findByRoom(any())).thenReturn(java.util.Optional.of(cleaning));
 		Assertions.assertEquals(cleaning, cleaningService.getByRoom(new Room()));

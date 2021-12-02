@@ -2,6 +2,7 @@ package com.revature.shms.services;
 
 
 import com.revature.shms.enums.EmployeeType;
+import com.revature.shms.exceptions.EntityNotFound;
 import com.revature.shms.models.Cleaning;
 import com.revature.shms.models.Employee;
 import com.revature.shms.models.Room;
@@ -58,7 +59,7 @@ public class CleaningService {
 	 * @param room the room to be worked on.
 	 * @return Room started being cleaned.
 	 */
-	public Room startCleanRoom(Employee employee, Room room) throws NotFound {
+	public Room startCleanRoom(Employee employee, Room room) throws EntityNotFound {
 		if (employee.getEmployeeType().equals(EmployeeType.RECEPTIONIST)) return null;
 		remove(getByRoom(room));
 		return roomService.startCleaning(room);
@@ -97,8 +98,8 @@ public class CleaningService {
 	 * @param room the room to match.
 	 * @return Cleaning corresponding to the room.
 	 */
-	public Cleaning getByRoom(Room room) throws NotFound {
-		return cleaningRepository.findByRoom(room).orElseThrow(NotFound::new);
+	public Cleaning getByRoom(Room room) throws EntityNotFound {
+		return cleaningRepository.findByRoom(room).orElseThrow(EntityNotFound::new);
 	} // Tested
 
 	/**

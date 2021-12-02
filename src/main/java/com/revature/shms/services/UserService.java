@@ -1,5 +1,6 @@
 package com.revature.shms.services;
 
+import com.revature.shms.exceptions.EntityNotFound;
 import com.revature.shms.models.Employee;
 import com.revature.shms.models.User;
 import com.revature.shms.repositories.UserRepository;
@@ -7,7 +8,6 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import org.omg.CosNaming.NamingContextPackage.NotFound;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.stereotype.Service;
@@ -38,7 +38,7 @@ public class UserService{
 		try {
 			User user = getUserByUserName(userName);
 			if (user.getPassword().equals(password)) return user;
-		} catch (NotFound e) { throw new AccessDeniedException("Incorrect username/password");}
+		} catch (EntityNotFound e) { throw new AccessDeniedException("Incorrect username/password");}
 		throw new AccessDeniedException("Incorrect username/password");
 	}
 
@@ -55,12 +55,12 @@ public class UserService{
         return userRepository.findAllByOrderByUserIDDesc();
     }
 
-    public User getUserByUserName(String userName) throws NotFound {
-        return userRepository.findByUsername(userName).orElseThrow(NotFound::new);
+    public User getUserByUserName(String userName) throws EntityNotFound {
+        return userRepository.findByUsername(userName).orElseThrow(EntityNotFound::new);
     }
 
-    public User getUserByUserId(int userId) throws NotFound {
-        return userRepository.findByUserID(userId).orElseThrow(NotFound::new);
+    public User getUserByUserId(int userId) throws EntityNotFound {
+        return userRepository.findByUserID(userId).orElseThrow(EntityNotFound::new);
     }
 }
 

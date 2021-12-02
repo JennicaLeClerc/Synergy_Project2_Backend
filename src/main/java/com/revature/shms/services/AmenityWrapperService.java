@@ -1,6 +1,7 @@
 package com.revature.shms.services;
 
 import com.revature.shms.enums.Amenities;
+import com.revature.shms.exceptions.EntityNotFound;
 import com.revature.shms.models.AmenityWrapper;
 import com.revature.shms.repositories.AmenityWrapperRepository;
 import lombok.AllArgsConstructor;
@@ -45,8 +46,8 @@ public class AmenityWrapperService {
 	 * @param amenity amenity to look for
 	 * @return AmenityWrapper
 	 */
-	public AmenityWrapper getAmenityWrapper(Amenities amenity){
-		return amenityWrapperRepository.getById(amenity);
+	public AmenityWrapper getAmenityWrapper(Amenities amenity) throws EntityNotFound {
+		return amenityWrapperRepository.findById(amenity).orElseThrow(EntityNotFound::new);
 	}
 
 	/**
@@ -54,8 +55,8 @@ public class AmenityWrapperService {
 	 * @param amenity amenity to look for
 	 * @return double price
 	 */
-	public Double getAmenityPrice(Amenities amenity) {
-		return amenityWrapperRepository.getById(amenity).getPriceWeight();
+	public Double getAmenityPrice(Amenities amenity) throws EntityNotFound {
+		return amenityWrapperRepository.findById(amenity).orElseThrow(EntityNotFound::new).getPriceWeight();
 	}
 
 	/**

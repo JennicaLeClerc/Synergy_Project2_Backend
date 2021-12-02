@@ -2,6 +2,8 @@ package com.revature.shms.services;
 import com.revature.shms.models.MyUserDetails;
 import com.revature.shms.models.User;
 import com.revature.shms.repositories.UserRepository;
+import lombok.AllArgsConstructor;
+import lombok.NoArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -10,6 +12,7 @@ import org.springframework.stereotype.Service;
 import java.util.Optional;
 
 @Service
+@AllArgsConstructor
 public class MyUserDetailsService implements UserDetailsService {
 
     @Autowired
