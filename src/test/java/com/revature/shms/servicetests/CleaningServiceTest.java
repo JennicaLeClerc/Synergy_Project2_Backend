@@ -86,20 +86,17 @@ public class CleaningServiceTest {
 
 	@Test
 	public void getAllCleaningsByEmployeeTest(){
-		Employee employee = new Employee();
-		Cleaning cleaning = new Cleaning();
 		List<Cleaning> cleaningList = new ArrayList<>();
-		cleaningList.add(cleaning);
+		cleaningList.add(new Cleaning());
 		when(cleaningRepository.findAllByEmployeeOrderByPriorityDescDateAddedAsc(any())).thenReturn(cleaningList);
-		Assertions.assertEquals(cleaningList, cleaningService.GetAllCleaningsByEmployee(employee));
+		Assertions.assertEquals(cleaningList, cleaningService.GetAllCleaningsByEmployee(new Employee()));
 	}
 
 	@Test
 	public void getByRoomTest() throws NotFound {
-		Room room = new Room();
 		Cleaning cleaning = new Cleaning();
 		when(cleaningRepository.findByRoom(any())).thenReturn(java.util.Optional.of(cleaning));
-		Assertions.assertEquals(cleaning, cleaningService.getByRoom(room));
+		Assertions.assertEquals(cleaning, cleaningService.getByRoom(new Room()));
 	}
 
 	@Test

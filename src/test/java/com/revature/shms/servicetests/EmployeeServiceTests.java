@@ -43,9 +43,10 @@ public class EmployeeServiceTests {
 	@Test
 	public void createEmployeeTest(){
 		Employee employee = new Employee();
-		when(employeeRepository.save(employee)).thenReturn(employee);
+		when(employeeRepository.save(any())).thenReturn(employee);
 		Assertions.assertEquals(employee,employeeService.createEmployee(employee));
 	}
+
 	@Test
 	public void loginEmployeeTests() {
 		Employee employee = new Employee();
@@ -81,19 +82,19 @@ public class EmployeeServiceTests {
 
 	@Test
 	public void getAllEmployeesTest(){
-		Employee employee = new Employee();
 		List<Employee> employeeList = new ArrayList<>();
-		employeeList.add(employee);
+		employeeList.add(new Employee());
+		employeeList.add(new Employee());
 		when(employeeRepository.findAllByOrderByEmployeeType()).thenReturn(employeeList);
 		Assertions.assertEquals(employeeList, employeeService.getAllEmployees());
 	}
 
 	@Test
 	public void getAllEmployeesByTypeTest(){
-		EmployeeType employeeType = null;
-		Employee employee = new Employee();
+		EmployeeType employeeType = EmployeeType.RECEPTIONIST;
 		List<Employee> employeeList = new ArrayList<>();
-		employeeList.add(employee);
+		employeeList.add(new Employee());
+		employeeList.add(new Employee());
 		when(employeeRepository.findByEmployeeType(any())).thenReturn(employeeList);
 		Assertions.assertEquals(employeeList, employeeService.getAllEmployeesByType(employeeType));
 	}
@@ -107,7 +108,7 @@ public class EmployeeServiceTests {
 
 	@Test
 	public void getEmployeeByUserNameTest() throws NotFound {
-		String username = null;
+		String username = "username";
 		Employee employee = new Employee();
 		when(employeeRepository.findByUsername(any())).thenReturn(java.util.Optional.of(employee));
 		Assertions.assertEquals(employee, employeeService.getEmployeeByUserName(username));
@@ -116,9 +117,9 @@ public class EmployeeServiceTests {
 	@Test
 	public void employeeCleaningToDoTest(){
 		Employee employee = new Employee();
-		Cleaning cleaning = new Cleaning();
 		List<Cleaning> cleaningList = new ArrayList<>();
-		cleaningList.add(cleaning);
+		cleaningList.add(new Cleaning());
+		cleaningList.add(new Cleaning());
 		when(cleaningService.GetAllCleaningsByEmployee(any())).thenReturn(cleaningList);
 		Assertions.assertEquals(cleaningList, employeeService.employeeCleaningToDo(employee));
 	}

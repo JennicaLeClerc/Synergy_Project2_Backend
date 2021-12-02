@@ -32,7 +32,7 @@ public class RoomService {
 	 */
 	// --- isClean portion ---
 	/**
-	 *
+	 * Sets the room cleaning status to the given room to the given status.
 	 * @param room the room to be worked on.
 	 * @param cleaningStatus the status of the cleaning.
 	 * @return Room with the current cleaning status.
@@ -43,7 +43,7 @@ public class RoomService {
 	} // Tested
 
 	/**
-	 *
+	 * Sets the room cleaning status to being Scheduled.
 	 * @param room the room to be worked on.
 	 * @return Room with a scheduled cleaning status.
 	 */
@@ -52,7 +52,7 @@ public class RoomService {
 	} // Tested
 
 	/**
-	 *
+	 * Sets the room cleaning status to In Progress.
 	 * @param room the room to be worked on.
 	 * @return Room with an in progress cleaning status.
 	 */
@@ -61,7 +61,7 @@ public class RoomService {
 	} // Tested
 
 	/**
-	 *
+	 * Sets the room cleaning status to Clean.
 	 * @param room the room to be worked on.
 	 * @return Room with a clean cleaning status.
 	 */

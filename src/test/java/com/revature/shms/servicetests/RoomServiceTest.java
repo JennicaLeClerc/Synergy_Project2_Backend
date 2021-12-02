@@ -39,4 +39,9 @@ public class RoomServiceTest {
 		Room room = new Room();
 		Assertions.assertEquals(CleaningStatus.CLEAN,roomService.finishCleaning(room).getStatus());
 	}
+
+	@Test
+	public void getAllRoomsTest(){
+
+	}
 }
