@@ -33,6 +33,7 @@ public class UserServiceTests {
 		when(userRepository.save(any())).thenReturn(user);
 		assertEquals(user,userService.createNewUser(user));
 	}
+	
 	@Test
 	public void loginTest(){
 		User user = new User();
@@ -46,10 +47,12 @@ public class UserServiceTests {
 		} catch (Exception ignored){}
 
 	}
+	
 	@Test
 	public void logoutTest(){
 		assertEquals("redirect:logoutPage",userService.logout());
 	}
+	
 	@Test
 	public void getUserByUserNameTest() throws NotFound {
 		User user = new User();
@@ -58,6 +61,7 @@ public class UserServiceTests {
 		when(userRepository.findByUsername(user.getUsername())).thenReturn(java.util.Optional.of(user));
 		assertEquals(user,userService.getUserByUserName("Ryan"));
 	}
+	
 	@Test
 	public void getAllUsersTest(){
 		List<User> users = new ArrayList<>();
@@ -70,6 +74,7 @@ public class UserServiceTests {
 		when(userRepository.findAllByOrderByUserIDDesc()).thenReturn(users);
 		assertEquals(users,userService.getAllUsers());
 	}
+	
 	@Test
 	public void getUserByUserId() throws NotFound {
 		User user = new User();
@@ -77,11 +82,11 @@ public class UserServiceTests {
 		when(userRepository.findByUserID(user.getUserID())).thenReturn(java.util.Optional.of(user));
 		assertEquals(user,userService.getUserByUserId(123));
 	}
+	
 	@Test
 	public void gettersSetters(){
 		UserRepository repo = null;
 		userService.setUserRepository(repo);
 		assertNull(userService.getUserRepository());
 	}
-
 }
