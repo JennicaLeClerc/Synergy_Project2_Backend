@@ -39,7 +39,7 @@ public class  ReservationService {
      * @return Reservation
      */
     public Reservation getReservationWithReservationId(String reservationId) throws NotFound {
-        return reservationRepository.findByUserReserve_UserID(Integer.parseInt(reservationId)).orElseThrow(NotFound::new);
+        return reservationRepository.findByReservationID(Integer.parseInt(reservationId)).orElseThrow(NotFound::new);
     }
 
     /**

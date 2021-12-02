@@ -2,8 +2,11 @@ package com.revature.shms.servicetests;
 
 import com.revature.shms.enums.ReservationStatus;
 import com.revature.shms.models.Reservation;
+import com.revature.shms.repositories.CleaningRepository;
 import com.revature.shms.repositories.ReservationRepository;
+import com.revature.shms.services.CleaningService;
 import com.revature.shms.services.ReservationService;
+import com.revature.shms.services.RoomService;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -16,6 +19,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.doReturn;
 import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
@@ -65,13 +70,38 @@ public class ReservationServiceTests {
 		Assertions.assertEquals(reservationService.deleteReservation(idToDelete.toString()), reservation);
 	}
 
-//    @Test void changeStatusOfReservationTest(){
-//        Reservation reservation = new Reservation();
-//        reservation.setReservationId(1);
-//        Reservation update = new Reservation();
-//        reservation.setStatus(ReservationStatus.ACTIVE.toString());
-//        update.setStatus(ReservationStatus.CANCELLED.toString());
-//        when(reservationRepository.save(reservation)).thenReturn(reservation);
-//        Assertions.assertEquals( reservationService.changeStatusOfReservation("1", update).getStatus(),reservation.getStatus());
-//    }
+    @Test void changeStatusOfReservationTest(){
+        Reservation reservation = new Reservation();
+        reservation.setReservationID(1);
+        Reservation update = new Reservation();
+        reservation.setStatus(ReservationStatus.ACTIVE.toString());
+        update.setStatus(ReservationStatus.CANCELLED.toString());
+        when(reservationRepository.save(any())).thenReturn(reservation);
+        Assertions.assertEquals( reservationService.changeStatusOfReservation("1", update),reservation);
+    }
+	@Test void changeDateOfReservationTest(){
+		Reservation reservation = new Reservation();
+		reservation.setReservationID(1);
+		Reservation update = new Reservation();
+		reservation.setStatus(ReservationStatus.ACTIVE.toString());
+		update.setStatus(ReservationStatus.CANCELLED.toString());
+		when(reservationRepository.save(any())).thenReturn(reservation);
+		Assertions.assertEquals( reservationService.changeDateOfReservation("1", update),reservation);
+	}
+	@Test void getReservationWithReservationIdTest () throws NotFound {
+		int id = 1;
+		Reservation reservation = new Reservation();
+		reservation.setReservationID(id);
+		when(reservationRepository.findByReservationID(1)).thenReturn(java.util.Optional.of(reservation));
+		assertEquals(reservationService.getReservationWithReservationId("1").getReservationID(), id);
+	}
+	@Test
+	public void gettersSetters() throws NotFound {
+		ReservationRepository reservationRepository = null;
+		ReservationService reservationService = new ReservationService();
+		reservationService = new ReservationService(reservationRepository);
+		Assertions.assertNull(reservationService.getReservationRepository());
+		reservationService.setReservationRepository(null);
+	}
+
 }
