@@ -61,6 +61,14 @@ public class  ReservationService {
         return reservationRepository.save(reservation);
     }
 
+    public Reservation approveReservation(String employeeId) {
+        return reservationRepository.approveReservationByEmployee_EmployeeId(Integer.parseInt(employeeId));
+    }
+
+    public Reservation denyReservation(String employeeId){
+        return reservationRepository.denyReservationByEmployee_EmployeeId(Integer.parseInt(employeeId));
+    }
+
     /**
      * This deletes a reservation by a userId
      */
