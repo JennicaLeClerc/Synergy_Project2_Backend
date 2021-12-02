@@ -121,4 +121,16 @@ public class RoomService {
 	public Room getByRoomNumber(int roomNumber) throws NotFound {
 		return roomRepository.findByRoomNumber(roomNumber).orElseThrow(NotFound::new);
 	} // Tested
+
+
+	/**
+	 * Find all room status.
+	 * @param status the status of all the room.
+	 */
+	public List<Room> findAllByStatus(CleaningStatus status){
+		return findAllByStatus(status);
+	}
 }
+
+
+
