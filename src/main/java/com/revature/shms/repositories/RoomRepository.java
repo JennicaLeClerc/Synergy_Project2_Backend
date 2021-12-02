@@ -22,5 +22,7 @@ public interface RoomRepository extends JpaRepository<Room,Integer> {
 
     List<Room> findAllByAmenitiesList_Amenity(Amenities amenity);
 
+    //Add in one with a list of Amenities.....
+
     Optional<Room> findByRoomNumber(int roomNumber);
 }
