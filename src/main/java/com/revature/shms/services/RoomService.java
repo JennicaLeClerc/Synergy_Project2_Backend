@@ -23,12 +23,6 @@ public class RoomService {
 
 	@Autowired
 	private RoomRepository roomRepository;
-	/*TODO
-		isAvailable
-			- Occupied // Done
-			- Clean // Done
-			- Work
-	 */
 
 	/**
 	 * Returns a boolean if the room is clean with no work being done and is not occupied.
