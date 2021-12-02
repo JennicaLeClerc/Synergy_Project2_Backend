@@ -42,6 +42,7 @@ public class RoomService {
 		return roomRepository.saveAll(rooms);
 	}
 
+	// --- isAvailable ---
 	/**
 	 * Returns a boolean if the room is clean with no work being done and is not occupied.
 	 * @param room the room to be worked on.
@@ -50,6 +51,11 @@ public class RoomService {
 	public boolean isAvailable(Room room){
 		return room.getStatus().equals(CleaningStatus.CLEAN) && room.getWorkStatus().equals(WorkStatus.NO_ISSUES)
 				&& !room.isOccupied();
+	}
+
+	public List<Room> findAllAvailable(){
+		return roomRepository.findAllByStatusAndIsOccupiedAndWorkStatusOrderByRoomNumberDesc(
+				CleaningStatus.CLEAN, false, WorkStatus.NO_ISSUES);
 	}
 
 	// --- isOccupied ---
@@ -62,6 +68,15 @@ public class RoomService {
 	public Room setOccupationStatus(Room room, boolean isOccupied){
 		room.setOccupied(isOccupied);
 		return room;
+	}
+
+	/**
+	 * Gets all Rooms with the given Occupation status.
+	 * @param isOccupied is the room Occupied or not
+	 * @return List<Room> of all rooms that are the given occupation status.
+	 */
+	public List<Room> getAllByIsOccupied(boolean isOccupied){
+		return roomRepository.findAllByIsOccupied(isOccupied);
 	}
 
 	/**
@@ -92,6 +107,24 @@ public class RoomService {
 	public Room setRoomStatus(Room room, CleaningStatus cleaningStatus){
 		room.setStatus(cleaningStatus);
 		return room;
+	}
+
+	/**
+	 * Gets all Rooms with the given Cleaning Status.
+	 * @param status the Cleaning Status to be matched.
+	 * @return List<Room> of all rooms with the given Cleaning Status.
+	 */
+	public List<Room> getAllByStatus(CleaningStatus status){
+		return roomRepository.findAllByStatus(status);
+	}
+
+	/**
+	 * Gets all Rooms without the given Cleaning status.
+	 * @param status the Cleaning Status to NOT be matched.
+	 * @return List<Room> of all rooms without the given Cleaning Status.
+	 */
+	public List<Room> findAllByNotStatus(CleaningStatus status){
+		return roomRepository.findAllByStatusNot(status);
 	}
 
 	/**
@@ -143,6 +176,24 @@ public class RoomService {
 	}
 
 	/**
+	 * Gets all Rooms with the given Needs Service status.
+	 * @param workStatus the Work Status to be matched.
+	 * @return List<Room> of all rooms that are the given Needs Service status.
+	 */
+	public List<Room> getAllByWorkStatus(WorkStatus workStatus){
+		return roomRepository.findAllByWorkStatus(workStatus);
+	}
+
+	/**
+	 * Gets all Rooms without the given Work Status.
+	 * @param workStatus the Work Status to NOT be matched.
+	 * @return List<Room> of all rooms without the given Work Status.
+	 */
+	public List<Room> findAllByNotWorkStatus(WorkStatus workStatus){
+		return roomRepository.findAllByWorkStatusNot(workStatus);
+	}
+
+	/**
 	 * Sets the Work Status of the given room to In Progress.
 	 * @param room the room to be worked on.
 	 * @return the room with an In Progress work status.
@@ -187,33 +238,6 @@ public class RoomService {
 	}
 
 	/**
-	 * Gets all Rooms with the given Cleaning Status.
-	 * @param status the Cleaning Status to be matched.
-	 * @return List<Room> of all rooms with the given Cleaning Status.
-	 */
-	public List<Room> getAllByStatus(CleaningStatus status){
-		return roomRepository.findAllByStatus(status);
-	}
-
-	/**
-	 * Gets all Rooms with the given Occupation status.
-	 * @param isOccupied is the room Occupied or not
-	 * @return List<Room> of all rooms that are the given occupation status.
-	 */
-	public List<Room> getAllByIsOccupied(boolean isOccupied){
-		return roomRepository.findAllByIsOccupied(isOccupied);
-	}
-
-	/**
-	 * Gets all Rooms with the given Needs Service status.
-	 * @param workStatus the Work Status of the room.
-	 * @return List<Room> of all rooms that are the given Needs Service status.
-	 */
-	public List<Room> getAllByNeedsService(WorkStatus workStatus){
-		return roomRepository.findAllByWorkStatus(workStatus);
-	}
-
-	/**
 	 * Gets all Rooms with the given Amenity.
 	 * @param amenity the Amenity to be matched.
 	 * @return List<Room> of all rooms that have the given Amenity.
@@ -226,7 +250,7 @@ public class RoomService {
 	 * A Room with the given Room Number.
 	 * @param roomNumber the Room Number to be matched.
 	 * @return Room with the given Room Number.
-	 * @throws NotFound
+	 * @throws NotFound if the room number does not exist.
 	 */
 	public Room getByRoomNumber(int roomNumber) throws NotFound {
 		return roomRepository.findByRoomNumber(roomNumber).orElseThrow(NotFound::new);
