@@ -61,12 +61,12 @@ public class  ReservationService {
         return reservationRepository.save(reservation);
     }
 
-    public Reservation approveReservation(String employeeId) {
-        return reservationRepository.approveReservationByEmployee_EmployeeId(Integer.parseInt(employeeId));
+    public Reservation approveReservation(int employeeId) {
+        return reservationRepository.approveReservationByEmployee_EmployeeId(employeeId);
     }
 
-    public Reservation denyReservation(String employeeId){
-        return reservationRepository.denyReservationByEmployee_EmployeeId(Integer.parseInt(employeeId));
+    public Reservation denyReservation(int employeeId){
+        return reservationRepository.denyReservationByEmployee_EmployeeId(employeeId);
     }
 
     /**

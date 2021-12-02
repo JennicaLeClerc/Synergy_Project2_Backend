@@ -1,6 +1,7 @@
 package com.revature.shms.servicetests;
 
 import com.revature.shms.enums.ReservationStatus;
+import com.revature.shms.models.Employee;
 import com.revature.shms.models.Reservation;
 import com.revature.shms.models.User;
 import com.revature.shms.repositories.CleaningRepository;
@@ -41,6 +42,19 @@ public class ReservationServiceTests {
 		test.add(reservation);
 		when(reservationRepository.findAll()).thenReturn(test);
 		assertEquals(reservationService.getAll(),test);
+	}
+	@Test
+	public void reserveApprove(){
+		Reservation reservation = new Reservation();
+		when(reservationRepository.approveReservationByEmployee_EmployeeId(1)).thenReturn(reservation);
+		assertEquals(reservationService.approveReservation((1)), reservation);
+	}
+
+	@Test
+	public void denyReservation(){
+		Reservation reservation = new Reservation();
+		when(reservationRepository.denyReservationByEmployee_EmployeeId(1)).thenReturn(reservation);
+		assertEquals(reservationService.denyReservation((1)), reservation);
 	}
 
 	@Test
