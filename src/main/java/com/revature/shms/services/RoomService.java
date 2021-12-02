@@ -142,17 +142,38 @@ public class RoomService {
 		return room;
 	}
 
+	/**
+	 * Sets the Work Status of the given room to In Progress.
+	 * @param room the room to be worked on.
+	 * @return the room with an In Progress work status.
+	 */
 	public Room startWorking(Room room){
 		return setWorkStatus(room, WorkStatus.IN_PROGRESS);
 	}
 
+	/**
+	 * Sets the Work Status of the given room to Scheduled.
+	 * @param room the room to be worked on.
+	 * @return the room with a Scheduled work status.
+	 */
 	public Room scheduleWorking(Room room){
-		return setWorkStatus(room, WorkStatus.SCHEDULED);}
+		return setWorkStatus(room, WorkStatus.SCHEDULED);
+	}
 
+	/**
+	 * Sets the Work Status of the given room to Not Scheduled.
+	 * @param room the room to be worked on.
+	 * @return the room with a Not Scheduled work status.
+	 */
 	public Room notScheduleWorking(Room room){
 		return setWorkStatus(room, WorkStatus.NOT_SCHEDULED);
 	}
 
+	/**
+	 * Sets the Work Status of the given room to No Issues.
+	 * @param room the room to be worked on.
+	 * @return the room with a No Issues work status.
+	 */
 	public Room finishWorking(Room room){
 		return setWorkStatus(room, WorkStatus.NO_ISSUES);
 	}
