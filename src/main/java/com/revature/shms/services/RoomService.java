@@ -1,10 +1,8 @@
 package com.revature.shms.services;
 
 
-import com.revature.shms.enums.Amenities;
-import com.revature.shms.enums.CleaningStatus;
+import com.revature.shms.enums.*;
 import com.revature.shms.models.Room;
-import com.revature.shms.repositories.EmployeeRepository;
 import com.revature.shms.repositories.RoomRepository;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -96,11 +94,11 @@ public class RoomService {
 
 	/**
 	 * Gets all Rooms with the given Needs Service status.
-	 * @param needsService is the room in need of service or not
+	 * @param workStatus the Work Status of the room.
 	 * @return List<Room> of all rooms that are the given Needs Service status.
 	 */
-	public List<Room> getAllByNeedsService(boolean needsService){
-		return roomRepository.findAllByNeedsService(needsService);
+	public List<Room> getAllByNeedsService(WorkStatus workStatus){
+		return roomRepository.findAllByWorkStatus(workStatus);
 	} // Tested
 
 	/**
