@@ -1,6 +1,8 @@
 package com.revature.shms.services;
 
+import com.revature.shms.enums.ReservationStatus;
 import com.revature.shms.models.Reservation;
+import com.revature.shms.models.User;
 import com.revature.shms.repositories.ReservationRepository;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -10,6 +12,7 @@ import org.omg.CosNaming.NamingContextPackage.NotFound;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -66,16 +69,28 @@ public class  ReservationService {
     }
 
     /**
-     * This toggles the reservation status
+     * This toggles the reservation status for employees or users that cancel a reservation
      */
-    public Reservation changeStatusOfReservation(String id, Reservation reservation){
+    public Reservation changeStatusOfReservation( Reservation reservation){
         return reservationRepository.save(reservation);
     }
     
     /**
      * This toggles the date
      */
-    public Reservation changeDateOfReservation(String id, Reservation reservation){
+    public Reservation changeDateOfReservation( Reservation reservation){
         return reservationRepository.save(reservation);
     }
+
+    /**
+     * The user can set a reservation to a specific date
+     */
+    public Reservation setReservation(User user, Date date){
+        Reservation reservation = new Reservation();
+        reservation.setUserReserve(user);
+        reservation.setStatus(ReservationStatus.PENDING.toString());
+        reservation.setDate(date);
+        return reservationRepository.save(reservation);
+    }
+
 }
