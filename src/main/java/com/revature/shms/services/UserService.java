@@ -29,20 +29,20 @@ public class UserService{
      * @param user the user to be saved.
      * @return the User, but not saved to the database.
      */
-    public User createNewUser(User user ){
+    public User createNewUser(User user){
         return userRepository.save(user);
     }
 
     /**
      * Logs in the user with the given username and password, then returns that User.
-     * @param userName the username to match.
+     * @param username the username to match.
      * @param password the password to match.
      * @return User of the given username AND password.
      * @throws AccessDeniedException if the username AND password aren't in the database together this will be thrown.
      */
-    public User login(String userName,String password) throws AccessDeniedException {
+    public User login(String username, String password) throws AccessDeniedException {
 		try {
-			User user = getUserByUsername(userName);
+			User user = getUserByUsername(username);
 			if (user.getPassword().equals(password)) return user;
 		} catch (NotFound e) { throw new AccessDeniedException("Incorrect username/password");}
 		throw new AccessDeniedException("Incorrect username/password");

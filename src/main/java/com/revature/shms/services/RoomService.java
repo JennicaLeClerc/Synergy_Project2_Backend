@@ -25,6 +25,24 @@ public class RoomService {
 	private RoomRepository roomRepository;
 
 	/**
+	 * Saves the given room to the database.
+	 * @param room the room to be saved.
+	 * @return Room now saved to the database.
+	 */
+	public Room addRoom(Room room){
+		return roomRepository.save(room);
+	}
+
+	/**
+	 * Saves the given list of rooms to the database.
+	 * @param rooms a list of rooms to be saved.
+	 * @return List<Room> now saved to the database.
+	 */
+	public List<Room> addRooms(List<Room> rooms){
+		return roomRepository.saveAll(rooms);
+	}
+
+	/**
 	 * Returns a boolean if the room is clean with no work being done and is not occupied.
 	 * @param room the room to be worked on.
 	 * @return boolean of if the room is avaliable or not.

@@ -1,11 +1,8 @@
 package com.revature.shms.services;
 
-import com.revature.shms.enums.Amenities;
-import com.revature.shms.enums.CleaningStatus;
-import com.revature.shms.enums.EmployeeType;
+import com.revature.shms.enums.*;
 import com.revature.shms.models.*;
-import com.revature.shms.repositories.EmployeeRepository;
-import com.revature.shms.repositories.RoomRepository;
+import com.revature.shms.repositories.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -36,25 +33,28 @@ public class EmployeeService {
 	@Autowired
 	private RoomRepository roomRepository;
 
-
+	/**
+	 * Creates the Employee in the database.
+	 * @param employee the given employee to match.
+	 * @return Employee now saved to the database.
+	 */
 	public Employee createEmployee(Employee employee){
 		return employeeRepository.save(employee);
 	}
 
+	/**
+	 * Logs in the employee with the given username and password, then returns that Employee.
+	 * @param username the username to match.
+	 * @param password the password to match.
+	 * @return Employee of the given username AND password.
+	 * @throws AccessDeniedException if the username AND password aren't in the database together this will be thrown.
+	 */
 	public Employee loginEmployee(String username, String password) throws AccessDeniedException {
 		try {
 			Employee employee = getEmployeeByUserName(username);
 			if (employee.getPassword().equals(password)) return employee;
 		} catch (NotFound e) { throw new AccessDeniedException("Incorrect username/password");}
 		throw new AccessDeniedException("Incorrect username/password");
-	}
-
-	public Room addRoom(Room room){
-		return roomRepository.save(room);
-	}
-
-	public List<Room> addRooms(List<Room> rooms){
-		return roomRepository.saveAll(rooms);
 	}
 
 	/**
@@ -72,7 +72,7 @@ public class EmployeeService {
 	 */
 	public List<Employee> getAllEmployeesByType(EmployeeType employeeType){
 		return employeeRepository.findByEmployeeType(employeeType);
-	} // Tested
+	}
 
 	/**
 	 * Gets the Employee with the matching employeeID.
@@ -81,7 +81,7 @@ public class EmployeeService {
 	 */
 	public Employee getEmployeeByID(int employeeID) throws NotFound {
 		return employeeRepository.findByEmployeeID(employeeID).orElseThrow(NotFound::new);
-	} // Tested
+	}
 
 	/**
 	 * Gets the Employee with the matching userName.
@@ -90,7 +90,7 @@ public class EmployeeService {
 	 */
 	public Employee getEmployeeByUserName(String userName) throws NotFound {
 		return employeeRepository.findByUsername(userName).orElseThrow(NotFound::new);
-	} // Tested
+	}
 
 	/**
 	 * Gets All Cleanings assigned to a specific employee.
@@ -99,6 +99,5 @@ public class EmployeeService {
 	 */
 	public List<Cleaning> employeeCleaningToDo(Employee employee){
 		return cleaningService.GetAllCleaningsByEmployee(employee);
-	} // Tested
-
+	}
 }

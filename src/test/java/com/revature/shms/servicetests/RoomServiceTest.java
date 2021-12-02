@@ -28,6 +28,25 @@ public class RoomServiceTest {
 	@InjectMocks RoomService roomService;
 
 	@Test
+	public void addRoomTest(){
+		Room room = new Room();
+		when(roomRepository.save(any())).thenReturn(room);
+		Assertions.assertEquals(room, roomService.addRoom(room));
+	}
+	@Test
+	public void addRoomsTest(){
+		List<Room> rooms = new ArrayList<>();
+		rooms.add(new Room());
+		rooms.add(new Room());
+		rooms.add(new Room());
+		rooms.add(new Room());
+		rooms.add(new Room());
+		rooms.add(new Room());
+		when(roomRepository.saveAll(any())).thenReturn(rooms);
+		Assertions.assertEquals(rooms, roomService.addRooms(rooms));
+	}
+
+	@Test
 	public void isAvailableTest(){
 		Room room = new Room();
 		room.setStatus(CleaningStatus.CLEAN);
