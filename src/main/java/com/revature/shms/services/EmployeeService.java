@@ -41,6 +41,8 @@ public class EmployeeService {
 		return employeeRepository.save(employee);
 	}
 
+	public void deleteEmployee(Employee employee){employeeRepository.delete(employee);}
+
 	public Employee loginEmployee(String username, String password) throws AccessDeniedException {
 		try {
 			Employee employee = getEmployeeByUserName(username);

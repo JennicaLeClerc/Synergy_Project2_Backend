@@ -26,9 +26,12 @@ public class UserService{
     private UserRepository userRepository;
 
     //this method create a new user and add it to the repository
-    public User createNewUser(User user ){
+    public User createNewUser(User user){
         return userRepository.save(user);
     }
+
+    //deletes a user from the repository
+    public void deleteNewUser(User user){userRepository.delete(user);}
 
     /*
     * if the userName and password exists in the repository return true and log in the user
@@ -62,6 +65,12 @@ public class UserService{
     public User getUserByUserId(int userId) throws NotFound {
         return userRepository.findByUserID(userId).orElseThrow(NotFound::new);
     }
+
+    /*
+    public String updatePassword(String password){
+        User u =
+        return user.setPassword(password);
+    } */
 }
 
 
