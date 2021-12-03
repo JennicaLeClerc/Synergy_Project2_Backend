@@ -33,12 +33,17 @@ public class UserService{
         return userRepository.save(user);
     }
 
+    /*
+    * if the userName and password exists in the repository return true and log in the user
+    * otherwise return false
+=======
     /**
      * Logs in the user with the given username and password, then returns that User.
      * @param username the username to match.
      * @param password the password to match.
      * @return User of the given username AND password.
      * @throws AccessDeniedException if the username AND password aren't in the database together this will be thrown.
+>>>>>>> 527d4564dd8a9d96c05d372bc4c08ed19aa4cd26
      */
     public User login(String username, String password) throws AccessDeniedException {
 		try {
@@ -84,6 +89,12 @@ public class UserService{
     public User getUserByUserID(int userID) throws NotFound {
         return userRepository.findByUserID(userID).orElseThrow(NotFound::new);
     }
+
+    /*
+    public String updatePassword(String password){
+        User u =
+        return user.setPassword(password);
+    } */
 }
 
 

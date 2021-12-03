@@ -29,14 +29,15 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         //testing roles
+
         http.authorizeRequests()
-                .antMatchers("/u").hasRole("USER")
-                .antMatchers("/m").hasRole("MANAGER")
-                .antMatchers("/e").hasRole("EMPLOYEE")
+                .antMatchers("/u").hasAuthority("USER")
+                .antMatchers("/m").hasAuthority("MANAGER")
+                .antMatchers("/e").hasAuthority("EMPLOYEE")
                 .and().formLogin();
 
         http.csrf().disable().authorizeRequests()
-                .antMatchers("/authenticate","/users")
+                .antMatchers("/authenticate","/users","employee")
                 .permitAll().anyRequest().authenticated()
                 .and().sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
 
