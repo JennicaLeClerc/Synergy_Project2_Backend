@@ -13,6 +13,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import java.util.List;
+import java.util.Optional;
 
 @Service // this annotation is to denote that this is a service class for user
 @NoArgsConstructor
@@ -83,6 +84,24 @@ public class UserService{
      */
     public User getUserByUserID(int userID) throws NotFound {
         return userRepository.findByUserID(userID).orElseThrow(NotFound::new);
+    }
+
+    /**
+     * Update password by the provided userName.
+     * @param userName the userName that already exists on the repository.
+     * @param password the password that the user wants to change
+     * get the current userName from the user
+     * if the userName is already in the database, then we can update the password
+     */
+    public boolean updatePassword(String userName, String password){
+        Optional<User>  user = Optional.ofNullable(userRepository.findByUsername(userName).orElse(null));
+        if(user.isPresent()) {
+            userRepository.updatePassword(password);
+            return true;
+        }
+        else{
+            return false;
+        }
     }
 }
 
