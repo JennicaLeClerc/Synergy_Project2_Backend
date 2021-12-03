@@ -1,6 +1,13 @@
 package com.revature.shms.enums;
 
 public enum ReservationStatus {
-     ACTIVE,
-     CANCELLED
+     APPROVED,
+     CANCELLED,
+     REJECTED,
+     PENDING;
+
+     @Override
+     public String toString() {
+          return super.toString();
+     }
 }
