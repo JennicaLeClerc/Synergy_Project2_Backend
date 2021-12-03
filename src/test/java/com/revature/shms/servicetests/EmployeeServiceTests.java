@@ -34,11 +34,7 @@ public class EmployeeServiceTests {
 
 	@Mock EmployeeRepository employeeRepository;
 	@Mock CleaningService cleaningService;
-	@Mock UserService userService;
-	@Mock RoomService roomService;
-	@Mock RoomRepository roomRepository;
 	@InjectMocks EmployeeService employeeService;
-
 
 	@Test
 	public void createEmployeeTest(){
@@ -59,25 +55,6 @@ public class EmployeeServiceTests {
 			Assertions.assertTrue(exception.getMessage().contains("Incorrect username/password"));
 		} catch (Exception ignored){}
 
-	}
-
-	@Test
-	public void addRoomTest(){
-		Room room = new Room();
-		when(roomRepository.save(any())).thenReturn(room);
-		Assertions.assertEquals(room,employeeService.addRoom(room));
-	}
-	@Test
-	public void addRoomsTest(){
-		List<Room> rooms = new ArrayList<>();
-		rooms.add(new Room());
-		rooms.add(new Room());
-		rooms.add(new Room());
-		rooms.add(new Room());
-		rooms.add(new Room());
-		rooms.add(new Room());
-		when(roomRepository.saveAll(any())).thenReturn(rooms);
-		Assertions.assertEquals(rooms,employeeService.addRooms(rooms));
 	}
 
 	@Test

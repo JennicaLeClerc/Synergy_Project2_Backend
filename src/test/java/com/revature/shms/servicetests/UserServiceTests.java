@@ -3,8 +3,6 @@ package com.revature.shms.servicetests;
 import com.revature.shms.models.User;
 import com.revature.shms.repositories.UserRepository;
 import com.revature.shms.services.UserService;
-import lombok.Getter;
-import lombok.Setter;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.junit.jupiter.api.function.Executable;
@@ -59,7 +57,7 @@ public class UserServiceTests {
 		user.setUsername("Ryan");
 		user.setPassword("123123");
 		when(userRepository.findByUsername(user.getUsername())).thenReturn(java.util.Optional.of(user));
-		assertEquals(user,userService.getUserByUserName("Ryan"));
+		assertEquals(user,userService.getUserByUsername("Ryan"));
 	}
 	
 	@Test
@@ -80,7 +78,7 @@ public class UserServiceTests {
 		User user = new User();
 		user.setUserID(123);
 		when(userRepository.findByUserID(user.getUserID())).thenReturn(java.util.Optional.of(user));
-		assertEquals(user,userService.getUserByUserId(123));
+		assertEquals(user,userService.getUserByUserID(123));
 	}
 	
 	@Test
