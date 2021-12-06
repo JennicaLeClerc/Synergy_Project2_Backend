@@ -1,4 +1,5 @@
 package com.revature.shms.util;
+import com.revature.shms.models.MyUserDetails;
 import com.revature.shms.services.MyUserDetailsService;
 import com.revature.shms.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -35,7 +36,7 @@ public class JwtRequestFilter extends OncePerRequestFilter {
             username = jwtUtil.extractUsername(jwt);
         }
         if(username != null && SecurityContextHolder.getContext().getAuthentication() == null){
-            UserDetails userDetails = this.userDetailsService.loadUserByUsername(username);
+            MyUserDetails userDetails = (MyUserDetails) this.userDetailsService.loadUserByUsername(username);
 
             if(jwtUtil.validateToken(jwt, userDetails)){
                 UsernamePasswordAuthenticationToken authToken = new UsernamePasswordAuthenticationToken(

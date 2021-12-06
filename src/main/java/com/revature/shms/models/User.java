@@ -1,8 +1,6 @@
 package com.revature.shms.models;
-
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import lombok.*;
-
 import javax.persistence.*;
 import java.util.List;
 
@@ -24,6 +22,7 @@ public class User {
 	String username;
 	@Column(nullable = false)
 	String password;
+
 
   	@OneToMany(mappedBy = "userReserve")
 	@JsonManagedReference

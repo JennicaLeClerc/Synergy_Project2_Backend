@@ -1,6 +1,7 @@
 package com.revature.shms.controllers;
 import com.revature.shms.auth.AuthenticationRequest;
 import com.revature.shms.auth.AuthenticationResponse;
+import com.revature.shms.models.MyUserDetails;
 import com.revature.shms.services.MyUserDetailsService;
 import com.revature.shms.services.UserService;
 import com.revature.shms.util.JwtUtil;
@@ -37,7 +38,7 @@ public class AuthenticationController {
         }catch(BadCredentialsException e){
             throw new Exception("Incorrect username/password", e);
         }
-        final UserDetails userDetails = userDetailsService.loadUserByUsername(authRequest.getUsername());
+        final MyUserDetails userDetails = (MyUserDetails) userDetailsService.loadUserByUsername(authRequest.getUsername());
         final String jwt = jwtUtil.generateToken(userDetails);
 
         return ResponseEntity.ok(new AuthenticationResponse(jwt));
