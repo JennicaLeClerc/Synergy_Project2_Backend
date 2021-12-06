@@ -13,6 +13,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import java.util.List;
+import java.util.Optional;
 
 @Service // this annotation is to denote that this is a service class for user
 @NoArgsConstructor
@@ -33,17 +34,12 @@ public class UserService{
         return userRepository.save(user);
     }
 
-    /*
-    * if the userName and password exists in the repository return true and log in the user
-    * otherwise return false
-=======
     /**
      * Logs in the user with the given username and password, then returns that User.
      * @param username the username to match.
      * @param password the password to match.
      * @return User of the given username AND password.
      * @throws AccessDeniedException if the username AND password aren't in the database together this will be thrown.
->>>>>>> 527d4564dd8a9d96c05d372bc4c08ed19aa4cd26
      */
     public User login(String username, String password) throws AccessDeniedException {
 		try {
@@ -90,11 +86,23 @@ public class UserService{
         return userRepository.findByUserID(userID).orElseThrow(NotFound::new);
     }
 
-    /*
-    public String updatePassword(String password){
-        User u =
-        return user.setPassword(password);
-    } */
+    /**
+     * Update password by the provided userName.
+     * @param userName the userName that already exists on the repository.
+     * @param password the password that the user wants to change
+     * get the current userName from the user
+     * if the userName is already in the database, then we can update the password
+     */
+    public boolean updatePassword(String userName, String password){
+        Optional<User>  user = Optional.ofNullable(userRepository.findByUsername(userName).orElse(null));
+        if(user.isPresent()) {
+            userRepository.updatePassword(password);
+            return true;
+        }
+        else{
+            return false;
+        }
+    }
 }
 
 
