@@ -28,7 +28,7 @@ public class LoggingAspect {
     @Before("execution(* com.revature.shms.services.ReservationService.createReservation(..))")
     public void newReservationLogs(JoinPoint joinPoint){
         Reservation reservation = (Reservation) joinPoint.getArgs()[0];
-        logger.info("New Reservation for:" + reservation.getDate());
+        logger.info("New Reservation for:" + reservation.getUserReserve().getUsername());
     }
 
 }

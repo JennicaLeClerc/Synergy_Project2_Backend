@@ -58,16 +58,18 @@ public class  ReservationService {
      * @return Reservation.
      */
     public Reservation createReservation(Reservation reservation){
+
         return reservationRepository.save(reservation);
+
     }
 
-    public Reservation approveReservation(int employeeId) {
-        return reservationRepository.approveReservationByEmployee_EmployeeId(employeeId);
-    }
-
-    public Reservation denyReservation(int employeeId){
-        return reservationRepository.denyReservationByEmployee_EmployeeId(employeeId);
-    }
+//    public Reservation approveReservation(int employeeId) {
+//        return reservationRepository.approveReservationByEmployee_EmployeeId(employeeId);
+//    }
+//
+//    public Reservation denyReservation(int employeeId){
+//        return reservationRepository.denyReservationByEmployee_EmployeeId(employeeId);
+//    }
 
     /**
      * This deletes a reservation by a userId
@@ -93,12 +95,18 @@ public class  ReservationService {
     /**
      * The user can set a reservation to a specific date
      */
-    public Reservation setReservation(User user, Date date){
+    public Reservation setReservation(User user, String startDate, String endDate){
+        System.out.println(" start date is: "+startDate);
         Reservation reservation = new Reservation();
         reservation.setUserReserve(user);
         reservation.setStatus(ReservationStatus.PENDING.toString());
-        reservation.setDate(date);
+        System.out.println(reservation.getUserReserve().getUsername());
+        reservation.setStartDate(startDate);
+        reservation.setEndDate(endDate);
+        System.out.println(reservation.getStartDate());
+        System.out.println(reservation.getEndDate());
         return reservationRepository.save(reservation);
     }
+
 
 }

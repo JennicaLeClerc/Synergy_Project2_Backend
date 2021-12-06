@@ -27,9 +27,13 @@ public class Reservation {
     String status;
 
     @Column
-    Date date;
+    String startDate;
+
+    @Column
+    String endDate;
 
     @ManyToOne(cascade = CascadeType.ALL)
     @JsonBackReference
     private User userReserve;
+
 }

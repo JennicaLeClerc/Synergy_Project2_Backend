@@ -28,10 +28,10 @@ public interface ReservationRepository extends JpaRepository<Reservation,Integer
 	/**
 	 * This denies a reservation by the employee
 	 */
-	Reservation denyReservationByEmployee_EmployeeId(int employeeId);
+//	Reservation denyReservationByEmployee_EmployeeId(int employeeId);
 
 	/**
 	 * This approves a reservation by the employee
 	 */
-	Reservation approveReservationByEmployee_EmployeeId(int employeeId);
+//	Reservation approveReservationByEmployee_EmployeeId(int employeeId);
 }
