@@ -17,6 +17,6 @@ public interface EmployeeRepository extends JpaRepository<Employee,Integer> {
     Optional<Employee> findByUsername(String username);
 	Optional<Employee> findByEmployeeID(int employeeID);
 
-    boolean updatePassword(String username,String password);
-    boolean updatePassword(String password);
+//    boolean updatePassword(String username,String password);
+//    boolean updatePassword(String password);
 }

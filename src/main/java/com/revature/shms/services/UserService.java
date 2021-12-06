@@ -96,7 +96,9 @@ public class UserService{
     public boolean updatePassword(String username, String password){
         Optional<User>  user = Optional.ofNullable(userRepository.findByUsername(username).orElse(null));
         if(user.isPresent()) {
-            userRepository.updatePassword(password);
+			User u = user.get();
+			u.setPassword(password);
+            userRepository.save(u);
             return true;
         }
         else{

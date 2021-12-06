@@ -108,9 +108,10 @@ public class EmployeeService {
 	 * If the username is already in the database, then we can update the password
 	 */
 	public boolean updatePassword(String username, String password){
-		Optional<Employee>  employee = Optional.ofNullable(employeeRepository.findByUsername(username).orElse(null));
-		if(employee.isPresent()) {
-			employeeRepository.updatePassword(password);
+		Employee  employee = employeeRepository.findByUsername(username).orElse(null);
+		if(employee != null) {
+			employee.setPassword(password);
+			employeeRepository.save(employee);
 			return true;
 		}
 		else{
