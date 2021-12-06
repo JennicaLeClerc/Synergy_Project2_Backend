@@ -11,10 +11,9 @@ public interface UserRepository extends JpaRepository<User,Integer> {
     List<User> findAllByOrderByUserIDDesc();
   
     Optional<User> findByUsername(String username);
-
 	Optional<User>  findByUserID(int userID);
 
-	boolean existsByUsernameAndPassword(String userName, String password);
-    boolean updatePassword(String userName,String password);
+	boolean existsByUsernameAndPassword(String username, String password);
+    boolean updatePassword(String username,String password);
     boolean updatePassword(String password);
 }

@@ -87,14 +87,14 @@ public class UserService{
     }
 
     /**
-     * Update password by the provided userName.
-     * @param userName the userName that already exists on the repository.
-     * @param password the password that the user wants to change
-     * get the current userName from the user
-     * if the userName is already in the database, then we can update the password
+     * Update password by the provided username.
+     * @param username the username that already exists on the repository.
+     * @param password the password that the user wants to change.
+     * Get the current username from the user.
+     * If the username is already in the database, then we can update the password.
      */
-    public boolean updatePassword(String userName, String password){
-        Optional<User>  user = Optional.ofNullable(userRepository.findByUsername(userName).orElse(null));
+    public boolean updatePassword(String username, String password){
+        Optional<User>  user = Optional.ofNullable(userRepository.findByUsername(username).orElse(null));
         if(user.isPresent()) {
             userRepository.updatePassword(password);
             return true;

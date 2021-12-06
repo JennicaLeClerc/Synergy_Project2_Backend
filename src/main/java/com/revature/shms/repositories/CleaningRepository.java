@@ -13,7 +13,6 @@ import java.util.Optional;
 public interface CleaningRepository  extends JpaRepository<Cleaning,Integer> {
 
 	List<Cleaning> findAllByOrderByPriorityDescDateAddedAsc();
-
 	List<Cleaning> findAllByEmployeeOrderByPriorityDescDateAddedAsc(Employee employee);
 
 	Optional<Cleaning> findByRoom(Room room);

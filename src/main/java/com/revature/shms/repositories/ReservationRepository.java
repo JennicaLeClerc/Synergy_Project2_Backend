@@ -14,7 +14,6 @@ public interface ReservationRepository extends JpaRepository<Reservation,Integer
 	 */
 	Optional<Reservation>  findByUserReserve_UserID(int id);
 
-
 	/**
 	 * Gets Reservation by ReservationId.
 	 */

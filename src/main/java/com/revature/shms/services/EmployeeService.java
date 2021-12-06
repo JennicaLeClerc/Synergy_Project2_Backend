@@ -99,4 +99,22 @@ public class EmployeeService {
 	public List<Cleaning> employeeCleaningToDo(Employee employee){
 		return cleaningService.findAllCleaningsByEmployee(employee);
 	}
+
+	/**
+	 * Update password by the provided username.
+	 * @param username the username that already exists on the repository.
+	 * @param password the password that the user wants to change.
+	 * Get the current username from the employee.
+	 * If the username is already in the database, then we can update the password
+	 */
+	public boolean updatePassword(String username, String password){
+		Optional<Employee>  employee = Optional.ofNullable(employeeRepository.findByUsername(username).orElse(null));
+		if(employee.isPresent()) {
+			employeeRepository.updatePassword(password);
+			return true;
+		}
+		else{
+			return false;
+		}
+	}
 }
