@@ -12,6 +12,8 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.omg.CosNaming.NamingContextPackage.NotFound;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.time.Instant;
@@ -33,8 +35,8 @@ public class CleaningService {
 	 * @param employee the employee to match.
 	 * @return all Cleanings sorted that are assigned to employee.
 	 */
-	public List<Cleaning> employeeCleaningToDo(Employee employee){
-		return findAllCleaningsByEmployee(employee);
+	public Page<Cleaning> employeeCleaningToDo(Employee employee,Pageable pageable){
+		return findAllCleaningsByEmployee(employee,pageable);
 	}
 
 	/**
@@ -79,8 +81,8 @@ public class CleaningService {
 	 * Gets All Cleanings by Priority then DateAdded.
 	 * @return List<Cleaning> Sorted by Priority and DateAdded.
 	 */
-	public List<Cleaning> findAllCleanings(){
-		return cleaningRepository.findAllByOrderByPriorityDescDateAddedAsc();
+	public Page<Cleaning> findAllCleanings(Pageable pageable){
+		return cleaningRepository.findAllByOrderByPriorityDescDateAddedAsc(pageable);
 	} // Tested
 
 	/**
@@ -88,8 +90,8 @@ public class CleaningService {
 	 * @param employee the employee to match.
 	 * @return all Cleanings sorted that are assigned to employee.
 	 */
-	public List<Cleaning> findAllCleaningsByEmployee(Employee employee){
-		return cleaningRepository.findAllByEmployeeOrderByPriorityDescDateAddedAsc(employee);
+	public Page<Cleaning> findAllCleaningsByEmployee(Employee employee, Pageable pageable){
+		return cleaningRepository.findAllByEmployeeOrderByPriorityDescDateAddedAsc(employee,pageable);
 	} // Tested
 
 	/**

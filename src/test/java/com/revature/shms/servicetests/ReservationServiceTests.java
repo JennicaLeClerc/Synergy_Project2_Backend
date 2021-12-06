@@ -18,8 +18,7 @@ import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.doReturn;
-import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
 public class ReservationServiceTests {
@@ -71,11 +70,9 @@ public class ReservationServiceTests {
 
 	@Test
 	public void deleteUserTest(){
-		Reservation reservation = new Reservation();
-		System.out.println(reservation.getReservationID());
-		Integer idToDelete = (Integer) reservation.getReservationID();
-		when(reservationRepository.deleteByUserReserve_UserID(idToDelete)).thenReturn(reservation);
-		Assertions.assertEquals(reservationService.deleteReservation(idToDelete.toString()), reservation);
+		reservationService.deleteReservation(1231245);
+		verify(reservationRepository,times(1)).deleteByUserReserve_UserID(anyInt());
+
 	}
 
     @Test void changeStatusOfReservationTest(){

@@ -8,6 +8,8 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.Arrays;
@@ -26,8 +28,8 @@ public class AmenityWrapperService {
 	 * gets all amenityWrappers
 	 * @return List<AmenityWrapper>
 	 */
-	public List<AmenityWrapper> findAllAmenities(){
-		return amenityWrapperRepository.findAll();
+	public Page<AmenityWrapper> findAllAmenities(Pageable pageable){
+		return amenityWrapperRepository.findAll(pageable);
 	}
 
 	/**

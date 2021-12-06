@@ -14,6 +14,8 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.omg.CosNaming.NamingContextPackage.NotFound;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -65,9 +67,9 @@ public class RoomServiceTest {
 		List<Room> roomList = new ArrayList<>();
 		roomList.add(room);
 		roomList.add(room);
-
-		when(roomRepository.findAllByStatusAndIsOccupiedAndWorkStatusOrderByRoomNumberDesc(any(), anyBoolean(), any())).thenReturn(roomList);
-		Assertions.assertEquals(roomList, roomService.findAllAvailable());
+		Page<Room> roomPage = new PageImpl<>(roomList);
+		when(roomRepository.findAllByStatusAndIsOccupiedAndWorkStatusOrderByRoomNumberDesc(any(), anyBoolean(), any(),any())).thenReturn(roomPage);
+		Assertions.assertEquals(roomList, roomService.findAllAvailable(null).getContent());
 	}
 
 	@Test
@@ -87,8 +89,9 @@ public class RoomServiceTest {
 			List<Room> roomList = new ArrayList<>();
 			roomList.add(room);
 			roomList.add(room);
-			when(roomRepository.findAllByIsOccupied(anyBoolean())).thenReturn(roomList);
-			Assertions.assertEquals(roomList, roomService.findAllByIsOccupied(testing));
+			Page<Room> roomPage = new PageImpl<>(roomList);
+			when(roomRepository.findAllByIsOccupied(anyBoolean(),any())).thenReturn(roomPage);
+			Assertions.assertEquals(roomList, roomService.findAllByIsOccupied(testing,null).getContent());
 			testing = false;
 		}
 	}
@@ -118,8 +121,9 @@ public class RoomServiceTest {
 			List<Room> roomList = new ArrayList<>();
 			roomList.add(room);
 			roomList.add(room);
-			when(roomRepository.findAllByStatus(any(CleaningStatus.class))).thenReturn(roomList);
-			Assertions.assertEquals(cleaningStatus, roomService.findAllByStatus(cleaningStatus).get(0).getStatus());
+			Page<Room> roomPage = new PageImpl<>(roomList);
+			when(roomRepository.findAllByStatus(any(CleaningStatus.class),any())).thenReturn(roomPage);
+			Assertions.assertEquals(cleaningStatus, roomService.findAllByStatus(cleaningStatus,null).getContent().get(0).getStatus());
 		}
 	}
 
@@ -131,8 +135,9 @@ public class RoomServiceTest {
 			List<Room> roomList = new ArrayList<>();
 			roomList.add(room);
 			roomList.add(room);
-			when(roomRepository.findAllByStatusNot(any(CleaningStatus.class))).thenReturn(roomList);
-			Assertions.assertEquals(cleaningStatus, roomService.findAllByNotStatus(cleaningStatus).get(0).getStatus());
+			Page<Room> roomPage = new PageImpl<>(roomList);
+			when(roomRepository.findAllByStatusNot(any(CleaningStatus.class),any())).thenReturn(roomPage);
+			Assertions.assertEquals(cleaningStatus, roomService.findAllByNotStatus(cleaningStatus,null).getContent().get(0).getStatus());
 		}
 	}
 
@@ -171,8 +176,9 @@ public class RoomServiceTest {
 			List<Room> roomList = new ArrayList<>();
 			roomList.add(room);
 			roomList.add(room);
-			when(roomRepository.findAllByWorkStatus(any())).thenReturn(roomList);
-			Assertions.assertEquals(roomList, roomService.findAllByWorkStatus(workStatus));
+			Page<Room> roomPage = new PageImpl<>(roomList);
+			when(roomRepository.findAllByWorkStatus(any(),any())).thenReturn(roomPage);
+			Assertions.assertEquals(roomList, roomService.findAllByWorkStatus(workStatus,null).getContent());
 		}
 	}
 
@@ -184,8 +190,9 @@ public class RoomServiceTest {
 			List<Room> roomList = new ArrayList<>();
 			roomList.add(room);
 			roomList.add(room);
-			when(roomRepository.findAllByWorkStatusNot(any())).thenReturn(roomList);
-			Assertions.assertEquals(roomList, roomService.findAllByNotWorkStatus(workStatus));
+			Page<Room> roomPage = new PageImpl<>(roomList);
+			when(roomRepository.findAllByWorkStatusNot(any(),any())).thenReturn(roomPage);
+			Assertions.assertEquals(roomList, roomService.findAllByNotWorkStatus(workStatus,null).getContent());
 		}
 	}
 
@@ -214,8 +221,9 @@ public class RoomServiceTest {
 		List<Room> roomList = new ArrayList<>();
 		roomList.add(new Room());
 		roomList.add(new Room());
-		when(roomRepository.findAllByOrderByRoomNumberDesc()).thenReturn(roomList);
-		Assertions.assertEquals(roomList, roomService.findAllRooms());
+		Page<Room> roomPage = new PageImpl<>(roomList);
+		when(roomRepository.findAllByOrderByRoomNumberDesc(any())).thenReturn(roomPage);
+		Assertions.assertEquals(roomList, roomService.findAllRooms(null ).getContent());
 	}
 
 	@Test
@@ -231,9 +239,9 @@ public class RoomServiceTest {
 			List<Room> roomList = new ArrayList<>();
 			roomList.add(room);
 			roomList.add(room);
-
-			when(roomRepository.findAllByAmenitiesList_Amenity(amenities)).thenReturn(roomList);
-			Assertions.assertEquals(roomList, roomService.findAllByAmenity(amenities));
+			Page<Room> roomPage = new PageImpl<>(roomList);
+			when(roomRepository.findAllByAmenitiesList_Amenity(amenities,null)).thenReturn(roomPage);
+			Assertions.assertEquals(roomList, roomService.findAllByAmenity(amenities,null).getContent());
 		}
 	}
 

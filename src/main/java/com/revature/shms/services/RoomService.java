@@ -10,6 +10,9 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.omg.CosNaming.NamingContextPackage.NotFound;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.security.core.parameters.P;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -53,14 +56,14 @@ public class RoomService {
 				&& !room.isOccupied();
 	}
 
-	public List<Room> findAllAvailable(){
+	public Page<Room> findAllAvailable(Pageable pageable){
 		return roomRepository.findAllByStatusAndIsOccupiedAndWorkStatusOrderByRoomNumberDesc(
-				CleaningStatus.CLEAN, false, WorkStatus.NO_ISSUES);
+				CleaningStatus.CLEAN, false, WorkStatus.NO_ISSUES,pageable);
 	}
 
 	// --- isOccupied ---
 	/**
-	 * Sets the room Occupation status of the given room to the given staus.
+	 * Sets the room Occupation status of the given room to the given status.
 	 * @param room the room to be worked on.
 	 * @param isOccupied is the room occupied or not.
 	 * @return the room with the new occupation status.
@@ -75,8 +78,8 @@ public class RoomService {
 	 * @param isOccupied is the room Occupied or not
 	 * @return List<Room> of all rooms that are the given occupation status.
 	 */
-	public List<Room> findAllByIsOccupied(boolean isOccupied){
-		return roomRepository.findAllByIsOccupied(isOccupied);
+	public Page<Room> findAllByIsOccupied(boolean isOccupied,Pageable pageable){
+		return roomRepository.findAllByIsOccupied(isOccupied, pageable);
 	}
 
 	/**
@@ -114,8 +117,8 @@ public class RoomService {
 	 * @param status the Cleaning Status to be matched.
 	 * @return List<Room> of all rooms with the given Cleaning Status.
 	 */
-	public List<Room> findAllByStatus(CleaningStatus status){
-		return roomRepository.findAllByStatus(status);
+	public Page<Room> findAllByStatus(CleaningStatus status, Pageable pageable){
+		return roomRepository.findAllByStatus(status,pageable);
 	}
 
 	/**
@@ -123,8 +126,8 @@ public class RoomService {
 	 * @param status the Cleaning Status to NOT be matched.
 	 * @return List<Room> of all rooms without the given Cleaning Status.
 	 */
-	public List<Room> findAllByNotStatus(CleaningStatus status){
-		return roomRepository.findAllByStatusNot(status);
+	public Page<Room> findAllByNotStatus(CleaningStatus status, Pageable pageable){
+		return roomRepository.findAllByStatusNot(status,pageable);
 	}
 
 	/**
@@ -180,8 +183,8 @@ public class RoomService {
 	 * @param workStatus the Work Status to be matched.
 	 * @return List<Room> of all rooms that are the given Needs Service status.
 	 */
-	public List<Room> findAllByWorkStatus(WorkStatus workStatus){
-		return roomRepository.findAllByWorkStatus(workStatus);
+	public Page<Room> findAllByWorkStatus(WorkStatus workStatus,Pageable pageable){
+		return roomRepository.findAllByWorkStatus(workStatus,pageable);
 	}
 
 	/**
@@ -189,8 +192,8 @@ public class RoomService {
 	 * @param workStatus the Work Status to NOT be matched.
 	 * @return List<Room> of all rooms without the given Work Status.
 	 */
-	public List<Room> findAllByNotWorkStatus(WorkStatus workStatus){
-		return roomRepository.findAllByWorkStatusNot(workStatus);
+	public Page<Room> findAllByNotWorkStatus(WorkStatus workStatus,Pageable pageable){
+		return roomRepository.findAllByWorkStatusNot(workStatus,pageable);
 	}
 
 	/**
@@ -233,8 +236,8 @@ public class RoomService {
 	/**
 	 * @return List<Room> Ordered by Room Number in descending order.
 	 */
-	public List<Room> findAllRooms(){
-		return roomRepository.findAllByOrderByRoomNumberDesc();
+	public Page<Room> findAllRooms(Pageable pageable){
+		return roomRepository.findAllByOrderByRoomNumberDesc(pageable);
 	}
 
 	/**
@@ -242,8 +245,8 @@ public class RoomService {
 	 * @param amenity the Amenity to be matched.
 	 * @return List<Room> of all rooms that have the given Amenity.
 	 */
-	public List<Room> findAllByAmenity(Amenities amenity){
-		return roomRepository.findAllByAmenitiesList_Amenity(amenity);
+	public Page<Room> findAllByAmenity(Amenities amenity, Pageable pageable){
+		return roomRepository.findAllByAmenitiesList_Amenity(amenity,pageable);
 	}
 
 	/**

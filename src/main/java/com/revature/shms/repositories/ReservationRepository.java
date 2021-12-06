@@ -22,7 +22,7 @@ public interface ReservationRepository extends JpaRepository<Reservation,Integer
 	/**
 	 * This deletes a reservation.
 	 */
-	Reservation deleteByUserReserve_UserID(int id);
+	void deleteByUserReserve_UserID(int id);
 
 	/**
 	 * This denies a reservation by the employee

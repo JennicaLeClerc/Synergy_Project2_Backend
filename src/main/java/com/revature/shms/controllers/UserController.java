@@ -3,6 +3,7 @@ import com.revature.shms.models.User;
 import com.revature.shms.repositories.UserRepository;
 import com.revature.shms.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Optional;
@@ -17,12 +18,13 @@ public class UserController {
     private UserService userService;
 
     @GetMapping("/{userId}")
-    public Optional<User> getUserById(@PathVariable String userId){
-        return userRepository.findByUserID(Integer.parseInt(userId));
+    public ResponseEntity<?> findUserById(@PathVariable String userId){
+        return ResponseEntity.ok( userRepository.findByUserID(Integer.parseInt(userId)));
     }
 
     @PostMapping
-    public User createNewUser(@RequestBody User user){
-        return userService.createNewUser(user);
+    public ResponseEntity<?> createNewUser(@RequestBody User user)
+	{
+		return ResponseEntity.ok( userService.createNewUser(user));
     }
 }

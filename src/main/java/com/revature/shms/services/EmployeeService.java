@@ -9,6 +9,8 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.omg.CosNaming.NamingContextPackage.NotFound;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.stereotype.Service;
 
@@ -60,8 +62,8 @@ public class EmployeeService {
 	 * List of All Employees ordered by Employee Type.
 	 * @return List<Employee> of All employees.
 	 */
-	public List<Employee> findAllEmployees(){
-		return employeeRepository.findAllByOrderByEmployeeType();
+	public Page<Employee> findAllEmployees(Pageable pageable){
+		return employeeRepository.findAllByOrderByEmployeeType(pageable);
 	} // Tested
 
 	/**
@@ -69,8 +71,8 @@ public class EmployeeService {
 	 * @param employeeType the employeeType to be matched.
 	 * @return List<Employee> of All employees with the given employeeType.
 	 */
-	public List<Employee> findAllEmployeesByType(EmployeeType employeeType){
-		return employeeRepository.findByEmployeeType(employeeType);
+	public Page<Employee> findAllEmployeesByType(EmployeeType employeeType, Pageable pageable){
+		return employeeRepository.findByEmployeeType(employeeType,pageable);
 	}
 
 	/**
@@ -96,8 +98,8 @@ public class EmployeeService {
 	 * @param employee the employee to match.
 	 * @return all Cleanings sorted that are assigned to employee.
 	 */
-	public List<Cleaning> employeeCleaningToDo(Employee employee){
-		return cleaningService.findAllCleaningsByEmployee(employee);
+	public Page<Cleaning> employeeCleaningToDo(Employee employee,Pageable pageable){
+		return cleaningService.findAllCleaningsByEmployee(employee,pageable);
 	}
 
 	/**

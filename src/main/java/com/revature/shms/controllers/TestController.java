@@ -1,6 +1,7 @@
 package com.revature.shms.controllers;
 
 
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -9,18 +10,18 @@ import org.springframework.web.bind.annotation.RestController;
 public class TestController {
 
     @RequestMapping("/u")
-    public String testURLUser(){
-        return "You are a user";
+    public ResponseEntity<?> testURLUser(){
+        return ResponseEntity.ok("You are a user");
     }
 
     @RequestMapping("/m")
-    public String testURLManager(){
-        return "You are a manager";
+    public ResponseEntity<?> testURLManager(){
+        return ResponseEntity.ok("You are a manager");
     }
 
     @RequestMapping("/e")
-    public String testURLEmployee(){
-        return "You are an employee";
+    public ResponseEntity<?> testURLEmployee(){
+        return ResponseEntity.ok("You are an employee");
     }
 
 }

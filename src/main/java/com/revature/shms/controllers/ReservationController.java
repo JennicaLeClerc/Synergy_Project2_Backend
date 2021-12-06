@@ -9,8 +9,14 @@ import com.revature.shms.services.ReservationService;
 import com.revature.shms.services.UserService;
 import org.omg.CosNaming.NamingContextPackage.NotFound;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.xml.ws.Response;
 import java.util.List;
 
 @RestController
@@ -30,8 +36,8 @@ public class ReservationController {
      * @return
      */
     @GetMapping("/all")
-    public List<Reservation> returnAllReservations(){
-        return reservationRepository.findAll();
+    public Page<Reservation> returnAllReservations(@RequestParam("pageNumber") int pageNumber, @RequestParam("pageSize") int pageSize, @RequestParam("sortBy") String sortBy){
+        return reservationRepository.findAll(PageRequest.of(pageNumber,pageSize, Sort.by(sortBy)));
     }
 
     /**
@@ -41,11 +47,11 @@ public class ReservationController {
      * @throws NotFound
      */
     @PostMapping("/update")
-    public Reservation setStatusOfReservation(@RequestBody CustomReservation customReservation) throws NotFound {
+    public ResponseEntity<?> setStatusOfReservation(@RequestBody CustomReservation customReservation) throws NotFound {
         System.out.println("Request recieved");
         Reservation reservation = reservationService.findReservationOfUser(customReservation.getUserID());
         reservation.setStatus(customReservation.getStatus());
-        return reservationService.changeStatusOfReservation(reservation);
+        return ResponseEntity.ok(reservationService.changeStatusOfReservation(reservation));
     }
     /**
      * A user can send a psot reuquest with the start and end date of a reservation.
@@ -54,11 +60,11 @@ public class ReservationController {
      * @throws NotFound
      */
     @PostMapping("/save")
-    public Reservation createNewReservation(@RequestBody CustomReservation customReservation) throws NotFound {
+    public ResponseEntity<?> createNewReservation(@RequestBody CustomReservation customReservation) throws NotFound {
         System.out.println("Request recieved");
 
         User user = userRepository.findByUserID(Integer.parseInt(customReservation.getUserID())).get();
 
-        return reservationService.setReservation(user, customReservation.getStartDate(), customReservation.getEndDate());
+        return  ResponseEntity.ok( reservationService.setReservation(user, customReservation.getStartDate(), customReservation.getEndDate()));
     }
 }
