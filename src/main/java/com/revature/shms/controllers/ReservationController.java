@@ -11,11 +11,7 @@ import org.omg.CosNaming.NamingContextPackage.NotFound;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
-import java.text.SimpleDateFormat;
-import java.util.Calendar;
-import java.util.Date;
 import java.util.List;
-import java.util.Optional;
 
 @RestController
 @RequestMapping("/reservations")
@@ -47,7 +43,7 @@ public class ReservationController {
     @PostMapping("/update")
     public Reservation setStatusOfReservation(@RequestBody CustomReservation customReservation) throws NotFound {
         System.out.println("Request recieved");
-        Reservation reservation = reservationService.getReservationOfUser(customReservation.getUserID());
+        Reservation reservation = reservationService.findReservationOfUser(customReservation.getUserID());
         reservation.setStatus(customReservation.getStatus());
         return reservationService.changeStatusOfReservation(reservation);
     }

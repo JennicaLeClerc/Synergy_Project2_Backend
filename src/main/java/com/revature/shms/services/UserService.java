@@ -43,7 +43,7 @@ public class UserService{
      */
     public User login(String username, String password) throws AccessDeniedException {
 		try {
-			User user = getUserByUsername(username);
+			User user = findUserByUsername(username);
 			if (user.getPassword().equals(password)) return user;
 		} catch (NotFound e) { throw new AccessDeniedException("Incorrect username/password");}
 		throw new AccessDeniedException("Incorrect username/password");
@@ -62,7 +62,7 @@ public class UserService{
      * Gets a list of all users.
      * @return List<User> for all users in the database ordered by UserID in descending order.
      */
-    public List<User> getAllUsers(){
+    public List<User> findAllUsers(){
         return userRepository.findAllByOrderByUserIDDesc();
     }
 
@@ -72,7 +72,7 @@ public class UserService{
      * @return User with the given username.
      * @throws NotFound if the username is not in the database this will be thrown.
      */
-    public User getUserByUsername(String username) throws NotFound {
+    public User findUserByUsername(String username) throws NotFound {
         return userRepository.findByUsername(username).orElseThrow(NotFound::new);
     }
 
@@ -82,7 +82,7 @@ public class UserService{
      * @return User with the given userID.
      * @throws NotFound if the userID is not in the database this will be thrown.
      */
-    public User getUserByUserID(int userID) throws NotFound {
+    public User findUserByUserID(int userID) throws NotFound {
         return userRepository.findByUserID(userID).orElseThrow(NotFound::new);
     }
 

@@ -57,7 +57,7 @@ public class UserServiceTests {
 		user.setUsername("Ryan");
 		user.setPassword("123123");
 		when(userRepository.findByUsername(user.getUsername())).thenReturn(java.util.Optional.of(user));
-		assertEquals(user,userService.getUserByUsername("Ryan"));
+		assertEquals(user,userService.findUserByUsername("Ryan"));
 	}
 	
 	@Test
@@ -70,7 +70,7 @@ public class UserServiceTests {
 		users.add(new User());
 		users.add(new User());
 		when(userRepository.findAllByOrderByUserIDDesc()).thenReturn(users);
-		assertEquals(users,userService.getAllUsers());
+		assertEquals(users,userService.findAllUsers());
 	}
 	
 	@Test
@@ -78,7 +78,7 @@ public class UserServiceTests {
 		User user = new User();
 		user.setUserID(123);
 		when(userRepository.findByUserID(user.getUserID())).thenReturn(java.util.Optional.of(user));
-		assertEquals(user,userService.getUserByUserID(123));
+		assertEquals(user,userService.findUserByUserID(123));
 	}
 	
 	@Test

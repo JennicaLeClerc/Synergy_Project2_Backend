@@ -32,7 +32,7 @@ public class  ReservationService {
      * @param id
      * @return Reservation
      */
-    public Reservation getReservationOfUser(String id) throws NotFound {
+    public Reservation findReservationOfUser(String id) throws NotFound {
         return reservationRepository.findByUserReserve_UserID(Integer.parseInt(id)).orElseThrow(NotFound::new);
     }
 
@@ -41,7 +41,7 @@ public class  ReservationService {
      * @param reservationId
      * @return Reservation
      */
-    public Reservation getReservationWithReservationId(String reservationId) throws NotFound {
+    public Reservation findReservationWithReservationId(String reservationId) throws NotFound {
         return reservationRepository.findByReservationID(Integer.parseInt(reservationId)).orElseThrow(NotFound::new);
     }
 
@@ -49,7 +49,7 @@ public class  ReservationService {
      * Get all reservations
      * @return a list of reservations
      */
-    public List <Reservation> getAll(){
+    public List <Reservation> findAll(){
         return reservationRepository.findAll();
     }
 
@@ -58,9 +58,7 @@ public class  ReservationService {
      * @return Reservation.
      */
     public Reservation createReservation(Reservation reservation){
-
         return reservationRepository.save(reservation);
-
     }
 
 //    public Reservation approveReservation(int employeeId) {
@@ -107,6 +105,4 @@ public class  ReservationService {
         System.out.println(reservation.getEndDate());
         return reservationRepository.save(reservation);
     }
-
-
 }

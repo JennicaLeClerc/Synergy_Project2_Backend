@@ -34,7 +34,7 @@ public class CleaningService {
 	 * @return all Cleanings sorted that are assigned to employee.
 	 */
 	public List<Cleaning> employeeCleaningToDo(Employee employee){
-		return GetAllCleaningsByEmployee(employee);
+		return findAllCleaningsByEmployee(employee);
 	}
 
 	/**
@@ -60,7 +60,7 @@ public class CleaningService {
 	 */
 	public Room startCleanRoom(Employee employee, Room room) throws NotFound {
 		if (employee.getEmployeeType().equals(EmployeeType.RECEPTIONIST)) return null;
-		remove(getByRoom(room));
+		remove(findByRoom(room));
 		return roomService.startCleaning(room);
 	}
 
@@ -79,7 +79,7 @@ public class CleaningService {
 	 * Gets All Cleanings by Priority then DateAdded.
 	 * @return List<Cleaning> Sorted by Priority and DateAdded.
 	 */
-	public List<Cleaning> GetAllCleanings(){
+	public List<Cleaning> findAllCleanings(){
 		return cleaningRepository.findAllByOrderByPriorityDescDateAddedAsc();
 	} // Tested
 
@@ -88,7 +88,7 @@ public class CleaningService {
 	 * @param employee the employee to match.
 	 * @return all Cleanings sorted that are assigned to employee.
 	 */
-	public List<Cleaning> GetAllCleaningsByEmployee(Employee employee){
+	public List<Cleaning> findAllCleaningsByEmployee(Employee employee){
 		return cleaningRepository.findAllByEmployeeOrderByPriorityDescDateAddedAsc(employee);
 	} // Tested
 
@@ -97,7 +97,7 @@ public class CleaningService {
 	 * @param room the room to match.
 	 * @return Cleaning corresponding to the room.
 	 */
-	public Cleaning getByRoom(Room room) throws NotFound {
+	public Cleaning findByRoom(Room room) throws NotFound {
 		return cleaningRepository.findByRoom(room).orElseThrow(NotFound::new);
 	} // Tested
 

@@ -1,14 +1,10 @@
 package com.revature.shms.servicetests;
 
 import com.revature.shms.enums.ReservationStatus;
-import com.revature.shms.models.Employee;
 import com.revature.shms.models.Reservation;
 import com.revature.shms.models.User;
-import com.revature.shms.repositories.CleaningRepository;
 import com.revature.shms.repositories.ReservationRepository;
-import com.revature.shms.services.CleaningService;
 import com.revature.shms.services.ReservationService;
-import com.revature.shms.services.RoomService;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -18,7 +14,6 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import org.omg.CosNaming.NamingContextPackage.NotFound;
 
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -41,7 +36,7 @@ public class ReservationServiceTests {
 		reservation.setReservationID(1);
 		test.add(reservation);
 		when(reservationRepository.findAll()).thenReturn(test);
-		assertEquals(reservationService.getAll(),test);
+		assertEquals(reservationService.findAll(),test);
 	}
 //	@Test
 //	public void reserveApprove(){
@@ -63,7 +58,7 @@ public class ReservationServiceTests {
 		Reservation reservation = new Reservation();
 		reservation.setReservationID(id);
 		when(reservationRepository.findByUserReserve_UserID(1)).thenReturn(java.util.Optional.of(reservation));
-		assertEquals(reservationService.getReservationOfUser("1").getReservationID(), id);
+		assertEquals(reservationService.findReservationOfUser("1").getReservationID(), id);
 	}
 
 	@Test
@@ -108,7 +103,7 @@ public class ReservationServiceTests {
 		Reservation reservation = new Reservation();
 		reservation.setReservationID(id);
 		when(reservationRepository.findByReservationID(1)).thenReturn(java.util.Optional.of(reservation));
-		assertEquals(reservationService.getReservationWithReservationId("1").getReservationID(), id);
+		assertEquals(reservationService.findReservationWithReservationId("1").getReservationID(), id);
 	}
 
 	@Test

@@ -11,7 +11,7 @@ import org.omg.CosNaming.NamingContextPackage.NotFound;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.stereotype.Service;
-import java.time.Instant;
+
 import java.util.*;
 
 @Service
@@ -41,7 +41,6 @@ public class EmployeeService {
 		return employeeRepository.save(employee);
 	}
 
-
 	/**
 	 * Logs in the employee with the given username and password, then returns that Employee.
 	 * @param username the username to match.
@@ -51,7 +50,7 @@ public class EmployeeService {
 	 */
 	public Employee loginEmployee(String username, String password) throws AccessDeniedException {
 		try {
-			Employee employee = getEmployeeByUserName(username);
+			Employee employee = findEmployeeByUserName(username);
 			if (employee.getPassword().equals(password)) return employee;
 		} catch (NotFound e) { throw new AccessDeniedException("Incorrect username/password");}
 		throw new AccessDeniedException("Incorrect username/password");
@@ -61,7 +60,7 @@ public class EmployeeService {
 	 * List of All Employees ordered by Employee Type.
 	 * @return List<Employee> of All employees.
 	 */
-	public List<Employee> getAllEmployees(){
+	public List<Employee> findAllEmployees(){
 		return employeeRepository.findAllByOrderByEmployeeType();
 	} // Tested
 
@@ -70,7 +69,7 @@ public class EmployeeService {
 	 * @param employeeType the employeeType to be matched.
 	 * @return List<Employee> of All employees with the given employeeType.
 	 */
-	public List<Employee> getAllEmployeesByType(EmployeeType employeeType){
+	public List<Employee> findAllEmployeesByType(EmployeeType employeeType){
 		return employeeRepository.findByEmployeeType(employeeType);
 	}
 
@@ -79,7 +78,7 @@ public class EmployeeService {
 	 * @param employeeID the employeeID to match.
 	 * @return Employee with the given employeeID.
 	 */
-	public Employee getEmployeeByID(int employeeID) throws NotFound {
+	public Employee findEmployeeByID(int employeeID) throws NotFound {
 		return employeeRepository.findByEmployeeID(employeeID).orElseThrow(NotFound::new);
 	}
 
@@ -88,7 +87,7 @@ public class EmployeeService {
 	 * @param userName the username to match.
 	 * @return Employee with the given username.
 	 */
-	public Employee getEmployeeByUserName(String userName) throws NotFound {
+	public Employee findEmployeeByUserName(String userName) throws NotFound {
 		return employeeRepository.findByUsername(userName).orElseThrow(NotFound::new);
 	}
 
@@ -98,6 +97,6 @@ public class EmployeeService {
 	 * @return all Cleanings sorted that are assigned to employee.
 	 */
 	public List<Cleaning> employeeCleaningToDo(Employee employee){
-		return cleaningService.GetAllCleaningsByEmployee(employee);
+		return cleaningService.findAllCleaningsByEmployee(employee);
 	}
 }

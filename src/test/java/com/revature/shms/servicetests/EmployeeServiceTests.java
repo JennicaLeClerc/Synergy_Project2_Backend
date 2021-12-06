@@ -1,10 +1,8 @@
 package com.revature.shms.servicetests;
 
-import com.revature.shms.enums.CleaningStatus;
 import com.revature.shms.enums.EmployeeType;
 import com.revature.shms.models.Cleaning;
 import com.revature.shms.models.Employee;
-import com.revature.shms.models.Room;
 import com.revature.shms.repositories.EmployeeRepository;
 import com.revature.shms.repositories.RoomRepository;
 import com.revature.shms.services.CleaningService;
@@ -63,7 +61,7 @@ public class EmployeeServiceTests {
 		employeeList.add(new Employee());
 		employeeList.add(new Employee());
 		when(employeeRepository.findAllByOrderByEmployeeType()).thenReturn(employeeList);
-		Assertions.assertEquals(employeeList, employeeService.getAllEmployees());
+		Assertions.assertEquals(employeeList, employeeService.findAllEmployees());
 	}
 
 	@Test
@@ -73,14 +71,14 @@ public class EmployeeServiceTests {
 		employeeList.add(new Employee());
 		employeeList.add(new Employee());
 		when(employeeRepository.findByEmployeeType(any())).thenReturn(employeeList);
-		Assertions.assertEquals(employeeList, employeeService.getAllEmployeesByType(employeeType));
+		Assertions.assertEquals(employeeList, employeeService.findAllEmployeesByType(employeeType));
 	}
 
 	@Test
 	public void getEmployeeByIDTest() throws NotFound {
 		Employee employee = new Employee();
 		when(employeeRepository.findByEmployeeID(anyInt())).thenReturn(java.util.Optional.of(employee));
-		Assertions.assertEquals(employee, employeeService.getEmployeeByID(0));
+		Assertions.assertEquals(employee, employeeService.findEmployeeByID(0));
 	}
 
 	@Test
@@ -88,7 +86,7 @@ public class EmployeeServiceTests {
 		String username = "username";
 		Employee employee = new Employee();
 		when(employeeRepository.findByUsername(any())).thenReturn(java.util.Optional.of(employee));
-		Assertions.assertEquals(employee, employeeService.getEmployeeByUserName(username));
+		Assertions.assertEquals(employee, employeeService.findEmployeeByUserName(username));
 	}
 
 	@Test
@@ -97,7 +95,7 @@ public class EmployeeServiceTests {
 		List<Cleaning> cleaningList = new ArrayList<>();
 		cleaningList.add(new Cleaning());
 		cleaningList.add(new Cleaning());
-		when(cleaningService.GetAllCleaningsByEmployee(any())).thenReturn(cleaningList);
+		when(cleaningService.findAllCleaningsByEmployee(any())).thenReturn(cleaningList);
 		Assertions.assertEquals(cleaningList, employeeService.employeeCleaningToDo(employee));
 	}
 

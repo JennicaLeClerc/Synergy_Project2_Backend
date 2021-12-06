@@ -32,7 +32,7 @@ public class CleaningServiceTest {
 
 	@Test
 	public void employeeCleaningToDoTest(){
-		when(cleaningService.GetAllCleaningsByEmployee(any())).thenReturn(null);
+		when(cleaningService.findAllCleaningsByEmployee(any())).thenReturn(null);
 		Assertions.assertNull(cleaningService.employeeCleaningToDo(new Employee()));
 	}
 
@@ -82,7 +82,7 @@ public class CleaningServiceTest {
 		cleanings.add(new Cleaning());
 		cleanings.add(new Cleaning());
 		when(cleaningRepository.findAllByOrderByPriorityDescDateAddedAsc()).thenReturn(cleanings);
-		Assertions.assertEquals(cleaningService.GetAllCleanings(),cleanings);
+		Assertions.assertEquals(cleaningService.findAllCleanings(),cleanings);
 	}
 
 	@Test
@@ -90,14 +90,14 @@ public class CleaningServiceTest {
 		List<Cleaning> cleaningList = new ArrayList<>();
 		cleaningList.add(new Cleaning());
 		when(cleaningRepository.findAllByEmployeeOrderByPriorityDescDateAddedAsc(any())).thenReturn(cleaningList);
-		Assertions.assertEquals(cleaningList, cleaningService.GetAllCleaningsByEmployee(new Employee()));
+		Assertions.assertEquals(cleaningList, cleaningService.findAllCleaningsByEmployee(new Employee()));
 	}
 
 	@Test
 	public void getByRoomTest() throws NotFound {
 		Cleaning cleaning = new Cleaning();
 		when(cleaningRepository.findByRoom(any())).thenReturn(java.util.Optional.of(cleaning));
-		Assertions.assertEquals(cleaning, cleaningService.getByRoom(new Room()));
+		Assertions.assertEquals(cleaning, cleaningService.findByRoom(new Room()));
 	}
 
 	@Test

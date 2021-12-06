@@ -4,7 +4,6 @@ import com.revature.shms.enums.Amenities;
 import com.revature.shms.models.AmenityWrapper;
 import com.revature.shms.repositories.AmenityWrapperRepository;
 import com.revature.shms.services.AmenityWrapperService;
-import com.revature.shms.services.ReservationService;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -30,7 +29,7 @@ public class AmenityWrapperServiceTest {
 		amenityWrappers.add(new AmenityWrapper(Amenities.ADA,123));
 		amenityWrappers.add(new AmenityWrapper(Amenities.KING_BED,12));
 		when(repo.findAll()).thenReturn(amenityWrappers);
-		assertEquals(service.getAllAmenities(),amenityWrappers);
+		assertEquals(service.findAllAmenities(),amenityWrappers);
 	}
 
 	@Test

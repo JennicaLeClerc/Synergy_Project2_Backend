@@ -75,7 +75,7 @@ public class RoomService {
 	 * @param isOccupied is the room Occupied or not
 	 * @return List<Room> of all rooms that are the given occupation status.
 	 */
-	public List<Room> getAllByIsOccupied(boolean isOccupied){
+	public List<Room> findAllByIsOccupied(boolean isOccupied){
 		return roomRepository.findAllByIsOccupied(isOccupied);
 	}
 
@@ -114,7 +114,7 @@ public class RoomService {
 	 * @param status the Cleaning Status to be matched.
 	 * @return List<Room> of all rooms with the given Cleaning Status.
 	 */
-	public List<Room> getAllByStatus(CleaningStatus status){
+	public List<Room> findAllByStatus(CleaningStatus status){
 		return roomRepository.findAllByStatus(status);
 	}
 
@@ -180,7 +180,7 @@ public class RoomService {
 	 * @param workStatus the Work Status to be matched.
 	 * @return List<Room> of all rooms that are the given Needs Service status.
 	 */
-	public List<Room> getAllByWorkStatus(WorkStatus workStatus){
+	public List<Room> findAllByWorkStatus(WorkStatus workStatus){
 		return roomRepository.findAllByWorkStatus(workStatus);
 	}
 
@@ -233,7 +233,7 @@ public class RoomService {
 	/**
 	 * @return List<Room> Ordered by Room Number in descending order.
 	 */
-	public List<Room> getAllRooms(){
+	public List<Room> findAllRooms(){
 		return roomRepository.findAllByOrderByRoomNumberDesc();
 	}
 
@@ -242,7 +242,7 @@ public class RoomService {
 	 * @param amenity the Amenity to be matched.
 	 * @return List<Room> of all rooms that have the given Amenity.
 	 */
-	public List<Room> getAllByAmenity(Amenities amenity){
+	public List<Room> findAllByAmenity(Amenities amenity){
 		return roomRepository.findAllByAmenitiesList_Amenity(amenity);
 	}
 
@@ -252,7 +252,7 @@ public class RoomService {
 	 * @return Room with the given Room Number.
 	 * @throws NotFound if the room number does not exist.
 	 */
-	public Room getByRoomNumber(int roomNumber) throws NotFound {
+	public Room findByRoomNumber(int roomNumber) throws NotFound {
 		return roomRepository.findByRoomNumber(roomNumber).orElseThrow(NotFound::new);
 	}
 }

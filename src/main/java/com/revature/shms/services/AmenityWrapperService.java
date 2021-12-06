@@ -26,7 +26,7 @@ public class AmenityWrapperService {
 	 * gets all amenityWrappers
 	 * @return List<AmenityWrapper>
 	 */
-	public List<AmenityWrapper> getAllAmenities(){
+	public List<AmenityWrapper> findAllAmenities(){
 		return amenityWrapperRepository.findAll();
 	}
 
