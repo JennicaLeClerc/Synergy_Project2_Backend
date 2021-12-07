@@ -55,7 +55,6 @@ public class EmployeeServiceTests {
 			Exception exception = assertThrows(org.springframework.security.access.AccessDeniedException.class, (Executable) employeeService.loginEmployee("RPH","123"));
 			assertTrue(exception.getMessage().contains("Incorrect username/password"));
 		} catch (Exception ignored){}
-
 	}
 
 	@Test

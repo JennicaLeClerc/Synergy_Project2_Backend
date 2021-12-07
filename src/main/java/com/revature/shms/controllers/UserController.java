@@ -18,13 +18,12 @@ public class UserController {
     private UserService userService;
 
     @GetMapping("/{userId}")
-    public ResponseEntity<?> findUserById(@PathVariable String userId){
+    public ResponseEntity<?> findUserById(@PathVariable String userId) {
         return ResponseEntity.ok( userRepository.findByUserID(Integer.parseInt(userId)));
     }
 
     @PostMapping
-    public ResponseEntity<?> createNewUser(@RequestBody User user)
-	{
+    public ResponseEntity<?> createNewUser(@RequestBody User user) {
 		return ResponseEntity.ok( userService.createNewUser(user));
     }
 }

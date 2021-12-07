@@ -23,8 +23,6 @@ import java.util.List;
 public class  ReservationService {
     @Autowired
 	ReservationRepository reservationRepository;
-    @Autowired
-    UserRepository userRepository;
     
     /**
      * Get a reservation with a userId
@@ -71,7 +69,7 @@ public class  ReservationService {
      * This toggles the reservation status for employees or users that cancel a reservation
      */
     public Reservation changeStatusOfReservation(int reservationID, ReservationStatus status) throws NotFound {
-        Reservation reservation = findReservationWithReservationId(reservationID);
+        Reservation reservation = findReservationByReservationID(reservationID);
         reservation.setStatus(status);
         return reservationRepository.save(reservation);
     }
@@ -86,18 +84,24 @@ public class  ReservationService {
         Reservation reservation = findReservationByReservationID(reservationID);
         reservation.setAccommodations(accommodations);
         return createReservation(reservation);
-  
+    }
+
     /**
      * This toggles the date
      */
     public Reservation changeDateOfReservation(int reservationID, String startDate, String endDate) throws NotFound {
-        Reservation reservation = findReservationOfUser(reservationID);
+        Reservation reservation = findReservationByReservationID(reservationID);
         reservation.setStartDate(startDate);
         reservation.setEndDate(endDate);
         return reservationRepository.save(reservation);
     }
-      
-    /*public Reservation setReservation(User user, String startDate, String endDate){
+
+    public Reservation setReservation(Reservation reservation){
+        reservation.setStatus(ReservationStatus.PENDING);
+        return reservationRepository.save(reservation);
+    }
+
+    /*public Reservation setReservation(User user, String startDate, String endDate) {
         //System.out.println(" start date is: " + startDate);
         Reservation reservation = new Reservation();
         reservation.setUserReserve(user);
@@ -108,5 +112,6 @@ public class  ReservationService {
         reservation.setEndDate(endDate);
         //System.out.println(reservation.getStartDate());
         //System.out.println(reservation.getEndDate());
-        return createReservation(reservation);*/
+        return createReservation(reservation);
+    }*/
 }
