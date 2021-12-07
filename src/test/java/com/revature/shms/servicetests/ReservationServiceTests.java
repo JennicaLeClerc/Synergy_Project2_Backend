@@ -61,28 +61,13 @@ public class ReservationServiceTests {
 		assertEquals(reservation, reservationService.createReservation(reservation));
 	}
 
-	/*
-	@Test
-	public void reserveApprove(){
-		Reservation reservation = new Reservation();
-		when(reservationRepository.approveReservationByEmployee_EmployeeId(1)).thenReturn(reservation);
-		assertEquals(reservationService.approveReservation((1)), reservation);
-	}
-
-	@Test
-	public void denyReservation(){
-		Reservation reservation = new Reservation();
-		when(reservationRepository.denyReservationByEmployee_EmployeeId(1)).thenReturn(reservation);
-		assertEquals(reservationService.denyReservation((1)), reservation);
-	}*/
-
 	@Test
 	public void deleteReservationByUserIDTest(){
 		reservationService.deleteReservationByUserID(1231245);
 		verify(reservationRepository,times(1)).deleteByUserReserve_UserID(anyInt());
 	}
 
-    /*@Test
+    @Test
     public void changeStatusOfReservationTest(){
         Reservation reservation = new Reservation();
         reservation.setReservationID(1);
@@ -102,7 +87,7 @@ public class ReservationServiceTests {
 		update.setStatus(ReservationStatus.CANCELLED.toString());
 		when(reservationRepository.save(any())).thenReturn(reservation);
 		assertEquals(reservation, reservationService.changeDateOfReservation(update));
-	}*/
+	}
 
 	@Test
 	public void setAccommodationsTest() throws NotFound {

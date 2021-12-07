@@ -72,7 +72,7 @@ public class EmployeeService {
 	 * @return List<Employee> of All employees with the given employeeType.
 	 */
 	public Page<Employee> findAllEmployeesByType(EmployeeType employeeType, Pageable pageable){
-		return employeeRepository.findByEmployeeType(employeeType,pageable);
+		return employeeRepository.findByEmployeeType(employeeType, pageable);
 	}
 
 	/**
@@ -98,8 +98,8 @@ public class EmployeeService {
 	 * @param employee the employee to match.
 	 * @return all Cleanings sorted that are assigned to employee.
 	 */
-	public Page<Cleaning> employeeCleaningToDo(Employee employee,Pageable pageable){
-		return cleaningService.findAllCleaningsByEmployee(employee,pageable);
+	public Page<Cleaning> employeeCleaningToDo(Employee employee, Pageable pageable){
+		return cleaningService.findAllCleaningsByEmployee(employee, pageable);
 	}
 
 	/**
@@ -117,13 +117,11 @@ public class EmployeeService {
 				employee.setPassword(newPassword);
 				createEmployee(employee);
 				return true;
-			}
-			else{
+			} else{
 				// Username/Password invalid.
 				return false;
 			}
-		}
-		else{
+		} else{
 			return false;
 		}
 	}
@@ -134,8 +132,7 @@ public class EmployeeService {
 			employee.setFirstName(firstName);
 			createEmployee(employee);
 			return true;
-		}
-		else{
+		} else{
 			return false;
 		}
 	}
@@ -146,8 +143,7 @@ public class EmployeeService {
 			employee.setLastName(lastName);
 			createEmployee(employee);
 			return true;
-		}
-		else{
+		} else{
 			return false;
 		}
 	}

@@ -49,6 +49,7 @@ public class ReservationController {
         reservation.setStatus(customReservation.getStatus());
         return ResponseEntity.ok(reservationService.changeStatusOfReservation(reservation));
     }*/
+
     /**
      * A user can send a psot reuquest with the start and end date of a reservation.
      * @param customReservation
