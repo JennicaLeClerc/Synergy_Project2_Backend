@@ -64,7 +64,7 @@ public class EmployeeService {
 	 */
 	public Page<Employee> findAllEmployees(Pageable pageable){
 		return employeeRepository.findAllByOrderByEmployeeType(pageable);
-	} // Tested
+	}
 
 	/**
 	 * List of All Employees with the given Employee Type.

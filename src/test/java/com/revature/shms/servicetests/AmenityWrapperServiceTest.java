@@ -30,46 +30,46 @@ public class AmenityWrapperServiceTest {
 	@Test
 	public void findAllAmenitiesTest(){
 		List<AmenityWrapper> amenityWrappers = new ArrayList<>();
-		amenityWrappers.add(new AmenityWrapper(Amenities.ADA,123));
-		amenityWrappers.add(new AmenityWrapper(Amenities.KING_BED,12));
+		amenityWrappers.add(new AmenityWrapper(Amenities.ADA, 123));
+		amenityWrappers.add(new AmenityWrapper(Amenities.KING_BED, 12));
 		Page<AmenityWrapper> pg = new PageImpl<>(amenityWrappers);
 		when(repo.findAll(any(Pageable.class))).thenReturn(pg);
-		assertEquals(service.findAllAmenities(PageRequest.of(0,1000000)).getContent(),amenityWrappers);
+		assertEquals(amenityWrappers, service.findAllAmenities(PageRequest.of(0, 1000000)).getContent());
 	}
 
 	@Test
 	public void setAmenityPriceTest(){
 		AmenityWrapper wrapper = new AmenityWrapper(Amenities.SMALL_KITCHEN, 100);
 		when(repo.save(any(AmenityWrapper.class))).thenReturn(wrapper);
-		assertEquals(service.setAmenityPrice(Amenities.SMALL_KITCHEN,100),wrapper);
+		assertEquals(wrapper, service.setAmenityPrice(Amenities.SMALL_KITCHEN, 100));
 	}
 
 	@Test
 	public void getAmenityWrapperTest(){
 		AmenityWrapper wrapper = new AmenityWrapper(Amenities.SMALL_KITCHEN, 100);
 		when(repo.getById(any())).thenReturn(wrapper);
-		assertEquals(service.getAmenityWrapper(Amenities.SMALL_KITCHEN),wrapper);
+		assertEquals(wrapper, service.getAmenityWrapper(Amenities.SMALL_KITCHEN));
 	}
 
 	@Test
 	public void getAmenityPriceTest(){
 		AmenityWrapper wrapper = new AmenityWrapper(Amenities.SMALL_KITCHEN, 100);
 		when(repo.getById(any())).thenReturn(wrapper);
-		assertEquals(service.getAmenityPrice(Amenities.SMALL_KITCHEN),100);
+		assertEquals(100, service.getAmenityPrice(Amenities.SMALL_KITCHEN));
 	}
 
 	@Test
 	public void getTotalTest(){
 		List<AmenityWrapper> amenityWrappers = new ArrayList<>();
-		amenityWrappers.add(new AmenityWrapper(Amenities.ADA,123));
-		amenityWrappers.add(new AmenityWrapper(Amenities.KING_BED,12));
-		assertEquals(service.getTotal(amenityWrappers),135);
+		amenityWrappers.add(new AmenityWrapper(Amenities.ADA, 123));
+		amenityWrappers.add(new AmenityWrapper(Amenities.KING_BED, 12));
+		assertEquals(135, service.getTotal(amenityWrappers));
 	}
 
 	@Test
 	public void GenerateAllAmenityWrappersTest(){
 		service.GenerateAllAmenityWrappers();
-		verify(repo,times(Amenities.values().length)).save(any());
+		verify(repo, times(Amenities.values().length)).save(any());
 	}
 
 	@Test
@@ -77,9 +77,9 @@ public class AmenityWrapperServiceTest {
 		AmenityWrapperRepository amenityWrapperRepository = null;
 		AmenityWrapperService amenityWrapperService = new AmenityWrapperService();
 		amenityWrapperService.setAmenityWrapperRepository(amenityWrapperRepository);
-		Assertions.assertNull(amenityWrapperService.getAmenityWrapperRepository());
+		assertNull(amenityWrapperService.getAmenityWrapperRepository());
 
 		amenityWrapperService.setAmenityWrapperRepository(null);
-		Assertions.assertNull(amenityWrapperService.getAmenityWrapperRepository());
+		assertNull(amenityWrapperService.getAmenityWrapperRepository());
 	}
 }
