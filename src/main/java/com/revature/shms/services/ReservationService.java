@@ -12,7 +12,6 @@ import org.omg.CosNaming.NamingContextPackage.NotFound;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.Date;
 import java.util.List;
 
 /**
@@ -29,11 +28,11 @@ public class  ReservationService {
 
     /**
      * Get a reservation with a userId
-     * @param id
+     * @param userID
      * @return Reservation
      */
-    public Reservation findReservationOfUser(String id) throws NotFound {
-        return reservationRepository.findByUserReserve_UserID(Integer.parseInt(id)).orElseThrow(NotFound::new);
+    public Reservation findReservationByUserID(int userID) throws NotFound {
+        return reservationRepository.findByUserReserve_UserID(userID).orElseThrow(NotFound::new);
     }
 
     /**
@@ -41,8 +40,8 @@ public class  ReservationService {
      * @param reservationId
      * @return Reservation
      */
-    public Reservation findReservationWithReservationId(String reservationId) throws NotFound {
-        return reservationRepository.findByReservationID(Integer.parseInt(reservationId)).orElseThrow(NotFound::new);
+    public Reservation findReservationByReservationID(int reservationId) throws NotFound {
+        return reservationRepository.findByReservationID(reservationId).orElseThrow(NotFound::new);
     }
 
     /**
@@ -54,7 +53,7 @@ public class  ReservationService {
     }
 
     /**
-     * This creates a reservation
+     * This creates or saves a reservation
      * @return Reservation.
      */
     public Reservation createReservation(Reservation reservation){
@@ -72,37 +71,50 @@ public class  ReservationService {
     /**
      * This deletes a reservation by a userId
      */
-    public void deleteReservation(int id) {
-		reservationRepository.deleteByUserReserve_UserID(id);
+    public void deleteReservationByUserID(int userID) {
+		reservationRepository.deleteByUserReserve_UserID(userID);
     }
 
     /**
      * This toggles the reservation status for employees or users that cancel a reservation
      */
-    public Reservation changeStatusOfReservation( Reservation reservation){
-        return reservationRepository.save(reservation);
-    }
+    public Reservation changeStatusOfReservation(Reservation reservation){
+        return createReservation(reservation);
+    } // currently doesn't do anything.
     
     /**
      * This toggles the date
      */
     public Reservation changeDateOfReservation( Reservation reservation){
-        return reservationRepository.save(reservation);
+        return createReservation(reservation);
+    } // Currently doesn't do anything
+
+    /**
+     * Sets the accommodations of the given reservation to the given accommodations string.
+     * @param reservationID the given reservationID.
+     * @param accommodations the accommodations that are being added or changed to.
+     * @return a Reservation with the given accommodations.
+     */
+    public Reservation setAccommodations(int reservationID, String accommodations) throws NotFound {
+        Reservation reservation = findReservationByReservationID(reservationID);
+        reservation.setAccommodations(accommodations);
+        return createReservation(reservation);
     }
 
     /**
      * The user can set a reservation to a specific date
      */
     public Reservation setReservation(User user, String startDate, String endDate){
-        System.out.println(" start date is: "+startDate);
+        //System.out.println(" start date is: " + startDate);
         Reservation reservation = new Reservation();
         reservation.setUserReserve(user);
         reservation.setStatus(ReservationStatus.PENDING.toString());
-        System.out.println(reservation.getUserReserve().getUsername());
+        //System.out.println(reservation.getUserReserve().getUsername());
+
         reservation.setStartDate(startDate);
         reservation.setEndDate(endDate);
-        System.out.println(reservation.getStartDate());
-        System.out.println(reservation.getEndDate());
-        return reservationRepository.save(reservation);
+        //System.out.println(reservation.getStartDate());
+        //System.out.println(reservation.getEndDate());
+        return createReservation(reservation);
     }
 }

@@ -11,13 +11,9 @@ import org.omg.CosNaming.NamingContextPackage.NotFound;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
-import javax.xml.ws.Response;
-import java.util.List;
 
 @RestController
 @RequestMapping("/reservations")
@@ -46,13 +42,13 @@ public class ReservationController {
      * @return
      * @throws NotFound
      */
-    @PostMapping("/update")
+    /*@PostMapping("/update")
     public ResponseEntity<?> setStatusOfReservation(@RequestBody CustomReservation customReservation) throws NotFound {
         System.out.println("Request recieved");
-        Reservation reservation = reservationService.findReservationOfUser(customReservation.getUserID());
+        Reservation reservation = reservationService.findReservationByUserID(customReservation.getUserID());
         reservation.setStatus(customReservation.getStatus());
         return ResponseEntity.ok(reservationService.changeStatusOfReservation(reservation));
-    }
+    }*/
     /**
      * A user can send a psot reuquest with the start and end date of a reservation.
      * @param customReservation
