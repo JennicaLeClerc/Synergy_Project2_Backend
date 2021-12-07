@@ -34,12 +34,7 @@ public class Reservation {
     @Column
     String endDate;
 
-    @Column(columnDefinition = "text")
-    String amenities;
-
     @ManyToOne(cascade = CascadeType.ALL)
     @JsonBackReference
     private User userReserve;
-
-
 }
