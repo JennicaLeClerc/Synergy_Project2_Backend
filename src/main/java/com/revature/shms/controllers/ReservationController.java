@@ -48,10 +48,7 @@ public class ReservationController {
      */
     @PostMapping("/update")
     public ResponseEntity<?> setStatusOfReservation(@RequestBody CustomReservation customReservation) throws NotFound {
-        System.out.println("Request recieved");
-        Reservation reservation = reservationService.findReservationOfUser(customReservation.getUserID());
-        reservation.setStatus(customReservation.getStatus());
-        return ResponseEntity.ok(reservationService.changeStatusOfReservation(reservation));
+        return ResponseEntity.ok(reservationService.changeStatusOfReservation(customReservation));
     }
     /**
      * A user can send a psot reuquest with the start and end date of a reservation.
@@ -61,10 +58,18 @@ public class ReservationController {
      */
     @PostMapping("/save")
     public ResponseEntity<?> createNewReservation(@RequestBody CustomReservation customReservation) throws NotFound {
-        System.out.println("Request recieved");
-
-        User user = userRepository.findByUserID(Integer.parseInt(customReservation.getUserID())).get();
-
-        return  ResponseEntity.ok( reservationService.setReservation(user, customReservation.getStartDate(), customReservation.getEndDate()));
+        return  ResponseEntity.ok( reservationService.setReservation(customReservation));
     }
+
+    /**
+     * This changes the dates of the reservation
+     * @param customReservation
+     * @return
+     * @throws NotFound
+     */
+    @PostMapping("/update/dates")
+    public ResponseEntity<?> setDateReservation(@RequestBody CustomReservation customReservation) throws NotFound {
+        return ResponseEntity.ok(reservationService.changeDateOfReservation(customReservation));
+    }
+
 }

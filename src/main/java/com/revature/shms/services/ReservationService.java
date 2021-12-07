@@ -1,9 +1,11 @@
 package com.revature.shms.services;
 
 import com.revature.shms.enums.ReservationStatus;
+import com.revature.shms.models.CustomReservation;
 import com.revature.shms.models.Reservation;
 import com.revature.shms.models.User;
 import com.revature.shms.repositories.ReservationRepository;
+import com.revature.shms.repositories.UserRepository;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -26,7 +28,8 @@ import java.util.List;
 public class  ReservationService {
     @Autowired
 	ReservationRepository reservationRepository;
-
+    @Autowired
+    UserRepository userRepository;
     /**
      * Get a reservation with a userId
      * @param id
@@ -61,14 +64,6 @@ public class  ReservationService {
         return reservationRepository.save(reservation);
     }
 
-//    public Reservation approveReservation(int employeeId) {
-//        return reservationRepository.approveReservationByEmployee_EmployeeId(employeeId);
-//    }
-//
-//    public Reservation denyReservation(int employeeId){
-//        return reservationRepository.denyReservationByEmployee_EmployeeId(employeeId);
-//    }
-
     /**
      * This deletes a reservation by a userId
      */
@@ -79,30 +74,33 @@ public class  ReservationService {
     /**
      * This toggles the reservation status for employees or users that cancel a reservation
      */
-    public Reservation changeStatusOfReservation( Reservation reservation){
+    public Reservation changeStatusOfReservation( CustomReservation customReservation) throws NotFound {
+        Reservation reservation = findReservationOfUser(customReservation.getUserID());
+        reservation.setStatus(ReservationStatus.valueOf(customReservation.getStatus()));
         return reservationRepository.save(reservation);
     }
     
     /**
      * This toggles the date
      */
-    public Reservation changeDateOfReservation( Reservation reservation){
+    public Reservation changeDateOfReservation( CustomReservation customReservation) throws NotFound {
+        Reservation reservation = findReservationOfUser(customReservation.getUserID());
+        reservation.setStartDate(customReservation.getStartDate());
+        reservation.setEndDate(customReservation.getEndDate());
         return reservationRepository.save(reservation);
     }
 
     /**
      * The user can set a reservation to a specific date
      */
-    public Reservation setReservation(User user, String startDate, String endDate){
-        System.out.println(" start date is: "+startDate);
+    public Reservation setReservation(CustomReservation customReservation){
+        User user = userRepository.findByUserID(Integer.parseInt(customReservation.getUserID())).get();
         Reservation reservation = new Reservation();
         reservation.setUserReserve(user);
-        reservation.setStatus(ReservationStatus.PENDING.toString());
-        System.out.println(reservation.getUserReserve().getUsername());
-        reservation.setStartDate(startDate);
-        reservation.setEndDate(endDate);
-        System.out.println(reservation.getStartDate());
-        System.out.println(reservation.getEndDate());
+        reservation.setStatus(ReservationStatus.PENDING);
+        reservation.setStartDate(customReservation.getStartDate());
+        reservation.setEndDate(customReservation.getEndDate());
+        reservation.setAmenities(customReservation.getAmenities());
         return reservationRepository.save(reservation);
     }
 }

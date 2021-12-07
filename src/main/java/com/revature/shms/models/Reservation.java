@@ -1,10 +1,12 @@
 package com.revature.shms.models;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.revature.shms.enums.CleaningStatus;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import com.revature.shms.enums.*;
 
 import javax.persistence.*;
 import java.util.Date;
@@ -24,7 +26,7 @@ public class Reservation {
     int reservationID;
 
     @Column
-    String status;
+    ReservationStatus status;
 
     @Column
     String startDate;
@@ -32,8 +34,12 @@ public class Reservation {
     @Column
     String endDate;
 
+    @Column(columnDefinition = "text")
+    String amenities;
+
     @ManyToOne(cascade = CascadeType.ALL)
     @JsonBackReference
     private User userReserve;
+
 
 }

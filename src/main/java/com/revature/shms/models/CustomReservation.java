@@ -17,4 +17,5 @@ public class CustomReservation {
     String startDate;
     String status;
     String endDate;
+    String Amenities;
 }
