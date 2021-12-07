@@ -10,6 +10,10 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -24,12 +28,13 @@ public class AmenityWrapperServiceTest {
 	@InjectMocks AmenityWrapperService service;
 
 	@Test
-	public void getAllAmenitiesTest(){
+	public void findAllAmenitiesTest(){
 		List<AmenityWrapper> amenityWrappers = new ArrayList<>();
 		amenityWrappers.add(new AmenityWrapper(Amenities.ADA,123));
 		amenityWrappers.add(new AmenityWrapper(Amenities.KING_BED,12));
-		when(repo.findAll()).thenReturn(amenityWrappers);
-		assertEquals(service.findAllAmenities(),amenityWrappers);
+		Page<AmenityWrapper> pg = new PageImpl<>(amenityWrappers);
+		when(repo.findAll(any(Pageable.class))).thenReturn(pg);
+		assertEquals(service.findAllAmenities(PageRequest.of(0,1000000)).getContent(),amenityWrappers);
 	}
 
 	@Test

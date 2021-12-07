@@ -19,6 +19,8 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.omg.CosNaming.NamingContextPackage.NotFound;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -60,8 +62,9 @@ public class EmployeeServiceTests {
 		List<Employee> employeeList = new ArrayList<>();
 		employeeList.add(new Employee());
 		employeeList.add(new Employee());
-		when(employeeRepository.findAllByOrderByEmployeeType()).thenReturn(employeeList);
-		Assertions.assertEquals(employeeList, employeeService.findAllEmployees());
+		Page<Employee> employeePage = new PageImpl<>(employeeList);
+		when(employeeRepository.findAllByOrderByEmployeeType(any())).thenReturn(employeePage);
+		Assertions.assertEquals(employeeList, employeeService.findAllEmployees(null).getContent());
 	}
 
 	@Test
@@ -70,8 +73,9 @@ public class EmployeeServiceTests {
 		List<Employee> employeeList = new ArrayList<>();
 		employeeList.add(new Employee());
 		employeeList.add(new Employee());
-		when(employeeRepository.findByEmployeeType(any())).thenReturn(employeeList);
-		Assertions.assertEquals(employeeList, employeeService.findAllEmployeesByType(employeeType));
+		Page<Employee> employeePage = new PageImpl<>(employeeList);
+		when(employeeRepository.findByEmployeeType(any(),any())).thenReturn(employeePage);
+		Assertions.assertEquals(employeeList, employeeService.findAllEmployeesByType(employeeType,null).getContent());
 	}
 
 	@Test
@@ -95,8 +99,9 @@ public class EmployeeServiceTests {
 		List<Cleaning> cleaningList = new ArrayList<>();
 		cleaningList.add(new Cleaning());
 		cleaningList.add(new Cleaning());
-		when(cleaningService.findAllCleaningsByEmployee(any())).thenReturn(cleaningList);
-		Assertions.assertEquals(cleaningList, employeeService.employeeCleaningToDo(employee));
+		Page<Cleaning> cleaningPage = new PageImpl<>(cleaningList);
+		when(cleaningService.findAllCleaningsByEmployee(any(),any())).thenReturn(cleaningPage);
+		Assertions.assertEquals(cleaningList, employeeService.employeeCleaningToDo(employee,null).getContent());
 	}
 
 	@Test

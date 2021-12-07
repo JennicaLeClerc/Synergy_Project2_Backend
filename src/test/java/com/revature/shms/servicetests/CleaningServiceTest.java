@@ -17,6 +17,8 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.omg.CosNaming.NamingContextPackage.NotFound;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -32,8 +34,8 @@ public class CleaningServiceTest {
 
 	@Test
 	public void employeeCleaningToDoTest(){
-		when(cleaningService.findAllCleaningsByEmployee(any())).thenReturn(null);
-		Assertions.assertNull(cleaningService.employeeCleaningToDo(new Employee()));
+		when(cleaningService.findAllCleaningsByEmployee(any(),any())).thenReturn(null);
+		Assertions.assertNull(cleaningService.employeeCleaningToDo(new Employee(),null));
 	}
 
 	@Test
@@ -81,16 +83,18 @@ public class CleaningServiceTest {
 		cleanings.add(new Cleaning());
 		cleanings.add(new Cleaning());
 		cleanings.add(new Cleaning());
-		when(cleaningRepository.findAllByOrderByPriorityDescDateAddedAsc()).thenReturn(cleanings);
-		Assertions.assertEquals(cleaningService.findAllCleanings(),cleanings);
+		Page<Cleaning> cleaningPage = new PageImpl<>(cleanings);
+		when(cleaningRepository.findAllByOrderByPriorityDescDateAddedAsc(any())).thenReturn(cleaningPage);
+		Assertions.assertEquals(cleaningService.findAllCleanings(any()).getContent(),cleanings);
 	}
 
 	@Test
 	public void getAllCleaningsByEmployeeTest(){
 		List<Cleaning> cleaningList = new ArrayList<>();
 		cleaningList.add(new Cleaning());
-		when(cleaningRepository.findAllByEmployeeOrderByPriorityDescDateAddedAsc(any())).thenReturn(cleaningList);
-		Assertions.assertEquals(cleaningList, cleaningService.findAllCleaningsByEmployee(new Employee()));
+		Page<Cleaning> cleaningPage = new PageImpl<>(cleaningList);
+		when(cleaningRepository.findAllByEmployeeOrderByPriorityDescDateAddedAsc(any(),any())).thenReturn(cleaningPage);
+		Assertions.assertEquals(cleaningList, cleaningService.findAllCleaningsByEmployee(new Employee(),null).getContent());
 	}
 
 	@Test

@@ -8,6 +8,8 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.omg.CosNaming.NamingContextPackage.NotFound;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -62,8 +64,8 @@ public class UserService{
      * Gets a list of all users.
      * @return List<User> for all users in the database ordered by UserID in descending order.
      */
-    public List<User> findAllUsers(){
-        return userRepository.findAllByOrderByUserIDDesc();
+    public Page<User> findAllUsers(Pageable pageable){
+        return userRepository.findAllByOrderByUserIDDesc(pageable);
     }
 
     /**

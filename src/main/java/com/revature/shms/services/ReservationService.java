@@ -72,8 +72,8 @@ public class  ReservationService {
     /**
      * This deletes a reservation by a userId
      */
-    public Reservation deleteReservation(String id) {
-        return reservationRepository.deleteByUserReserve_UserID(Integer.parseInt(id));
+    public void deleteReservation(int id) {
+		reservationRepository.deleteByUserReserve_UserID(id);
     }
 
     /**

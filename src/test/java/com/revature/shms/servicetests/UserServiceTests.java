@@ -1,5 +1,6 @@
 package com.revature.shms.servicetests;
 
+import com.revature.shms.models.Room;
 import com.revature.shms.models.User;
 import com.revature.shms.repositories.UserRepository;
 import com.revature.shms.services.UserService;
@@ -10,6 +11,8 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.omg.CosNaming.NamingContextPackage.NotFound;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
 
 import java.nio.file.AccessDeniedException;
 import java.util.ArrayList;
@@ -69,8 +72,9 @@ public class UserServiceTests {
 		users.add(new User());
 		users.add(new User());
 		users.add(new User());
-		when(userRepository.findAllByOrderByUserIDDesc()).thenReturn(users);
-		assertEquals(users,userService.findAllUsers());
+		Page<User> usersPage = new PageImpl<>(users);
+		when(userRepository.findAllByOrderByUserIDDesc(any())).thenReturn(usersPage);
+		assertEquals(users,userService.findAllUsers(null).getContent());
 	}
 	
 	@Test
