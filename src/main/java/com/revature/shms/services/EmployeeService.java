@@ -64,7 +64,7 @@ public class EmployeeService {
 	 */
 	public Page<Employee> findAllEmployees(Pageable pageable){
 		return employeeRepository.findAllByOrderByEmployeeType(pageable);
-	} // Tested
+	}
 
 	/**
 	 * List of All Employees with the given Employee Type.
@@ -105,14 +105,45 @@ public class EmployeeService {
 	/**
 	 * Update password by the provided username.
 	 * @param username the username that already exists on the repository.
-	 * @param password the password that the user wants to change.
+	 * @param oldPassword the password that the user currently uses.
+	 * @param newPassword the password that the user wants to switch to.
 	 * Get the current username from the employee.
 	 * If the username is already in the database, then we can update the password
 	 */
-	public boolean updatePassword(String username, String password){
+	public boolean updatePassword(String username, String oldPassword, String newPassword) {
 		Employee  employee = employeeRepository.findByUsername(username).orElse(null);
 		if(employee != null) {
-			employee.setPassword(password);
+			if(employee.getPassword().equals(oldPassword)){
+				employee.setPassword(newPassword);
+				employeeRepository.save(employee);
+				return true;
+			}
+			else{
+				// Username/Password invalid.
+				return false;
+			}
+		}
+		else{
+			return false;
+		}
+	}
+
+	public boolean updateFirstName(int employeeID, String firstName){
+		Employee employee = employeeRepository.findByEmployeeID(employeeID).orElse(null);
+		if(employee != null){
+			employee.setFirstName(firstName);
+			employeeRepository.save(employee);
+			return true;
+		}
+		else{
+			return false;
+		}
+	}
+
+	public boolean updateLastName(int employeeID, String lastName){
+		Employee employee = employeeRepository.findByEmployeeID(employeeID).orElse(null);
+		if(employee != null){
+			employee.setLastName(lastName);
 			employeeRepository.save(employee);
 			return true;
 		}

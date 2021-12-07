@@ -14,8 +14,6 @@ import org.springframework.security.access.AccessDeniedException;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-import java.util.List;
-import java.util.Optional;
 
 @Service // this annotation is to denote that this is a service class for user
 @NoArgsConstructor
@@ -91,16 +89,46 @@ public class UserService{
     /**
      * Update password by the provided username.
      * @param username the username that already exists on the repository.
-     * @param password the password that the user wants to change.
-     * Get the current username from the user.
-     * If the username is already in the database, then we can update the password.
+     * @param oldPassword the password that the employee currently uses.
+     * @param newPassword the password that the employee wants to switch to.
+     * Get the current username from the employee.
+     * If the username is already in the database, then we can update the password
      */
-    public boolean updatePassword(String username, String password){
-        Optional<User>  user = Optional.ofNullable(userRepository.findByUsername(username).orElse(null));
-        if(user.isPresent()) {
-			User u = user.get();
-			u.setPassword(password);
-            userRepository.save(u);
+    public boolean updatePassword(String username, String oldPassword, String newPassword) {
+        User user = userRepository.findByUsername(username).orElse(null);
+        if(user != null) {
+            if(user.getPassword().equals(oldPassword)){
+                user.setPassword(newPassword);
+                userRepository.save(user);
+                return true;
+            }
+            else{
+                // Username/Password invalid.
+                return false;
+            }
+        }
+        else{
+            return false;
+        }
+    }
+
+    public boolean updateFirstName(int userID, String firstName){
+        User user = userRepository.findByUserID(userID).orElse(null);
+        if(user != null){
+            user.setFirstName(firstName);
+            userRepository.save(user);
+            return true;
+        }
+        else{
+            return false;
+        }
+    }
+
+    public boolean updateLastName(int userID, String lastName){
+        User user = userRepository.findByUserID(userID).orElse(null);
+        if(user != null){
+            user.setLastName(lastName);
+            userRepository.save(user);
             return true;
         }
         else{
