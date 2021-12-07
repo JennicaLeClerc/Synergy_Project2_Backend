@@ -1,6 +1,5 @@
 package com.revature.shms.services;
 
-
 import com.revature.shms.enums.EmployeeType;
 import com.revature.shms.models.Cleaning;
 import com.revature.shms.models.Employee;
@@ -17,7 +16,6 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.time.Instant;
-import java.util.List;
 
 @Service
 @NoArgsConstructor
@@ -27,6 +25,8 @@ import java.util.List;
 public class CleaningService {
 	@Autowired
 	private CleaningRepository cleaningRepository;
+	@Autowired
+	private EmployeeService employeeService;
 	@Autowired
 	private RoomService roomService;
 
@@ -47,34 +47,37 @@ public class CleaningService {
 	 * @param priority how quickly should the room be cleaned.
 	 * @return Room scheduled to be cleaned.
 	 */
-	public Room scheduleCleaningRoom(Employee employee, Employee employeeTarget, Room room, int priority){
+	public Room scheduleCleaningRoom(Employee employee, Employee employeeTarget, Room room, int priority) throws NotFound {
 		if (employeeTarget.getEmployeeType().equals(EmployeeType.RECEPTIONIST)) return null;
-		schedule(new Cleaning(0,room,employeeTarget, Instant.now().toEpochMilli(),priority));
-		return roomService.scheduleCleaning(room);
+		createCleaning(new Cleaning(0,room,employeeTarget, Instant.now().toEpochMilli(),priority));
+		return roomService.scheduleCleaning(room.getRoomNumber());
 	}
 
 	/**
 	 * If you aren't a Receptionist, then you delete the previous Cleaning ID for that room number and start another
 	 * with the Cleaning status of In Progress.
-	 * @param employee the employee doing the cleaning
-	 * @param room the room to be worked on.
+	 * @param employeeID the employee doing the cleaning with the given ID.
+	 * @param roomNumber the room to be worked on by room number.
 	 * @return Room started being cleaned.
 	 */
-	public Room startCleanRoom(Employee employee, Room room) throws NotFound {
+	public Room startCleanRoom(int employeeID, int roomNumber) throws NotFound {
+		Employee employee = employeeService.findEmployeeByID(employeeID);
 		if (employee.getEmployeeType().equals(EmployeeType.RECEPTIONIST)) return null;
-		remove(findByRoom(room));
-		return roomService.startCleaning(room);
+		return roomService.startCleaning(roomNumber);
 	}
 
 	/**
 	 * If you aren't a Receptionist, then you set the Cleaning status of the given room to Clean.
-	 * @param employee the employee doing the cleaning
-	 * @param room the room to be worked on.
+	 * @param employeeID the employee doing the cleaning with the given ID.
+	 * @param roomNumber the room to be worked on by room number.
 	 * @return Room now finished being cleaned.
 	 */
-	public Room finishCleaningRoom(Employee employee, Room room){
+	public Room finishCleaningRoom(int employeeID, int roomNumber) throws NotFound {
+		Employee employee = employeeService.findEmployeeByID(employeeID);
+		Room room = roomService.findByRoomNumber(roomNumber);
 		if (employee.getEmployeeType().equals(EmployeeType.RECEPTIONIST)) return null;
-		return roomService.finishCleaning(room);
+		removeCleaning(findByRoom(room));
+		return roomService.finishCleaning(roomNumber);
 	}
 
 	/**
@@ -83,7 +86,7 @@ public class CleaningService {
 	 */
 	public Page<Cleaning> findAllCleanings(Pageable pageable){
 		return cleaningRepository.findAllByOrderByPriorityDescDateAddedAsc(pageable);
-	} // Tested
+	}
 
 	/**
 	 * Gets All Cleanings assigned to a specific employee.
@@ -91,8 +94,8 @@ public class CleaningService {
 	 * @return all Cleanings sorted that are assigned to employee.
 	 */
 	public Page<Cleaning> findAllCleaningsByEmployee(Employee employee, Pageable pageable){
-		return cleaningRepository.findAllByEmployeeOrderByPriorityDescDateAddedAsc(employee,pageable);
-	} // Tested
+		return cleaningRepository.findAllByEmployeeOrderByPriorityDescDateAddedAsc(employee, pageable);
+	}
 
 	/**
 	 * Gets Cleaning assigned to a specific room.
@@ -101,22 +104,22 @@ public class CleaningService {
 	 */
 	public Cleaning findByRoom(Room room) throws NotFound {
 		return cleaningRepository.findByRoom(room).orElseThrow(NotFound::new);
-	} // Tested
+	}
 
 	/**
 	 * Saves the cleaning information to the database and returns the original object
 	 * @param cleaning the cleaning information to match.
 	 * @return the cleaning information with it saved to the database.
 	 */
-	public Cleaning schedule(Cleaning cleaning){
+	public Cleaning createCleaning(Cleaning cleaning){
 		return cleaningRepository.save(cleaning);
-	} // Tested
+	}
 
 	/**
 	 * Deletes the cleaning information from the database
 	 * @param cleaning the cleaning information to match
 	 */
-	public void remove(Cleaning cleaning){
+	public void removeCleaning(Cleaning cleaning){
 		cleaningRepository.delete(cleaning);
-	}// Tested
+	}
 }

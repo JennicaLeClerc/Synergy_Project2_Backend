@@ -35,7 +35,7 @@ public class EmployeeService {
 	private RoomRepository roomRepository;
 
 	/**
-	 * Creates the Employee in the database.
+	 * Creates and updates the Employee in the database.
 	 * @param employee the given employee to match.
 	 * @return Employee now saved to the database.
 	 */
@@ -72,7 +72,7 @@ public class EmployeeService {
 	 * @return List<Employee> of All employees with the given employeeType.
 	 */
 	public Page<Employee> findAllEmployeesByType(EmployeeType employeeType, Pageable pageable){
-		return employeeRepository.findByEmployeeType(employeeType,pageable);
+		return employeeRepository.findByEmployeeType(employeeType, pageable);
 	}
 
 	/**
@@ -98,8 +98,8 @@ public class EmployeeService {
 	 * @param employee the employee to match.
 	 * @return all Cleanings sorted that are assigned to employee.
 	 */
-	public Page<Cleaning> employeeCleaningToDo(Employee employee,Pageable pageable){
-		return cleaningService.findAllCleaningsByEmployee(employee,pageable);
+	public Page<Cleaning> employeeCleaningToDo(Employee employee, Pageable pageable){
+		return cleaningService.findAllCleaningsByEmployee(employee, pageable);
 	}
 
 	/**
@@ -115,15 +115,13 @@ public class EmployeeService {
 		if(employee != null) {
 			if(employee.getPassword().equals(oldPassword)){
 				employee.setPassword(newPassword);
-				employeeRepository.save(employee);
+				createEmployee(employee);
 				return true;
-			}
-			else{
+			} else{
 				// Username/Password invalid.
 				return false;
 			}
-		}
-		else{
+		} else{
 			return false;
 		}
 	}
@@ -132,10 +130,9 @@ public class EmployeeService {
 		Employee employee = employeeRepository.findByEmployeeID(employeeID).orElse(null);
 		if(employee != null){
 			employee.setFirstName(firstName);
-			employeeRepository.save(employee);
+			createEmployee(employee);
 			return true;
-		}
-		else{
+		} else{
 			return false;
 		}
 	}
@@ -144,10 +141,9 @@ public class EmployeeService {
 		Employee employee = employeeRepository.findByEmployeeID(employeeID).orElse(null);
 		if(employee != null){
 			employee.setLastName(lastName);
-			employeeRepository.save(employee);
+			createEmployee(employee);
 			return true;
-		}
-		else{
+		} else{
 			return false;
 		}
 	}

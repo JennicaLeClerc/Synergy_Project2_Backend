@@ -45,6 +45,7 @@ public class ReservationController {
     public ResponseEntity<?> setStatusOfReservation( @PathVariable("id") int id, @RequestParam("status") ReservationStatus status) throws NotFound {
            return ResponseEntity.ok(reservationService.changeStatusOfReservation(id, status));
     }
+  
     /**
      * A user can send a psot reuquest with the start and end date of a reservation.
      * @param reservation
@@ -55,7 +56,7 @@ public class ReservationController {
     public ResponseEntity<?> createNewReservation(@RequestBody Reservation reservation) throws NotFound {
         return  ResponseEntity.ok( reservationService.setReservation(reservation));
     }
-//@RequestBody CustomReservation customReservation
+
     /**
      * This changes the dates of the reservation
      * @param endDate startDate
@@ -66,5 +67,4 @@ public class ReservationController {
     public ResponseEntity<?> setDateReservation(@PathVariable("id") int id,  @RequestParam("startDate") String startDate, @RequestParam("startDate") String endDate ) throws NotFound {
         return ResponseEntity.ok(reservationService.changeDateOfReservation(id, startDate, endDate));
     }
-
 }

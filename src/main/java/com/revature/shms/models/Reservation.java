@@ -30,9 +30,11 @@ public class Reservation {
 
     @Column
     String startDate;
-
     @Column
     String endDate;
+
+    @Column
+    String accommodations;
 
     @ManyToOne(cascade = CascadeType.ALL)
     @JsonBackReference
