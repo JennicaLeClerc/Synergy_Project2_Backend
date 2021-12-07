@@ -87,20 +87,22 @@ public class UserServiceTests {
 	@Test
 	public void updatePasswordTestTrue(){
 		String username = "jlecl";
-		String password = "Password";
+		String oldPassword = "Password";
+		String newPassword = "new";
 		User user = new User();
 		user.setUsername(username);
-		user.setPassword(password);
+		user.setPassword(oldPassword);
 		when(userRepository.findByUsername(any())).thenReturn(java.util.Optional.of(user));
-		assertTrue(userService.updatePassword(username, password));
+		assertTrue(userService.updatePassword(username, oldPassword, newPassword));
 	}
 
 	@Test
 	public void updatePasswordTestFalse(){
 		String username = "jlecl";
-		String password = "Password";
+		String oldPassword = "Password";
+		String newPassword = "new";
 		when(userRepository.findByUsername(any())).thenReturn(java.util.Optional.empty());
-		assertFalse(userService.updatePassword(username, password));
+		assertFalse(userService.updatePassword(username, oldPassword, newPassword));
 	}
 	
 	@Test
