@@ -128,5 +128,27 @@ public class EmployeeService {
 		}
 	}
 
-	//public boolean updateFirstName(String username, String firstN)
+	public boolean updateFirstName(int employeeID, String firstName){
+		Employee employee = employeeRepository.findByEmployeeID(employeeID).orElse(null);
+		if(employee != null){
+			employee.setFirstName(firstName);
+			employeeRepository.save(employee);
+			return true;
+		}
+		else{
+			return false;
+		}
+	}
+
+	public boolean updateLastName(int employeeID, String lastName){
+		Employee employee = employeeRepository.findByEmployeeID(employeeID).orElse(null);
+		if(employee != null){
+			employee.setLastName(lastName);
+			employeeRepository.save(employee);
+			return true;
+		}
+		else{
+			return false;
+		}
+	}
 }

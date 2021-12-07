@@ -1,6 +1,5 @@
 package com.revature.shms.services;
 
-import com.revature.shms.models.Employee;
 import com.revature.shms.models.User;
 import com.revature.shms.repositories.UserRepository;
 import lombok.AllArgsConstructor;
@@ -15,8 +14,6 @@ import org.springframework.security.access.AccessDeniedException;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-import java.util.List;
-import java.util.Optional;
 
 @Service // this annotation is to denote that this is a service class for user
 @NoArgsConstructor
@@ -109,6 +106,30 @@ public class UserService{
                 // Username/Password invalid.
                 return false;
             }
+        }
+        else{
+            return false;
+        }
+    }
+
+    public boolean updateFirstName(int userID, String firstName){
+        User user = userRepository.findByUserID(userID).orElse(null);
+        if(user != null){
+            user.setFirstName(firstName);
+            userRepository.save(user);
+            return true;
+        }
+        else{
+            return false;
+        }
+    }
+
+    public boolean updateLastName(int userID, String lastName){
+        User user = userRepository.findByUserID(userID).orElse(null);
+        if(user != null){
+            user.setLastName(lastName);
+            userRepository.save(user);
+            return true;
         }
         else{
             return false;

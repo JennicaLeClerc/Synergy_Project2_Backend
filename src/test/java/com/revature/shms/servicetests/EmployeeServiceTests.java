@@ -3,6 +3,7 @@ package com.revature.shms.servicetests;
 import com.revature.shms.enums.EmployeeType;
 import com.revature.shms.models.Cleaning;
 import com.revature.shms.models.Employee;
+import com.revature.shms.models.User;
 import com.revature.shms.repositories.EmployeeRepository;
 import com.revature.shms.repositories.RoomRepository;
 import com.revature.shms.services.CleaningService;
@@ -10,7 +11,6 @@ import com.revature.shms.services.EmployeeService;
 import com.revature.shms.services.RoomService;
 import com.revature.shms.services.UserService;
 
-import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -118,12 +118,60 @@ public class EmployeeServiceTests {
 	}
 
 	@Test
+	public void updatePasswordTestWrongPassword(){
+		String username = "jlecl";
+		String rightPassword = "Password";
+		String wrongPassword = "new";
+		Employee employee = new Employee();
+		employee.setUsername(username);
+		employee.setPassword(rightPassword);
+		when(employeeRepository.findByUsername(any())).thenReturn(java.util.Optional.of(employee));
+		assertFalse(employeeService.updatePassword(username, wrongPassword, rightPassword));
+	}
+
+	@Test
 	public void updatePasswordTestFalse(){
 		String username = "jlecl";
 		String oldPassword = "Password";
 		String newPassword = "new";
 		when(employeeRepository.findByUsername(any())).thenReturn(java.util.Optional.empty());
 		assertFalse(employeeService.updatePassword(username, oldPassword, newPassword));
+	}
+
+	@Test
+	public void updateFirstNameTestTrue(){
+		int userID = 1;
+		String firstName = "Jennica";
+		Employee employee = new Employee();
+		employee.setEmployeeID(userID);
+		when(employeeRepository.findByEmployeeID(anyInt())).thenReturn(java.util.Optional.of(employee));
+		assertTrue(employeeService.updateFirstName(userID, firstName));
+	}
+
+	@Test
+	public void updateFirstNameTestFalse(){
+		int userID = 1;
+		String firstName = "Jennica";
+		when(employeeRepository.findByEmployeeID(anyInt())).thenReturn(java.util.Optional.empty());
+		assertFalse(employeeService.updateFirstName(userID, firstName));
+	}
+
+	@Test
+	public void updateLastNameTestTrue(){
+		int userID = 1;
+		String lastName = "LeClerc";
+		Employee employee = new Employee();
+		employee.setEmployeeID(userID);
+		when(employeeRepository.findByEmployeeID(anyInt())).thenReturn(java.util.Optional.of(employee));
+		assertTrue(employeeService.updateLastName(userID, lastName));
+	}
+
+	@Test
+	public void updateLastNameTestFalse(){
+		int userID = 1;
+		String lastName = "LeClerc";
+		when(employeeRepository.findByEmployeeID(anyInt())).thenReturn(java.util.Optional.empty());
+		assertFalse(employeeService.updateLastName(userID, lastName));
 	}
 
 	@Test

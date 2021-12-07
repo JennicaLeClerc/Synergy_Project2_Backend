@@ -1,7 +1,5 @@
 package com.revature.shms.servicetests;
 
-import com.revature.shms.models.Employee;
-import com.revature.shms.models.Room;
 import com.revature.shms.models.User;
 import com.revature.shms.repositories.UserRepository;
 import com.revature.shms.services.UserService;
@@ -45,7 +43,6 @@ public class UserServiceTests {
 			Exception e= assertThrows(AccessDeniedException.class, (Executable) userService.login("Ryan","1231234"));
 			assertTrue(e.getMessage().contains("Incorrect username/password"));
 		} catch (Exception ignored){}
-
 	}
 	
 	@Test
@@ -97,6 +94,18 @@ public class UserServiceTests {
 	}
 
 	@Test
+	public void updatePasswordTestWrongPassword(){
+		String username = "jlecl";
+		String rightPassword = "Password";
+		String wrongPassword = "new";
+		User user = new User();
+		user.setUsername(username);
+		user.setPassword(rightPassword);
+		when(userRepository.findByUsername(any())).thenReturn(java.util.Optional.of(user));
+		assertFalse(userService.updatePassword(username, wrongPassword, rightPassword));
+	}
+
+	@Test
 	public void updatePasswordTestFalse(){
 		String username = "jlecl";
 		String oldPassword = "Password";
@@ -104,7 +113,43 @@ public class UserServiceTests {
 		when(userRepository.findByUsername(any())).thenReturn(java.util.Optional.empty());
 		assertFalse(userService.updatePassword(username, oldPassword, newPassword));
 	}
-	
+
+	@Test
+	public void updateFirstNameTestTrue(){
+		int userID = 1;
+		String firstName = "Jennica";
+		User user = new User();
+		user.setUserID(userID);
+		when(userRepository.findByUserID(anyInt())).thenReturn(java.util.Optional.of(user));
+		assertTrue(userService.updateFirstName(userID, firstName));
+	}
+
+	@Test
+	public void updateFirstNameTestFalse(){
+		int userID = 1;
+		String firstName = "Jennica";
+		when(userRepository.findByUserID(anyInt())).thenReturn(java.util.Optional.empty());
+		assertFalse(userService.updateFirstName(userID, firstName));
+	}
+
+	@Test
+	public void updateLastNameTestTrue(){
+		int userID = 1;
+		String lastName = "LeClerc";
+		User user = new User();
+		user.setUserID(userID);
+		when(userRepository.findByUserID(anyInt())).thenReturn(java.util.Optional.of(user));
+		assertTrue(userService.updateLastName(userID, lastName));
+	}
+
+	@Test
+	public void updateLastNameTestFalse(){
+		int userID = 1;
+		String lastName = "LeClerc";
+		when(userRepository.findByUserID(anyInt())).thenReturn(java.util.Optional.empty());
+		assertFalse(userService.updateLastName(userID, lastName));
+	}
+
 	@Test
 	public void gettersSetters(){
 		UserRepository repo = null;

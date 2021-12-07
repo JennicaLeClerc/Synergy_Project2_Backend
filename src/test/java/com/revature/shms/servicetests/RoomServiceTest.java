@@ -60,7 +60,25 @@ public class RoomServiceTest {
 	}
 
 	@Test
-	public void isAvailableTestFalse(){
+	public void isAvailableTestWrongCleaning(){
+		Room room = new Room();
+		room.setStatus(CleaningStatus.NOT_SCHEDULED);
+		room.setWorkStatus(WorkStatus.NO_ISSUES);
+		room.setOccupied(false);
+		assertFalse(roomService.isAvailable(room));
+	}
+
+	@Test
+	public void isAvailableTestWrongWorking(){
+		Room room = new Room();
+		room.setStatus(CleaningStatus.CLEAN);
+		room.setWorkStatus(WorkStatus.SCHEDULED);
+		room.setOccupied(false);
+		assertFalse(roomService.isAvailable(room));
+	}
+
+	@Test
+	public void isAvailableTestWrongOccupied(){
 		Room room = new Room();
 		room.setStatus(CleaningStatus.CLEAN);
 		room.setWorkStatus(WorkStatus.NO_ISSUES);
