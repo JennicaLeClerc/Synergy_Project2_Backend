@@ -4,8 +4,10 @@ import com.revature.shms.enums.ReservationStatus;
 import com.revature.shms.models.Reservation;
 import com.revature.shms.models.User;
 import com.revature.shms.repositories.ReservationRepository;
+import com.revature.shms.repositories.UserRepository;
 import com.revature.shms.services.ReservationService;
-import org.junit.jupiter.api.Assertions;
+import com.revature.shms.services.UserService;
+import javafx.beans.binding.When;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -15,6 +17,7 @@ import org.omg.CosNaming.NamingContextPackage.NotFound;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNull;
@@ -26,6 +29,9 @@ public class ReservationServiceTests {
 	@InjectMocks ReservationService reservationService ;
 	@Mock ReservationRepository reservationRepository;
 
+	@InjectMocks UserService userService ;
+	@Mock UserRepository userRepository;
+
 	@Test
 	public void returnAllReservationsTest(){
 		List<Reservation> test = new ArrayList<>();
@@ -35,19 +41,6 @@ public class ReservationServiceTests {
 		when(reservationRepository.findAll()).thenReturn(test);
 		assertEquals(test, reservationService.findAll());
 	}
-//	@Test
-//	public void reserveApprove(){
-//		Reservation reservation = new Reservation();
-//		when(reservationRepository.approveReservationByEmployee_EmployeeId(1)).thenReturn(reservation);
-//		assertEquals(reservationService.approveReservation((1)), reservation);
-//	}
-//
-//	@Test
-//	public void denyReservation(){
-//		Reservation reservation = new Reservation();
-//		when(reservationRepository.denyReservationByEmployee_EmployeeId(1)).thenReturn(reservation);
-//		assertEquals(reservationService.denyReservation((1)), reservation);
-//	}
 
 	@Test
 	public void getSpecificReservation() throws NotFound {
@@ -55,13 +48,13 @@ public class ReservationServiceTests {
 		Reservation reservation = new Reservation();
 		reservation.setReservationID(id);
 		when(reservationRepository.findByUserReserve_UserID(1)).thenReturn(java.util.Optional.of(reservation));
-		assertEquals(id, reservationService.findReservationOfUser("1").getReservationID());
+		assertEquals(id, reservationService.findReservationOfUser(1).getReservationID());
 	}
 
 	@Test
 	public void createUserTest(){
 		Reservation reservation = new Reservation();
-		reservation.setStatus(ReservationStatus.APPROVED.toString());
+		reservation.setStatus(ReservationStatus.APPROVED);
 		when(reservationRepository.save(reservation)).thenReturn(reservation);
 		assertEquals(reservation, reservationService.createReservation(reservation));
 	}
@@ -72,41 +65,54 @@ public class ReservationServiceTests {
 		verify(reservationRepository,times(1)).deleteByUserReserve_UserID(anyInt());
 	}
 
-    @Test void changeStatusOfReservationTest(){
-        Reservation reservation = new Reservation();
-        reservation.setReservationID(1);
-        Reservation update = new Reservation();
-        reservation.setStatus(ReservationStatus.APPROVED.toString());
-        update.setStatus(ReservationStatus.CANCELLED.toString());
-        when(reservationRepository.save(any())).thenReturn(reservation);
-        assertEquals(reservation, reservationService.changeStatusOfReservation(update));
-    }
+    	@Test
+	public void changeStatusOfReservationTest() throws NotFound {
+		User user = new User();
+       		Reservation reservation = new Reservation();
+		Reservation update = new Reservation();
+		update.setUserReserve(user);
+		update.setStatus(ReservationStatus.REJECTED);
+       		reservation.setReservationID(1);
+        	reservation.setStatus(ReservationStatus.APPROVED);
+        	update.setStatus(ReservationStatus.CANCELLED);
+        	when(reservationRepository.findByReservationID(1)).thenReturn(Optional.of(reservation));
+		when(reservationRepository.save(any())).thenReturn(reservation);
+		assertEquals(reservation, reservationService.changeStatusOfReservation(1,ReservationStatus.APPROVED));
+    	}
 
-	@Test void changeDateOfReservationTest(){
+	@Test 
+	public void changeDateOfReservationTest() throws NotFound {
 		Reservation reservation = new Reservation();
 		reservation.setReservationID(1);
 		Reservation update = new Reservation();
-		reservation.setStatus(ReservationStatus.APPROVED.toString());
-		update.setStatus(ReservationStatus.CANCELLED.toString());
+		update.setReservationID(1);
+		reservation.setStatus(ReservationStatus.APPROVED);
+		update.setStatus(ReservationStatus.CANCELLED);
+		when(reservationRepository.findByUserReserve_UserID(1)).thenReturn(java.util.Optional.of(reservation));
 		when(reservationRepository.save(any())).thenReturn(reservation);
-		assertEquals(reservation, reservationService.changeDateOfReservation(update));
+		assertEquals(reservation, reservationService.changeDateOfReservation(1,"1", "1"));
 	}
 
-	@Test void getReservationWithReservationIdTest () throws NotFound {
+	@Test 
+	public void getReservationWithReservationIdTest () throws NotFound {
 		int id = 1;
 		Reservation reservation = new Reservation();
 		reservation.setReservationID(id);
 		when(reservationRepository.findByReservationID(1)).thenReturn(java.util.Optional.of(reservation));
-		assertEquals(id, reservationService.findReservationWithReservationId("1").getReservationID());
+		assertEquals(id, reservationService.findReservationWithReservationId(1).getReservationID());
 	}
 
 	@Test
 	public void reserveTest(){
 		Reservation reservation = new Reservation();
-		User user = new User();
-		String date = "12/11/1997";
-		when(reservationRepository.save(any())).thenReturn(reservation);
-		assertEquals(reservation, reservationService.setReservation(user, date, date));
+		Reservation customReservation = new Reservation();
+       		User user = new User();
+        	customReservation.setUserReserve(user);
+		customReservation.setStartDate("1");
+		customReservation.setEndDate("1");
+		customReservation.setAmenities("1");
+        	when(reservationRepository.save(any())).thenReturn(reservation);
+		assertEquals(reservation, reservationService.setReservation(customReservation));
 	}
 
 	@Test
