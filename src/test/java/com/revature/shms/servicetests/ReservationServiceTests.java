@@ -65,21 +65,23 @@ public class ReservationServiceTests {
 		verify(reservationRepository,times(1)).deleteByUserReserve_UserID(anyInt());
 	}
 
-    @Test void changeStatusOfReservationTest() throws NotFound {
-        Reservation reservation = new Reservation();
+    	@Test
+	public void changeStatusOfReservationTest() throws NotFound {
+		User user = new User();
+       		Reservation reservation = new Reservation();
 		Reservation update = new Reservation();
-        User user = new User();
 		update.setUserReserve(user);
 		update.setStatus(ReservationStatus.REJECTED);
-        reservation.setReservationID(1);
-        reservation.setStatus(ReservationStatus.APPROVED);
-        update.setStatus(ReservationStatus.CANCELLED);
-        when(reservationRepository.findByReservationID(1)).thenReturn(Optional.of(reservation));
+       		reservation.setReservationID(1);
+        	reservation.setStatus(ReservationStatus.APPROVED);
+        	update.setStatus(ReservationStatus.CANCELLED);
+        	when(reservationRepository.findByReservationID(1)).thenReturn(Optional.of(reservation));
 		when(reservationRepository.save(any())).thenReturn(reservation);
 		assertEquals(reservation, reservationService.changeStatusOfReservation(1,ReservationStatus.APPROVED));
-    }
+    	}
 
-	@Test void changeDateOfReservationTest() throws NotFound {
+	@Test 
+	public void changeDateOfReservationTest() throws NotFound {
 		Reservation reservation = new Reservation();
 		reservation.setReservationID(1);
 		Reservation update = new Reservation();
@@ -91,7 +93,8 @@ public class ReservationServiceTests {
 		assertEquals(reservation, reservationService.changeDateOfReservation(1,"1", "1"));
 	}
 
-	@Test void getReservationWithReservationIdTest () throws NotFound {
+	@Test 
+	public void getReservationWithReservationIdTest () throws NotFound {
 		int id = 1;
 		Reservation reservation = new Reservation();
 		reservation.setReservationID(id);
@@ -103,14 +106,13 @@ public class ReservationServiceTests {
 	public void reserveTest(){
 		Reservation reservation = new Reservation();
 		Reservation customReservation = new Reservation();
-        User user = new User();
-        customReservation.setUserReserve(user);
+       		User user = new User();
+        	customReservation.setUserReserve(user);
 		customReservation.setStartDate("1");
 		customReservation.setEndDate("1");
 		customReservation.setAmenities("1");
-        when(reservationRepository.save(any())).thenReturn(reservation);
+        	when(reservationRepository.save(any())).thenReturn(reservation);
 		assertEquals(reservation, reservationService.setReservation(customReservation));
-
 	}
 
 	@Test
