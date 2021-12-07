@@ -1,8 +1,7 @@
 package com.revature.shms.controllers;
 
-import com.revature.shms.models.CustomReservation;
+import com.revature.shms.enums.ReservationStatus;
 import com.revature.shms.models.Reservation;
-import com.revature.shms.models.User;
 import com.revature.shms.repositories.ReservationRepository;
 import com.revature.shms.repositories.UserRepository;
 import com.revature.shms.services.ReservationService;
@@ -38,30 +37,34 @@ public class ReservationController {
 
     /**
      * An employee can set the status of a reservation to accepted or rejected.
-     * @param customReservation to change
+     * @param status to change
      * @return
      * @throws NotFound
      */
-    /*@PostMapping("/update")
-    public ResponseEntity<?> setStatusOfReservation(@RequestBody CustomReservation customReservation) throws NotFound {
-        System.out.println("Request recieved");
-        Reservation reservation = reservationService.findReservationByUserID(customReservation.getUserID());
-        reservation.setStatus(customReservation.getStatus());
-        return ResponseEntity.ok(reservationService.changeStatusOfReservation(reservation));
-    }*/
-
+    @PostMapping("/update/{id}")
+    public ResponseEntity<?> setStatusOfReservation( @PathVariable("id") int id, @RequestParam("status") ReservationStatus status) throws NotFound {
+           return ResponseEntity.ok(reservationService.changeStatusOfReservation(id, status));
+    }
+  
     /**
      * A user can send a psot reuquest with the start and end date of a reservation.
-     * @param customReservation
+     * @param reservation
      * @return
      * @throws NotFound
      */
     @PostMapping("/save")
-    public ResponseEntity<?> createNewReservation(@RequestBody CustomReservation customReservation) throws NotFound {
-        System.out.println("Request recieved");
+    public ResponseEntity<?> createNewReservation(@RequestBody Reservation reservation) throws NotFound {
+        return  ResponseEntity.ok( reservationService.setReservation(reservation));
+    }
 
-        User user = userRepository.findByUserID(Integer.parseInt(customReservation.getUserID())).get();
-
-        return  ResponseEntity.ok( reservationService.setReservation(user, customReservation.getStartDate(), customReservation.getEndDate()));
+    /**
+     * This changes the dates of the reservation
+     * @param endDate startDate
+     * @return
+     * @throws NotFound
+     */
+    @PostMapping("/update/dates/{id}")
+    public ResponseEntity<?> setDateReservation(@PathVariable("id") int id,  @RequestParam("startDate") String startDate, @RequestParam("startDate") String endDate ) throws NotFound {
+        return ResponseEntity.ok(reservationService.changeDateOfReservation(id, startDate, endDate));
     }
 }
