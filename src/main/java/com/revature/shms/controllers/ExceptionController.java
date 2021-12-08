@@ -24,5 +24,4 @@ public class ExceptionController {
     public ResponseEntity<?> handleAccessException(AccessDeniedException e){
         return ResponseEntity.status(HttpStatus.CONFLICT).body(e.getMessage());
     }
-
 }

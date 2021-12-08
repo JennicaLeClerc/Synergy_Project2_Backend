@@ -1,4 +1,5 @@
 package com.revature.shms.controllers;
+
 import com.revature.shms.models.User;
 import com.revature.shms.repositories.UserRepository;
 import com.revature.shms.services.UserService;
@@ -17,15 +18,14 @@ public class UserController {
     @Autowired
     private UserService userService;
 
-
     @GetMapping("/{userId}")
-    public ResponseEntity<?> findUserById(@PathVariable String userId) {
-        return ResponseEntity.ok( userRepository.findByUserID(Integer.parseInt(userId)));
+    public ResponseEntity<?> findUserById(@PathVariable int userID) {
+        return ResponseEntity.ok(userRepository.findByUserID(userID));
     }
 
     @PostMapping
     public ResponseEntity<?> createNewUser(@RequestBody User user) {
-		return ResponseEntity.ok( userService.createNewUser(user));
+		return ResponseEntity.ok(userService.createNewUser(user));
     }
 
     /**
