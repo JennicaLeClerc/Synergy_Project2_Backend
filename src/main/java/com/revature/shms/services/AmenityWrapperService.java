@@ -26,15 +26,6 @@ public class AmenityWrapperService {
 	private AmenityWrapperRepository amenityWrapperRepository;
 
 	/**
-	 * Gets all amenityWrappers in a Page.
-	 * @param pageable the page information.
-	 * @return Page<AmenityWrapper> of All amenity wrappers.
-	 */
-	public Page<AmenityWrapper> findAllAmenities(Pageable pageable){
-		return amenityWrapperRepository.findAll(pageable);
-	}
-
-	/**
 	 * Sets an amenities prices to the given amount.
 	 * @param amenity amenity to change price.
 	 * @param price  price to be set.
@@ -44,6 +35,14 @@ public class AmenityWrapperService {
 		return amenityWrapperRepository.save(new AmenityWrapper(amenity, price));
 	}
 
+	/**
+	 * Generates all AmenityWrappers with 0 price
+	 */
+	public void GenerateAllAmenityWrappers(){
+		Arrays.stream(Amenities.values()).forEach(amenities -> amenityWrapperRepository.save(new AmenityWrapper(amenities,0)));
+	}
+
+	// -- Gets
 	/**
 	 * Gets AmenityWrapper based on amenities enum
 	 * @param amenity amenity to look for.
@@ -71,10 +70,14 @@ public class AmenityWrapperService {
 		return wrappers.stream().mapToDouble(AmenityWrapper::getPriceWeight).sum();
 	}
 
+	// -- Finds
 	/**
-	 * Generates all AmenityWrappers with 0 price
+	 * Gets all amenityWrappers in a Page.
+	 * @param pageable the page information.
+	 * @return Page<AmenityWrapper> of All amenity wrappers.
 	 */
-	public void GenerateAllAmenityWrappers(){
-		Arrays.stream(Amenities.values()).forEach(amenities -> amenityWrapperRepository.save(new AmenityWrapper(amenities,0)));
+	public Page<AmenityWrapper> findAllAmenities(Pageable pageable){
+		return amenityWrapperRepository.findAll(pageable);
 	}
+
 }

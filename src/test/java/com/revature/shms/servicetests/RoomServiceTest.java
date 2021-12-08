@@ -211,6 +211,15 @@ public class RoomServiceTest {
 	}
 
 	@Test
+	public void findByRoomNumberTest() throws NotFound {
+		int roomNumber = 102;
+		Room room = new Room();
+		room.setRoomNumber(roomNumber);
+		when(roomRepository.findByRoomNumber(roomNumber)).thenReturn(java.util.Optional.of(room));
+		assertEquals(room, roomService.findByRoomNumber(roomNumber));
+	}
+
+	@Test
 	public void findAllByAmenityTest(){
 		for(Amenities amenities:Amenities.values()) {
 			AmenityWrapper amenityWrapper = new AmenityWrapper();
@@ -227,15 +236,6 @@ public class RoomServiceTest {
 			when(roomRepository.findAllByAmenitiesList_Amenity(amenities, null)).thenReturn(roomPage);
 			assertEquals(roomList, roomService.findAllByAmenity(amenities, null).getContent());
 		}
-	}
-
-	@Test
-	public void findByRoomNumberTest() throws NotFound {
-		int roomNumber = 102;
-		Room room = new Room();
-		room.setRoomNumber(roomNumber);
-		when(roomRepository.findByRoomNumber(roomNumber)).thenReturn(java.util.Optional.of(room));
-		assertEquals(room, roomService.findByRoomNumber(roomNumber));
 	}
 
 	@Test

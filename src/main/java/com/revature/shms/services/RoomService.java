@@ -11,7 +11,6 @@ import org.omg.CosNaming.NamingContextPackage.NotFound;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
-import org.springframework.security.core.parameters.P;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -208,16 +207,6 @@ public class RoomService {
 	}
 
 	/**
-	 * Gets all Rooms with the given Amenity.
-	 * @param amenity the Amenity to be matched.
-	 * @param pageable the page information.
-	 * @return List<Room> of all rooms that have the given Amenity.
-	 */
-	public Page<Room> findAllByAmenity(Amenities amenity, Pageable pageable){
-		return roomRepository.findAllByAmenitiesList_Amenity(amenity,pageable);
-	}
-
-	/**
 	 * A Room with the given Room Number.
 	 * @param roomNumber the Room Number to be matched.
 	 * @return Room with the given Room Number.
@@ -225,6 +214,16 @@ public class RoomService {
 	 */
 	public Room findByRoomNumber(int roomNumber) throws NotFound {
 		return roomRepository.findByRoomNumber(roomNumber).orElseThrow(NotFound::new);
+	}
+
+	/**
+	 * Gets all Rooms with the given Amenity.
+	 * @param amenity the Amenity to be matched.
+	 * @param pageable the page information.
+	 * @return List<Room> of all rooms that have the given Amenity.
+	 */
+	public Page<Room> findAllByAmenity(Amenities amenity, Pageable pageable){
+		return roomRepository.findAllByAmenitiesList_Amenity(amenity,pageable);
 	}
 
 	/**

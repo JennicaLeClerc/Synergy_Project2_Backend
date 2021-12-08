@@ -55,42 +55,7 @@ public class EmployeeServiceTests {
 		} catch (Exception ignored){}
 	}
 
-	@Test
-	public void getAllEmployeesTest(){
-		List<Employee> employeeList = new ArrayList<>();
-		employeeList.add(new Employee());
-		employeeList.add(new Employee());
-		Page<Employee> employeePage = new PageImpl<>(employeeList);
-		when(employeeRepository.findAllByOrderByEmployeeType(any())).thenReturn(employeePage);
-		assertEquals(employeeList, employeeService.findAllEmployees(null).getContent());
-	}
-
-	@Test
-	public void getAllEmployeesByTypeTest(){
-		EmployeeType employeeType = EmployeeType.RECEPTIONIST;
-		List<Employee> employeeList = new ArrayList<>();
-		employeeList.add(new Employee());
-		employeeList.add(new Employee());
-		Page<Employee> employeePage = new PageImpl<>(employeeList);
-		when(employeeRepository.findByEmployeeType(any(), any())).thenReturn(employeePage);
-		assertEquals(employeeList, employeeService.findAllEmployeesByType(employeeType,null).getContent());
-	}
-
-	@Test
-	public void getEmployeeByIDTest() throws NotFound {
-		Employee employee = new Employee();
-		when(employeeRepository.findByEmployeeID(anyInt())).thenReturn(java.util.Optional.of(employee));
-		assertEquals(employee, employeeService.findEmployeeByID(0));
-	}
-
-	@Test
-	public void getEmployeeByUserNameTest() throws NotFound {
-		String username = "username";
-		Employee employee = new Employee();
-		when(employeeRepository.findByUsername(any())).thenReturn(java.util.Optional.of(employee));
-		assertEquals(employee, employeeService.findEmployeeByUserName(username));
-	}
-
+	// -- Updates
 	@Test
 	public void updatePasswordTest(){
 		String username = "jlecl";
@@ -141,6 +106,44 @@ public class EmployeeServiceTests {
 		assertTrue(employeeService.updateLastName(userID, lastName));
 	}
 
+	// -- Finds
+	@Test
+	public void findAllEmployeesTest(){
+		List<Employee> employeeList = new ArrayList<>();
+		employeeList.add(new Employee());
+		employeeList.add(new Employee());
+		Page<Employee> employeePage = new PageImpl<>(employeeList);
+		when(employeeRepository.findAllByOrderByEmployeeType(any())).thenReturn(employeePage);
+		assertEquals(employeeList, employeeService.findAllEmployees(null).getContent());
+	}
+
+	@Test
+	public void findAllEmployeesByTypeTest(){
+		EmployeeType employeeType = EmployeeType.RECEPTIONIST;
+		List<Employee> employeeList = new ArrayList<>();
+		employeeList.add(new Employee());
+		employeeList.add(new Employee());
+		Page<Employee> employeePage = new PageImpl<>(employeeList);
+		when(employeeRepository.findByEmployeeType(any(), any())).thenReturn(employeePage);
+		assertEquals(employeeList, employeeService.findAllEmployeesByType(employeeType,null).getContent());
+	}
+
+	@Test
+	public void findEmployeeByIDTest() throws NotFound {
+		Employee employee = new Employee();
+		when(employeeRepository.findByEmployeeID(anyInt())).thenReturn(java.util.Optional.of(employee));
+		assertEquals(employee, employeeService.findEmployeeByID(0));
+	}
+
+	@Test
+	public void findEmployeeByUserNameTest() throws NotFound {
+		String username = "username";
+		Employee employee = new Employee();
+		when(employeeRepository.findByUsername(any())).thenReturn(java.util.Optional.of(employee));
+		assertEquals(employee, employeeService.findEmployeeByUserName(username));
+	}
+
+	// -- Getter/Setter
 	@Test
 	public void settersGettersTest(){
 		EmployeeService employeeService = new EmployeeService();
