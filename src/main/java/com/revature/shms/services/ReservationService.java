@@ -26,9 +26,9 @@ public class  ReservationService {
     
     /**
      * Get a reservation with a userId
-     * @param userID
-     * @return Reservation
-     * @throws NotFound
+     * @param userID of user that created a reservation.
+     * @return Reservation object of the specific user.
+     * @throws NotFound exception if reservation not found.
      */
     public Reservation findReservationByUserID(int userID) throws NotFound {
         return reservationRepository.findByUserReserve_UserID(userID).orElseThrow(NotFound::new);
@@ -36,9 +36,9 @@ public class  ReservationService {
       
     /**
      * Get a reservation with a reservation Id
-     * @param reservationId
-     * @return Reservation
-     * @throws NotFound
+     * @param reservationId specific to a reservation
+     * @return Reservation object of the reservation id.
+     * @throws NotFound exception id reservation not found.
      */
     public Reservation findReservationByReservationID(int reservationId) throws NotFound {
         return reservationRepository.findByReservationID(reservationId).orElseThrow(NotFound::new);
@@ -54,8 +54,8 @@ public class  ReservationService {
 
     /**
      * This creates or saves a reservation
-     * @param reservation
-     * @return Reservation.
+     * @param reservation object that will be created.
+     * @return Reservation object that was created .
      */
     public Reservation createReservation(Reservation reservation){
         return reservationRepository.save(reservation);
@@ -63,7 +63,7 @@ public class  ReservationService {
 
     /**
      * This deletes a reservation by a userId
-     * @param userID
+     * @param userID of user that will have their reservation deleted
      */
     public void deleteReservationByUserID(int userID) {
 		reservationRepository.deleteByUserReserve_UserID(userID);
@@ -71,10 +71,10 @@ public class  ReservationService {
 
     /**
      * This toggles the reservation status for employees or users that cancel a reservation
-     * @param reservationID
-     * @param status
-     * @return
-     * @throws NotFound
+     * @param reservationID of reservation that will be changed.
+     * @param status that will be used to update
+     * @return Reservation object that was updated
+     * @throws NotFound exception if reservation was not found.
      */
     public Reservation changeStatusOfReservation(int reservationID, ReservationStatus status) throws NotFound {
         Reservation reservation = findReservationByReservationID(reservationID);
@@ -84,10 +84,10 @@ public class  ReservationService {
 
     /**
      * Sets the accommodations of the given reservation to the given accommodations string.
-     * @param reservationID the given reservationID.
+     * @param reservationID of reservation that will be changed.
      * @param accommodations the accommodations that are being added or changed to.
      * @return a Reservation with the given accommodations.
-     * @throws NotFound
+     * @throws NotFound exception if reservation was not found.
      */
     public Reservation setAccommodations(int reservationID, String accommodations) throws NotFound {
         Reservation reservation = findReservationByReservationID(reservationID);
@@ -97,11 +97,11 @@ public class  ReservationService {
 
     /**
      * This toggles the date
-     * @param reservationID
-     * @param startDate
-     * @param endDate
-     * @return
-     * @throws NotFound
+     * @param reservationID of reservation that will be changed.
+     * @param startDate start date that will be updated
+     * @param endDate end date that will be updated
+     * @return Reservation object with updated fields
+     * @throws NotFound exception if reservation was not found.
      */
     public Reservation changeDateOfReservation(int reservationID, String startDate, String endDate) throws NotFound {
         Reservation reservation = findReservationByReservationID(reservationID);
@@ -111,9 +111,9 @@ public class  ReservationService {
     }
 
     /**
-     *
-     * @param reservation
-     * @return
+     * Handles the creation of a reservation and sets the default status as pending
+     * @param reservation object that will be created
+     * @return Reservation object that was created.
      */
     public Reservation setReservation(Reservation reservation){
         reservation.setStatus(ReservationStatus.PENDING);
