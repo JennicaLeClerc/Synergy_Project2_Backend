@@ -31,14 +31,14 @@ public class CleaningService {
 	private RoomService roomService;
 
 	/**
-	 * Gets All Cleanings assigned to a specific employee.
+	 * Gets All Cleanings assigned to a specific employee by employeeID.
 	 * @param employeeID the employee to match by employeeID.
-	 * @param pageable
+	 * @param pageable the page information.
 	 * @return all Cleanings sorted that are assigned to employee.
-	 * @throws NotFound
+	 * @throws NotFound is thrown if the employee with the given ID does not exist.
 	 */
 	public Page<Cleaning> employeeCleaningToDo(int employeeID,Pageable pageable) throws NotFound {
-		return findAllCleaningsByEmployee(employeeService.findEmployeeByID(employeeID),pageable);
+		return findAllCleaningsByEmployee(employeeService.findEmployeeByID(employeeID), pageable);
 	}
 
 	/**
@@ -48,7 +48,7 @@ public class CleaningService {
 	 * @param room the room being worked on.
 	 * @param priority how quickly should the room be cleaned.
 	 * @return Room scheduled to be cleaned.
-	 * @throws NotFound
+	 * @throws NotFound is thrown if the room with the given roomNumber does not exist.
 	 */
 	public Room scheduleCleaningRoom(Employee employee, Employee employeeTarget, Room room, int priority) throws NotFound {
 		if (employeeTarget.getEmployeeType().equals(EmployeeType.RECEPTIONIST)) return null;
@@ -62,7 +62,7 @@ public class CleaningService {
 	 * @param employeeID the employee doing the cleaning with the given ID.
 	 * @param roomNumber the room to be worked on by room number.
 	 * @return Room started being cleaned.
-	 * @throws NotFound
+	 * @throws NotFound is thrown if the room with the given roomNumber does not exist.
 	 */
 	public Room startCleanRoom(int employeeID, int roomNumber) throws NotFound {
 		Employee employee = employeeService.findEmployeeByID(employeeID);
@@ -75,7 +75,7 @@ public class CleaningService {
 	 * @param employeeID the employee doing the cleaning with the given ID.
 	 * @param roomNumber the room to be worked on by room number.
 	 * @return Room now finished being cleaned.
-	 * @throws NotFound
+	 * @throws NotFound is thrown if the room with the given roomNumber does not exist.
 	 */
 	public Room finishCleaningRoom(int employeeID, int roomNumber) throws NotFound {
 		Employee employee = employeeService.findEmployeeByID(employeeID);
@@ -87,7 +87,7 @@ public class CleaningService {
 
 	/**
 	 * Gets All Cleanings by Priority then DateAdded.
-	 * @param pageable
+	 * @param pageable the page information.
 	 * @return List<Cleaning> Sorted by Priority and DateAdded.
 	 */
 	public Page<Cleaning> findAllCleanings(Pageable pageable){
@@ -97,7 +97,7 @@ public class CleaningService {
 	/**
 	 * Gets All Cleanings assigned to a specific employee.
 	 * @param employee the employee to match.
-	 * @param pageable
+	 * @param pageable the page information.
 	 * @return all Cleanings sorted that are assigned to employee.
 	 */
 	public Page<Cleaning> findAllCleaningsByEmployee(Employee employee, Pageable pageable){
@@ -108,7 +108,7 @@ public class CleaningService {
 	 * Gets Cleaning assigned to a specific room.
 	 * @param room the room to match.
 	 * @return Cleaning corresponding to the room.
-	 * @throws NotFound
+	 * @throws NotFound is thrown if the room does not exist
 	 */
 	public Cleaning findByRoom(Room room) throws NotFound {
 		return cleaningRepository.findByRoom(room).orElseThrow(NotFound::new);

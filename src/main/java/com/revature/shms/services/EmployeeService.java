@@ -79,7 +79,7 @@ public class EmployeeService {
 	 * Gets the Employee with the matching employeeID.
 	 * @param employeeID the employeeID to match.
 	 * @return Employee with the given employeeID.
-	 * @throws NotFound
+	 * @throws NotFound is thrown if the employee with the given ID does not exist.
 	 */
 	public Employee findEmployeeByID(int employeeID) throws NotFound {
 		return employeeRepository.findByEmployeeID(employeeID).orElseThrow(NotFound::new);
@@ -89,7 +89,7 @@ public class EmployeeService {
 	 * Gets the Employee with the matching userName.
 	 * @param userName the username to match.
 	 * @return Employee with the given username.
-	 * @throws NotFound
+	 * @throws NotFound is thrown if the employee with the given username does not exist.
 	 */
 	public Employee findEmployeeByUserName(String userName) throws NotFound {
 		return employeeRepository.findByUsername(userName).orElseThrow(NotFound::new);
@@ -126,8 +126,6 @@ public class EmployeeService {
 	 * @param employeeID the employee to be matched witht the given employeeID
 	 * @param firstName the first name to be changed to
 	 * @return boolean if the em exits then change the first name of the employee
-	 * Get the employeeId from the employee.
-	 * If the first name is already in the database, then update the first name
 	 */
 	public boolean updateFirstName(int employeeID, String firstName){
 		Employee employee = employeeRepository.findByEmployeeID(employeeID).orElse(null);
@@ -145,8 +143,6 @@ public class EmployeeService {
 	 * @param employeeID the employee to be matched witht the given employeeID
 	 * @param lastName the last name to be changed to
 	 * @return boolean if the employeeId exits then change the last name of the employee
-	 * Get the employeeId from the employee.
-	 * If the last name is already in the database, then update the last name
 	 */
 	public boolean updateLastName(int employeeID, String lastName){
 		Employee employee = employeeRepository.findByEmployeeID(employeeID).orElse(null);
