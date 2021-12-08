@@ -48,7 +48,7 @@ public class RoomService {
 	/**
 	 * Returns a boolean if the room is clean with no work being done and is not occupied.
 	 * @param room the room to be worked on.
-	 * @return boolean of if the room is avaliable or not.
+	 * @return boolean of if the room is available or not.
 	 */
 	public boolean isAvailable(Room room){
 		return room.getStatus().equals(CleaningStatus.CLEAN) && room.getWorkStatus().equals(WorkStatus.NO_ISSUES)
@@ -57,8 +57,8 @@ public class RoomService {
 
 	/**
 	 * Returns a room page by finding all or any rooms that are available
-	 * @param pageable
-	 * @return
+	 * @param pageable the page information.
+	 * @return Page<Room> List of all rooms that are available (is clean, not occupied, and no work issues)
 	 */
 	public Page<Room> findAllAvailable(Pageable pageable){
 		return roomRepository.findAllByStatusAndIsOccupiedAndWorkStatusOrderByRoomNumberDesc(
@@ -67,11 +67,21 @@ public class RoomService {
 
 	// --- isOccupied ---
 	/**
+	 * Gets all Rooms with the given Occupation status.
+	 * @param isOccupied is the room Occupied or not
+	 * @param pageable the page information.
+	 * @return List<Room> of all rooms that are the given occupation status.
+	 */
+	public Page<Room> findAllByIsOccupied(boolean isOccupied,Pageable pageable){
+		return roomRepository.findAllByIsOccupied(isOccupied, pageable);
+	}
+
+	/**
 	 * Sets the room Occupation status of the given room to the given status.
 	 * @param roomNumber the room to be worked on by room number.
 	 * @param isOccupied is the room occupied or not.
 	 * @return the room with the new occupation status.
-	 * @throws NotFound
+	 * @throws NotFound is thrown if the room with the given room number does not exist.
 	 */
 	public Room setOccupationStatus(int roomNumber, boolean isOccupied) throws NotFound {
 		Room room = findByRoomNumber(roomNumber);
@@ -80,20 +90,10 @@ public class RoomService {
 	}
 
 	/**
-	 * Gets all Rooms with the given Occupation status.
-	 * @param isOccupied is the room Occupied or not
-	 * @param pageable
-	 * @return List<Room> of all rooms that are the given occupation status.
-	 */
-	public Page<Room> findAllByIsOccupied(boolean isOccupied,Pageable pageable){
-		return roomRepository.findAllByIsOccupied(isOccupied, pageable);
-	}
-
-	/**
 	 * Set the room Occupation status to true, aka. Occupied.
 	 * @param roomNumber the room to be worked on by room number.
 	 * @return the room with the occupation status set to true.
-	 * @throws NotFound
+	 * @throws NotFound is thrown if the room with the given room number does not exist.
 	 */
 	public Room Occupied(int roomNumber) throws NotFound {
 		return setOccupationStatus(roomNumber, true);
@@ -103,7 +103,7 @@ public class RoomService {
 	 * Set the room Occupation status to false, aka. not Occupied.
 	 * @param roomNumber the room to be worked on by room number.
 	 * @return the room with the occupation status set to false.
-	 * @throws NotFound
+	 * @throws NotFound is thrown if the room with the given room number does not exist.
 	 */
 	public Room notOccupied(int roomNumber) throws NotFound {
 		return setOccupationStatus(roomNumber, false);
@@ -115,7 +115,7 @@ public class RoomService {
 	 * @param roomNumber the room to be worked on by room number.
 	 * @param cleaningStatus the status of the cleaning.
 	 * @return Room with the current cleaning status.
-	 * @throws NotFound
+	 * @throws NotFound is thrown if the room with the given room number does not exist.
 	 */
 	public Room setRoomStatus(int roomNumber, CleaningStatus cleaningStatus) throws NotFound {
 		Room room = findByRoomNumber(roomNumber);
@@ -127,7 +127,7 @@ public class RoomService {
 	 * Sets the room cleaning status to being Scheduled.
 	 * @param roomNumber the room to be worked on by room number.
 	 * @return Room with a scheduled cleaning status.
-	 * @throws NotFound
+	 * @throws NotFound is thrown if the room with the given room number does not exist.
 	 */
 	public Room scheduleCleaning(int roomNumber) throws NotFound {
 		return setRoomStatus(roomNumber, CleaningStatus.SCHEDULED);
@@ -137,7 +137,7 @@ public class RoomService {
 	 * Sets the room cleaning status to Not Scheduled.
 	 * @param roomNumber the room to be worked on by room number.
 	 * @return Room with no scheduled cleaning.
-	 * @throws NotFound
+	 * @throws NotFound is thrown if the room with the given room number does not exist.
 	 */
 	public Room notScheduleCleaning(int roomNumber) throws NotFound {
 		return setRoomStatus(roomNumber, CleaningStatus.NOT_SCHEDULED);
@@ -147,7 +147,7 @@ public class RoomService {
 	 * Sets the room cleaning status to In Progress.
 	 * @param roomNumber the room to be worked on by room number.
 	 * @return Room with an in progress cleaning status.
-	 * @throws NotFound
+	 * @throws NotFound is thrown if the room with the given room number does not exist.
 	 */
 	public Room startCleaning(int roomNumber) throws NotFound {
 		return setRoomStatus(roomNumber, CleaningStatus.IN_PROGRESS);
@@ -157,7 +157,7 @@ public class RoomService {
 	 * Sets the room cleaning status to Clean.
 	 * @param roomNumber the room to be worked on by r
 	 * @return Room with a clean cleaning Status.
-	 * @throws NotFound
+	 * @throws NotFound is thrown if the room with the given room number does not exist.
 	 */
 	public Room finishCleaning(int roomNumber) throws NotFound {
 		return setRoomStatus(roomNumber, CleaningStatus.CLEAN);
@@ -166,7 +166,7 @@ public class RoomService {
 	/**
 	 * Gets all Rooms with the given Cleaning Status.
 	 * @param status the Cleaning Status to be matched.
-	 * @param pageable
+	 * @param pageable the page information.
 	 * @return List<Room> of all rooms with the given Cleaning Status.
 	 */
 	public Page<Room> findAllByStatus(CleaningStatus status, Pageable pageable){
@@ -176,7 +176,7 @@ public class RoomService {
 	/**
 	 * Gets all Rooms without the given Cleaning status.
 	 * @param status the Cleaning Status to NOT be matched.
-	 * @param pageable
+	 * @param pageable the page information.
 	 * @return List<Room> of all rooms without the given Cleaning Status.
 	 */
 	public Page<Room> findAllByNotStatus(CleaningStatus status, Pageable pageable){
@@ -198,7 +198,7 @@ public class RoomService {
 	/**
 	 * Gets all Rooms with the given Needs Service status.
 	 * @param workStatus the Work Status to be matched.
-	 * @param pageable
+	 * @param pageable the page information.
 	 * @return List<Room> of all rooms that are the given Needs Service status.
 	 */
 	public Page<Room> findAllByWorkStatus(WorkStatus workStatus,Pageable pageable){
@@ -208,7 +208,7 @@ public class RoomService {
 	/**
 	 * Gets all Rooms without the given Work Status.
 	 * @param workStatus the Work Status to NOT be matched.
-	 * @param pageable
+	 * @param pageable the page information.
 	 * @return List<Room> of all rooms without the given Work Status.
 	 */
 	public Page<Room> findAllByNotWorkStatus(WorkStatus workStatus,Pageable pageable){
@@ -254,7 +254,7 @@ public class RoomService {
 	// --- Finds ---
 	/**
 	 *
-	 * @param pageable
+	 * @param pageable the page information.
 	 * @return List<Room> Ordered by Room Number in descending order.
 	 */
 	public Page<Room> findAllRooms(Pageable pageable){
@@ -264,7 +264,7 @@ public class RoomService {
 	/**
 	 * Gets all Rooms with the given Amenity.
 	 * @param amenity the Amenity to be matched.
-	 * @param pageable
+	 * @param pageable the page information.
 	 * @return List<Room> of all rooms that have the given Amenity.
 	 */
 	public Page<Room> findAllByAmenity(Amenities amenity, Pageable pageable){
@@ -275,7 +275,7 @@ public class RoomService {
 	 * A Room with the given Room Number.
 	 * @param roomNumber the Room Number to be matched.
 	 * @return Room with the given Room Number.
-	 * @throws NotFound if the room number does not exist.
+	 * @throws NotFound is thrown if the room number does not exist.
 	 */
 	public Room findByRoomNumber(int roomNumber) throws NotFound {
 		return roomRepository.findByRoomNumber(roomNumber).orElseThrow(NotFound::new);
