@@ -12,8 +12,6 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
 
 @Service // this annotation is to denote that this is a service class for user
 @NoArgsConstructor
@@ -49,34 +47,7 @@ public class UserService{
 		throw new AccessDeniedException("Incorrect username/password");
 	}
 
-    /**
-     * Gets a list of all users.
-     * @return List<User> for all users in the database ordered by UserID in descending order.
-     */
-    public Page<User> findAllUsers(Pageable pageable){
-        return userRepository.findAllByOrderByUserIDDesc(pageable);
-    }
-
-    /**
-     * Get the user with the given username.
-     * @param username the username to match.
-     * @return User with the given username.
-     * @throws NotFound if the username is not in the database this will be thrown.
-     */
-    public User findUserByUsername(String username) throws NotFound {
-        return userRepository.findByUsername(username).orElseThrow(NotFound::new);
-    }
-
-    /**
-     * Get the user with the given user ID.
-     * @param userID the user ID to match.
-     * @return User with the given userID.
-     * @throws NotFound if the userID is not in the database this will be thrown.
-     */
-    public User findUserByUserID(int userID) throws NotFound {
-        return userRepository.findByUserID(userID).orElseThrow(NotFound::new);
-    }
-
+    // -- Updates
     /**
      * Update password by the provided username.
      * @param username the username that already exists on the repository.
@@ -141,6 +112,35 @@ public class UserService{
         else{
             return false;
         }
+    }
+
+    // -- Finds
+    /**
+     * Gets a list of all users.
+     * @return List<User> for all users in the database ordered by UserID in descending order.
+     */
+    public Page<User> findAllUsers(Pageable pageable){
+        return userRepository.findAllByOrderByUserIDDesc(pageable);
+    }
+
+    /**
+     * Get the user with the given username.
+     * @param username the username to match.
+     * @return User with the given username.
+     * @throws NotFound if the username is not in the database this will be thrown.
+     */
+    public User findUserByUsername(String username) throws NotFound {
+        return userRepository.findByUsername(username).orElseThrow(NotFound::new);
+    }
+
+    /**
+     * Get the user with the given user ID.
+     * @param userID the user ID to match.
+     * @return User with the given userID.
+     * @throws NotFound if the userID is not in the database this will be thrown.
+     */
+    public User findUserByUserID(int userID) throws NotFound {
+        return userRepository.findByUserID(userID).orElseThrow(NotFound::new);
     }
 }
 
