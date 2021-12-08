@@ -154,30 +154,50 @@ public class RoomServiceTest {
 
 	// --- Work Status ---
 	@Test
-	public void setWorkStatusTest(){
+	public void setWorkStatusTest() throws NotFound {
+		int roomNumber = 1;
+		Room room = new Room();
+		room.setRoomNumber(roomNumber);
+		when(roomRepository.findByRoomNumber(anyInt())).thenReturn(java.util.Optional.of(room));
 		for(WorkStatus workStatus: WorkStatus.values()){
-			assertEquals(workStatus, roomService.setWorkStatus(new Room(), workStatus).getWorkStatus());
+			assertEquals(workStatus, roomService.setWorkStatus(roomNumber, workStatus).getWorkStatus());
 		}
 	}
 
 	@Test
-	public void startWorkingTest(){
-		assertEquals(WorkStatus.IN_PROGRESS, roomService.startWorking(new Room()).getWorkStatus());
+	public void startWorkingTest() throws NotFound {
+		int roomNumber = 1;
+		Room room = new Room();
+		room.setRoomNumber(roomNumber);
+		when(roomRepository.findByRoomNumber(anyInt())).thenReturn(java.util.Optional.of(room));
+		assertEquals(WorkStatus.IN_PROGRESS, roomService.startWorking(roomNumber).getWorkStatus());
 	}
 
 	@Test
-	public void finishWorkingTest(){
-		assertEquals(WorkStatus.NO_ISSUES, roomService.finishWorking(new Room()).getWorkStatus());
+	public void finishWorkingTest() throws NotFound {
+		int roomNumber = 1;
+		Room room = new Room();
+		room.setRoomNumber(roomNumber);
+		when(roomRepository.findByRoomNumber(anyInt())).thenReturn(java.util.Optional.of(room));
+		assertEquals(WorkStatus.NO_ISSUES, roomService.finishWorking(roomNumber).getWorkStatus());
 	}
 
 	@Test
-	public void scheduleWorkingTest(){
-		assertEquals(WorkStatus.SCHEDULED, roomService.scheduleWorking(new Room()).getWorkStatus());
+	public void scheduleWorkingTest() throws NotFound {
+		int roomNumber = 1;
+		Room room = new Room();
+		room.setRoomNumber(roomNumber);
+		when(roomRepository.findByRoomNumber(anyInt())).thenReturn(java.util.Optional.of(room));
+		assertEquals(WorkStatus.SCHEDULED, roomService.scheduleWorking(roomNumber).getWorkStatus());
 	}
 
 	@Test
-	public void notScheduleWorkingTest(){
-		assertEquals(WorkStatus.NOT_SCHEDULED, roomService.notScheduleWorking(new Room()).getWorkStatus());
+	public void notScheduleWorkingTest() throws NotFound {
+		int roomNumber = 1;
+		Room room = new Room();
+		room.setRoomNumber(roomNumber);
+		when(roomRepository.findByRoomNumber(anyInt())).thenReturn(java.util.Optional.of(room));
+		assertEquals(WorkStatus.NOT_SCHEDULED, roomService.notScheduleWorking(roomNumber).getWorkStatus());
 	}
 
 	@Test
