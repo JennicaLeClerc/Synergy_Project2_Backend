@@ -25,19 +25,19 @@ public class AmenityWrapperService {
 	private AmenityWrapperRepository amenityWrapperRepository;
 
 	/**
-	 * Gets all amenityWrappers
-	 * @param pageable
-	 * @return List<AmenityWrapper>
+	 * Gets all amenityWrappers in a Page.
+	 * @param pageable the page information.
+	 * @return Page<AmenityWrapper> of All amenity wrappers.
 	 */
 	public Page<AmenityWrapper> findAllAmenities(Pageable pageable){
 		return amenityWrapperRepository.findAll(pageable);
 	}
 
 	/**
-	 * Sets an amenities prices
-	 * @param amenity amenity to change price
-	 * @param price  price to be set
-	 * @return the amenityWrapper
+	 * Sets an amenities prices to the given amount.
+	 * @param amenity amenity to change price.
+	 * @param price  price to be set.
+	 * @return the amenityWrapper with the new price for the given amenity.
 	 */
 	public AmenityWrapper setAmenityPrice(Amenities amenity, double price){
 		return amenityWrapperRepository.save(new AmenityWrapper(amenity, price));
@@ -45,26 +45,26 @@ public class AmenityWrapperService {
 
 	/**
 	 * Gets AmenityWrapper based on amenities enum
-	 * @param amenity amenity to look for
-	 * @return AmenityWrapper
+	 * @param amenity amenity to look for.
+	 * @return AmenityWrapper the amenity wrapper for the given amenity.
 	 */
 	public AmenityWrapper getAmenityWrapper(Amenities amenity){
 		return amenityWrapperRepository.getById(amenity);
 	}
 
 	/**
-	 * Gets price of amenity from database
-	 * @param amenity amenity to look for
-	 * @return double price
+	 * Gets price of the given amenity from database.
+	 * @param amenity amenity to look for.
+	 * @return double price of the given ammenity.
 	 */
 	public Double getAmenityPrice(Amenities amenity) {
 		return amenityWrapperRepository.getById(amenity).getPriceWeight();
 	}
 
 	/**
-	 * Gets total from list of amenity wrappers
-	 * @param wrappers list of AmenityWrappers to get prices
-	 * @return double total price
+	 * Gets total price from list of amenity wrappers.
+	 * @param wrappers List<AmenityWrapper> list of AmenityWrappers to get prices of.
+	 * @return double total price for the lis of amenities.
 	 */
 	public Double getTotal(List<AmenityWrapper> wrappers){
 		return wrappers.stream().mapToDouble(AmenityWrapper::getPriceWeight).sum();
