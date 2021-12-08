@@ -32,8 +32,8 @@ public class UserController {
      * Logs out the user and redirect them to the logout page.
      * @return String that redirects the user to the logout page.
      */
-    @RequestMapping(value = "/logout", method = RequestMethod.GET)
-    public String logout(){
-        return "redirect:logoutPage";
-    }
+    //@RequestMapping(value = "/logout", method = RequestMethod.GET)
+    //public String logout(){
+      //  return "redirect:logoutPage";
+    //}
 }
