@@ -56,6 +56,11 @@ public class RoomService {
 				&& !room.isOccupied();
 	}
 
+	/**
+	 * Returns a room page by finding all or any rooms that are available
+	 * @param pageable
+	 * @return
+	 */
 	public Page<Room> findAllAvailable(Pageable pageable){
 		return roomRepository.findAllByStatusAndIsOccupiedAndWorkStatusOrderByRoomNumberDesc(
 				CleaningStatus.CLEAN, false, WorkStatus.NO_ISSUES,pageable);

@@ -50,15 +50,6 @@ public class UserService{
 	}
 
     /**
-     * Logs out the user and redirect them to the logout page.
-     * @return String that redirects the user to the logout page.
-     */
-    @RequestMapping(value = "/logout", method = RequestMethod.GET)
-    public String logout(){
-        return "redirect:logoutPage";
-    }
-
-    /**
      * Gets a list of all users.
      * @return List<User> for all users in the database ordered by UserID in descending order.
      */
@@ -112,6 +103,15 @@ public class UserService{
         }
     }
 
+    /**
+     * Updating the first name of the user
+     * @param userID
+     * @param firstName
+     * @return boolean if the userId exits then change the firstname of the user
+     * Get the userId from the employee.
+     * If the first name is already in the database, then update the first name
+     */
+
     public boolean updateFirstName(int userID, String firstName){
         User user = userRepository.findByUserID(userID).orElse(null);
         if(user != null){
@@ -123,6 +123,15 @@ public class UserService{
             return false;
         }
     }
+
+    /**
+     * Updating the last name of the user
+     * @param userID
+     * @param lastName
+     * @return boolean if the userId exits then change the last name of the user
+     * Get the userId from the employee.
+     * If the last name is already in the database, then update the last name
+     */
 
     public boolean updateLastName(int userID, String lastName){
         User user = userRepository.findByUserID(userID).orElse(null);

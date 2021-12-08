@@ -128,6 +128,15 @@ public class EmployeeService {
 		}
 	}
 
+	/**
+	 * Updating the first name of the employee
+	 * @param employeeID
+	 * @param firstName
+	 * @return boolean if the em exits then change the first name of the employee
+	 * Get the employeeId from the employee.
+	 * If the first name is already in the database, then update the first name
+	 */
+
 	public boolean updateFirstName(int employeeID, String firstName){
 		Employee employee = employeeRepository.findByEmployeeID(employeeID).orElse(null);
 		if(employee != null){
@@ -139,6 +148,15 @@ public class EmployeeService {
 			return false;
 		}
 	}
+
+	/**
+	 * Updating the last name of the employee
+	 * @param employeeID
+	 * @param lastName
+	 * @return boolean if the employeeId exits then change the last name of the employee
+	 * Get the employeeId from the employee.
+	 * If the last name is already in the database, then update the last name
+	 */
 
 	public boolean updateLastName(int employeeID, String lastName){
 		Employee employee = employeeRepository.findByEmployeeID(employeeID).orElse(null);
