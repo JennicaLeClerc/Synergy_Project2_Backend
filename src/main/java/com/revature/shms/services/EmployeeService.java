@@ -58,7 +58,7 @@ public class EmployeeService {
 
 	/**
 	 * List of All Employees ordered by Employee Type.
-	 * @param pageable
+	 * @param pageable the page information.
 	 * @return List<Employee> of All employees.
 	 */
 	public Page<Employee> findAllEmployees(Pageable pageable){
@@ -68,7 +68,7 @@ public class EmployeeService {
 	/**
 	 * List of All Employees with the given Employee Type.
 	 * @param employeeType the employeeType to be matched.
-	 * @param pageable
+	 * @param pageable the page information.
 	 * @return List<Employee> of All employees with the given employeeType.
 	 */
 	public Page<Employee> findAllEmployeesByType(EmployeeType employeeType, Pageable pageable){
