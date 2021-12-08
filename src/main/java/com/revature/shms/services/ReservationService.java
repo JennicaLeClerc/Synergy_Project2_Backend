@@ -48,7 +48,7 @@ public class  ReservationService {
      * Get all reservations
      * @return a list of reservations
      */
-    public List <Reservation> findAll(){
+    public List<Reservation> findAll(){
         return reservationRepository.findAll();
     }
 
@@ -62,8 +62,8 @@ public class  ReservationService {
     }
 
     /**
-     * This deletes a reservation by a userId
-     * @param userID of user that will have their reservation deleted
+     * This deletes a reservation by a userId.
+     * @param userID of user that will have their reservation deleted.
      */
     public void deleteReservationByUserID(int userID) {
 		reservationRepository.deleteByUserReserve_UserID(userID);
@@ -74,7 +74,7 @@ public class  ReservationService {
      * @param reservationID of reservation that will be changed.
      * @param status that will be used to update
      * @return Reservation object that was updated
-     * @throws NotFound exception if reservation was not found.
+     * @throws NotFound exception if a reservation with the given reservationID was not found.
      */
     public Reservation changeStatusOfReservation(int reservationID, ReservationStatus status) throws NotFound {
         Reservation reservation = findReservationByReservationID(reservationID);
@@ -87,7 +87,7 @@ public class  ReservationService {
      * @param reservationID of reservation that will be changed.
      * @param accommodations the accommodations that are being added or changed to.
      * @return a Reservation with the given accommodations.
-     * @throws NotFound exception if reservation was not found.
+     * @throws NotFound exception if a reservation with the given reservationID was not found.
      */
     public Reservation setAccommodations(int reservationID, String accommodations) throws NotFound {
         Reservation reservation = findReservationByReservationID(reservationID);
@@ -101,7 +101,7 @@ public class  ReservationService {
      * @param startDate start date that will be updated
      * @param endDate end date that will be updated
      * @return Reservation object with updated fields
-     * @throws NotFound exception if reservation was not found.
+     * @throws NotFound exception if a reservation with the given reservationID was not found.
      */
     public Reservation changeDateOfReservation(int reservationID, String startDate, String endDate) throws NotFound {
         Reservation reservation = findReservationByReservationID(reservationID);
@@ -113,7 +113,7 @@ public class  ReservationService {
     /**
      * Handles the creation of a reservation and sets the default status as pending
      * @param reservation object that will be created
-     * @return Reservation object that was created.
+     * @return Reservation object that was created with a Pending status.
      */
     public Reservation setReservation(Reservation reservation){
         reservation.setStatus(ReservationStatus.PENDING);
