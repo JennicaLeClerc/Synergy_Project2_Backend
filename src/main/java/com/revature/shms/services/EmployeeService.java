@@ -95,8 +95,6 @@ public class EmployeeService {
 		return employeeRepository.findByUsername(userName).orElseThrow(NotFound::new);
 	}
 
-
-
 	/**
 	 * Update password by the provided username.
 	 * @param username the username that already exists on the repository.

@@ -23,6 +23,7 @@ import java.time.Instant;
 @Setter
 @AllArgsConstructor
 public class CleaningService {
+
 	@Autowired
 	private CleaningRepository cleaningRepository;
 	@Autowired

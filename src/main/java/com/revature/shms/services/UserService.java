@@ -21,6 +21,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 @Setter
 @AllArgsConstructor
 public class UserService{
+
     @Autowired
     private UserRepository userRepository;
 

@@ -21,6 +21,7 @@ import java.util.List;
 @Getter
 @Setter
 public class AmenityWrapperService {
+
 	@Autowired
 	private AmenityWrapperRepository amenityWrapperRepository;
 

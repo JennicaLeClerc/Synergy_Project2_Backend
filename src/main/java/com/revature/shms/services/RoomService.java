@@ -23,6 +23,7 @@ import java.util.List;
 @Setter
 @AllArgsConstructor
 public class RoomService {
+
 	@Autowired
 	private RoomRepository roomRepository;
 
