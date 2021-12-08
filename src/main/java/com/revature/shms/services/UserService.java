@@ -21,7 +21,6 @@ import org.springframework.web.bind.annotation.RequestMethod;
 @Setter
 @AllArgsConstructor
 public class UserService{
-    
     @Autowired
     private UserRepository userRepository;
 
@@ -105,13 +104,12 @@ public class UserService{
 
     /**
      * Updating the first name of the user
-     * @param userID
-     * @param firstName
+     * @param userID the user to be matched by userID
+     * @param firstName the first name to be changed to
      * @return boolean if the userId exits then change the firstname of the user
      * Get the userId from the employee.
      * If the first name is already in the database, then update the first name
      */
-
     public boolean updateFirstName(int userID, String firstName){
         User user = userRepository.findByUserID(userID).orElse(null);
         if(user != null){
@@ -126,13 +124,12 @@ public class UserService{
 
     /**
      * Updating the last name of the user
-     * @param userID
-     * @param lastName
+     * @param userID the user to be matched by userID
+     * @param lastName the last name to be changed to.
      * @return boolean if the userId exits then change the last name of the user
      * Get the userId from the employee.
      * If the last name is already in the database, then update the last name
      */
-
     public boolean updateLastName(int userID, String lastName){
         User user = userRepository.findByUserID(userID).orElse(null);
         if(user != null){

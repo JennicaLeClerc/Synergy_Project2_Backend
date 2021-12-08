@@ -25,7 +25,8 @@ public class AmenityWrapperService {
 	private AmenityWrapperRepository amenityWrapperRepository;
 
 	/**
-	 * gets all amenityWrappers
+	 * Gets all amenityWrappers
+	 * @param pageable
 	 * @return List<AmenityWrapper>
 	 */
 	public Page<AmenityWrapper> findAllAmenities(Pageable pageable){
@@ -39,7 +40,7 @@ public class AmenityWrapperService {
 	 * @return the amenityWrapper
 	 */
 	public AmenityWrapper setAmenityPrice(Amenities amenity, double price){
-		return amenityWrapperRepository.save(new AmenityWrapper(amenity,price));
+		return amenityWrapperRepository.save(new AmenityWrapper(amenity, price));
 	}
 
 	/**
@@ -68,6 +69,7 @@ public class AmenityWrapperService {
 	public Double getTotal(List<AmenityWrapper> wrappers){
 		return wrappers.stream().mapToDouble(AmenityWrapper::getPriceWeight).sum();
 	}
+
 	/**
 	 * Generates all AmenityWrappers with 0 price
 	 */

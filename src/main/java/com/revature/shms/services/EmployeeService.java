@@ -26,8 +26,6 @@ public class EmployeeService {
 	@Autowired
 	private EmployeeRepository employeeRepository;
 	@Autowired
-	private CleaningService cleaningService;
-	@Autowired
 	private RoomService roomService;
 	@Autowired
 	private UserService userService;
@@ -35,7 +33,7 @@ public class EmployeeService {
 	private RoomRepository roomRepository;
 
 	/**
-	 * Creates the Employee in the database.
+	 * Creates and updates the Employee in the database.
 	 * @param employee the given employee to match.
 	 * @return Employee now saved to the database.
 	 */
@@ -60,6 +58,7 @@ public class EmployeeService {
 
 	/**
 	 * List of All Employees ordered by Employee Type.
+	 * @param pageable
 	 * @return List<Employee> of All employees.
 	 */
 	public Page<Employee> findAllEmployees(Pageable pageable){
@@ -69,16 +68,18 @@ public class EmployeeService {
 	/**
 	 * List of All Employees with the given Employee Type.
 	 * @param employeeType the employeeType to be matched.
+	 * @param pageable
 	 * @return List<Employee> of All employees with the given employeeType.
 	 */
 	public Page<Employee> findAllEmployeesByType(EmployeeType employeeType, Pageable pageable){
-		return employeeRepository.findByEmployeeType(employeeType,pageable);
+		return employeeRepository.findByEmployeeType(employeeType, pageable);
 	}
 
 	/**
 	 * Gets the Employee with the matching employeeID.
 	 * @param employeeID the employeeID to match.
 	 * @return Employee with the given employeeID.
+	 * @throws NotFound
 	 */
 	public Employee findEmployeeByID(int employeeID) throws NotFound {
 		return employeeRepository.findByEmployeeID(employeeID).orElseThrow(NotFound::new);
@@ -88,19 +89,13 @@ public class EmployeeService {
 	 * Gets the Employee with the matching userName.
 	 * @param userName the username to match.
 	 * @return Employee with the given username.
+	 * @throws NotFound
 	 */
 	public Employee findEmployeeByUserName(String userName) throws NotFound {
 		return employeeRepository.findByUsername(userName).orElseThrow(NotFound::new);
 	}
 
-	/**
-	 * Gets All Cleanings assigned to a specific employee.
-	 * @param employee the employee to match.
-	 * @return all Cleanings sorted that are assigned to employee.
-	 */
-	public Page<Cleaning> employeeCleaningToDo(Employee employee,Pageable pageable){
-		return cleaningService.findAllCleaningsByEmployee(employee,pageable);
-	}
+
 
 	/**
 	 * Update password by the provided username.
@@ -115,57 +110,51 @@ public class EmployeeService {
 		if(employee != null) {
 			if(employee.getPassword().equals(oldPassword)){
 				employee.setPassword(newPassword);
-				employeeRepository.save(employee);
+				createEmployee(employee);
 				return true;
-			}
-			else{
+			} else{
 				// Username/Password invalid.
 				return false;
 			}
-		}
-		else{
+		} else{
 			return false;
 		}
 	}
 
 	/**
 	 * Updating the first name of the employee
-	 * @param employeeID
-	 * @param firstName
+	 * @param employeeID the employee to be matched witht the given employeeID
+	 * @param firstName the first name to be changed to
 	 * @return boolean if the em exits then change the first name of the employee
 	 * Get the employeeId from the employee.
 	 * If the first name is already in the database, then update the first name
 	 */
-
 	public boolean updateFirstName(int employeeID, String firstName){
 		Employee employee = employeeRepository.findByEmployeeID(employeeID).orElse(null);
 		if(employee != null){
 			employee.setFirstName(firstName);
-			employeeRepository.save(employee);
+			createEmployee(employee);
 			return true;
-		}
-		else{
+		} else{
 			return false;
 		}
 	}
 
 	/**
 	 * Updating the last name of the employee
-	 * @param employeeID
-	 * @param lastName
+	 * @param employeeID the employee to be matched witht the given employeeID
+	 * @param lastName the last name to be changed to
 	 * @return boolean if the employeeId exits then change the last name of the employee
 	 * Get the employeeId from the employee.
 	 * If the last name is already in the database, then update the last name
 	 */
-
 	public boolean updateLastName(int employeeID, String lastName){
 		Employee employee = employeeRepository.findByEmployeeID(employeeID).orElse(null);
 		if(employee != null){
 			employee.setLastName(lastName);
-			employeeRepository.save(employee);
+			createEmployee(employee);
 			return true;
-		}
-		else{
+		} else{
 			return false;
 		}
 	}

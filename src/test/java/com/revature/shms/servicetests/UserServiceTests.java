@@ -50,7 +50,7 @@ public class UserServiceTests {
 		User user = new User();
 		user.setUsername("Ryan");
 		user.setPassword("123123");
-		when(userRepository.findByUsername(user.getUsername())).thenReturn(java.util.Optional.of(user));
+		when(userRepository.findByUsername(any())).thenReturn(java.util.Optional.of(user));
 		assertEquals(user, userService.findUserByUsername("Ryan"));
 	}
 	
@@ -72,7 +72,7 @@ public class UserServiceTests {
 	public void getUserByUserId() throws NotFound {
 		User user = new User();
 		user.setUserID(123);
-		when(userRepository.findByUserID(user.getUserID())).thenReturn(java.util.Optional.of(user));
+		when(userRepository.findByUserID(anyInt())).thenReturn(java.util.Optional.of(user));
 		assertEquals(user, userService.findUserByUserID(123));
 	}
 
@@ -147,8 +147,9 @@ public class UserServiceTests {
 
 	@Test
 	public void gettersSetters(){
-		UserRepository repo = null;
-		userService.setUserRepository(repo);
+		UserService userService = new UserService();
+		UserRepository userRepository = null;
+		userService.setUserRepository(userRepository);
 		assertNull(userService.getUserRepository());
 	}
 }
