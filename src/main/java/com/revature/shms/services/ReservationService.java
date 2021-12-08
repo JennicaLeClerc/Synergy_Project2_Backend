@@ -63,11 +63,19 @@ public class  ReservationService {
     }
 
     /**
-     * This deletes a reservation by a userId.
+     * This deletes a reservation by a userID.
      * @param userID of user that will have their reservation deleted.
      */
     public void deleteReservationByUserID(int userID) {
 		reservationRepository.deleteByUserReserve_UserID(userID);
+    }
+
+    /**
+     * This deletes a reservation by a reservationID.
+     * @param reservationID of the reservation to be deleted.
+     */
+    public void deleteReservationByReservationID(int reservationID){
+        reservationRepository.deleteByReservationID(reservationID);
     }
 
     /**

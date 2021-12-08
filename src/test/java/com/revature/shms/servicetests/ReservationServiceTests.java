@@ -81,6 +81,12 @@ public class ReservationServiceTests {
 	}
 
 	@Test
+	public void deleteReservationByReservationIDTest() {
+		reservationService.deleteReservationByReservationID(1231245);
+		verify(reservationRepository, times(1)).deleteByReservationID(anyInt());
+	}
+
+	@Test
 	public void changeStatusOfReservationTest() throws NotFound {
 		User user = new User();
 		Reservation reservation = new Reservation();
