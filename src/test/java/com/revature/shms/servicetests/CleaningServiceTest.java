@@ -7,9 +7,9 @@ import com.revature.shms.models.Employee;
 import com.revature.shms.models.Room;
 import com.revature.shms.repositories.CleaningRepository;
 import com.revature.shms.services.CleaningService;
+import com.revature.shms.services.EmployeeService;
 import com.revature.shms.services.RoomService;
 
-import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -23,61 +23,81 @@ import org.springframework.data.domain.PageImpl;
 import java.util.ArrayList;
 import java.util.List;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
 public class CleaningServiceTest {
 	@Mock RoomService roomService;
+	@Mock EmployeeService employeeService;
 	@Mock CleaningRepository cleaningRepository;
 	@InjectMocks CleaningService cleaningService;
 
 	@Test
 	public void employeeCleaningToDoTest(){
-		when(cleaningService.findAllCleaningsByEmployee(any(),any())).thenReturn(null);
-		Assertions.assertNull(cleaningService.employeeCleaningToDo(new Employee(),null));
+		when(cleaningRepository.findAllByEmployeeOrderByPriorityDescDateAddedAsc(any(), any())).thenReturn(null);
+		assertNull(cleaningService.employeeCleaningToDo(new Employee(), null));
 	}
 
 	@Test
-	public void scheduleCleaningRoomTest(){
+	public void scheduleCleaningRoomTest() throws NotFound {
 		Employee employee = new Employee();
 		employee.setEmployeeType(EmployeeType.RECEPTIONIST);
-		Assertions.assertNull( cleaningService.scheduleCleaningRoom(null,employee,null,0));
-		when(cleaningService.schedule(any())).thenReturn(new Cleaning());
+		when(cleaningRepository.save(any())).thenReturn(new Cleaning());
+		assertNull(cleaningService.scheduleCleaningRoom(null, employee, null, 0));
+
 		Room room = new Room();
-		when(roomService.scheduleCleaning(any())).thenReturn(room);
 		employee.setEmployeeType(EmployeeType.MAINTENANCE);
 		room.setStatus(CleaningStatus.NOT_SCHEDULED);
-		Assertions.assertEquals(room, cleaningService.scheduleCleaningRoom(null,employee,room,0));
+		when(roomService.scheduleCleaning(anyInt())).thenReturn(room);
+		assertEquals(room, cleaningService.scheduleCleaningRoom(null, employee, room, 0));
 	}
 
 	@Test
 	public void startCleanRoomTest() throws NotFound {
+		int employeeID = 1;
 		Employee employee = new Employee();
+		employee.setEmployeeID(employeeID);
 		employee.setEmployeeType(EmployeeType.RECEPTIONIST);
-		Assertions.assertNull( cleaningService.startCleanRoom(employee,null));
+
+		int roomNumber = 1;
 		Room room = new Room();
-		when(roomService.startCleaning(any())).thenReturn(room);
+		room.setRoomNumber(roomNumber);
+
+		when(employeeService.findEmployeeByID(anyInt())).thenReturn(employee);
+		assertNull(cleaningService.startCleanRoom(employeeID, roomNumber));
+
 		employee.setEmployeeType(EmployeeType.MAINTENANCE);
 		room.setStatus(CleaningStatus.NOT_SCHEDULED);
+		when(roomService.startCleaning(anyInt())).thenReturn(room);
+		assertEquals(room, cleaningService.startCleanRoom(employeeID, roomNumber));
+	}
+
+	@Test
+	public void finishCleaningRoomTest() throws NotFound {
+		int employeeID = 1;
+		Employee employee = new Employee();
+		employee.setEmployeeType(EmployeeType.RECEPTIONIST);
+
+		int roomNumber = 1;
+		Room room = new Room();
+		room.setRoomNumber(roomNumber);
+
+		when(roomService.findByRoomNumber(anyInt())).thenReturn(room);
+		when(employeeService.findEmployeeByID(anyInt())).thenReturn(employee);
+		assertNull(cleaningService.finishCleaningRoom(employeeID, roomNumber));
+
+		employee.setEmployeeType(EmployeeType.MAINTENANCE);
+		room.setStatus(CleaningStatus.NOT_SCHEDULED);
+		when(roomService.finishCleaning(anyInt())).thenReturn(room);
 		when(cleaningRepository.findByRoom(any())).thenReturn(java.util.Optional.of(new Cleaning()));
-		Assertions.assertEquals(room, cleaningService.startCleanRoom(employee,room));
+		assertEquals(room, cleaningService.finishCleaningRoom(employeeID, roomNumber));
 	}
 
 	@Test
-	public void finishCleaningRoomTest(){
-		Employee employee = new Employee();
-		employee.setEmployeeType(EmployeeType.RECEPTIONIST);
-		Assertions.assertNull( cleaningService.finishCleaningRoom(employee,null));
-		Room room = new Room();
-		when(roomService.finishCleaning(any())).thenReturn(room);
-		employee.setEmployeeType(EmployeeType.MAINTENANCE);
-		room.setStatus(CleaningStatus.NOT_SCHEDULED);
-		Assertions.assertEquals(room, cleaningService.finishCleaningRoom(employee,room));
-	}
-
-	@Test
-	public void getAllCleaningsTest(){
+	public void findAllCleaningsTest(){
 		List<Cleaning> cleanings = new ArrayList<>();
 		cleanings.add(new Cleaning());
 		cleanings.add(new Cleaning());
@@ -85,36 +105,36 @@ public class CleaningServiceTest {
 		cleanings.add(new Cleaning());
 		Page<Cleaning> cleaningPage = new PageImpl<>(cleanings);
 		when(cleaningRepository.findAllByOrderByPriorityDescDateAddedAsc(any())).thenReturn(cleaningPage);
-		Assertions.assertEquals(cleaningService.findAllCleanings(any()).getContent(),cleanings);
+		assertEquals(cleanings, cleaningService.findAllCleanings(any()).getContent());
 	}
 
 	@Test
-	public void getAllCleaningsByEmployeeTest(){
+	public void findAllCleaningsByEmployeeTest(){
 		List<Cleaning> cleaningList = new ArrayList<>();
 		cleaningList.add(new Cleaning());
 		Page<Cleaning> cleaningPage = new PageImpl<>(cleaningList);
 		when(cleaningRepository.findAllByEmployeeOrderByPriorityDescDateAddedAsc(any(),any())).thenReturn(cleaningPage);
-		Assertions.assertEquals(cleaningList, cleaningService.findAllCleaningsByEmployee(new Employee(),null).getContent());
+		assertEquals(cleaningList, cleaningService.findAllCleaningsByEmployee(new Employee(),null).getContent());
 	}
 
 	@Test
-	public void getByRoomTest() throws NotFound {
+	public void findByRoomTest() throws NotFound {
 		Cleaning cleaning = new Cleaning();
 		when(cleaningRepository.findByRoom(any())).thenReturn(java.util.Optional.of(cleaning));
-		Assertions.assertEquals(cleaning, cleaningService.findByRoom(new Room()));
+		assertEquals(cleaning, cleaningService.findByRoom(new Room()));
 	}
 
 	@Test
-	public void scheduleTest(){
+	public void createCleaningTest(){
 		Cleaning cleaning = new Cleaning();
 		when(cleaningRepository.save(any())).thenReturn(cleaning);
-		Assertions.assertEquals(cleaning, cleaningService.schedule(cleaning));
+		assertEquals(cleaning, cleaningService.createCleaning(cleaning));
 	}
 
 	@Test
-	public void removeTest(){
+	public void removeCleaningTest(){
 		Cleaning cleaning = new Cleaning();
-		cleaningService.remove(cleaning);
+		cleaningService.removeCleaning(cleaning);
 		verify(cleaningRepository, times(1)).delete(any());
 	}
 
@@ -122,18 +142,23 @@ public class CleaningServiceTest {
 	public void gettersSetters(){
 		CleaningRepository cleaningRepository = null;
 		RoomService roomService = new RoomService();
+		EmployeeService employeeService = new EmployeeService();
 
 		CleaningService cleaningService = new CleaningService();
 		cleaningService.setCleaningRepository(cleaningRepository);
 		cleaningService.setRoomService(roomService);
+		cleaningService.setEmployeeService(employeeService);
 
-		Assertions.assertNull(cleaningService.getCleaningRepository());
-		Assertions.assertEquals(cleaningService.getRoomService(),roomService);
+		assertNull(cleaningService.getCleaningRepository());
+		assertEquals(roomService, cleaningService.getRoomService());
+		assertEquals(employeeService, cleaningService.getEmployeeService());
 
 		cleaningService.setRoomService(null);
 		cleaningService.setCleaningRepository(null);
+		cleaningService.setEmployeeService(null);
 
-		Assertions.assertNull(cleaningService.getCleaningRepository());
-		Assertions.assertNull(cleaningService.getRoomService());
+		assertNull(cleaningService.getCleaningRepository());
+		assertNull(cleaningService.getRoomService());
+		assertNull(cleaningService.getEmployeeService());
 	}
 }

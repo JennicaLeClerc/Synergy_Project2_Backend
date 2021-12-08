@@ -15,7 +15,7 @@ import java.util.Optional;
 public interface CleaningRepository  extends JpaRepository<Cleaning,Integer> {
 
 	Page<Cleaning> findAllByOrderByPriorityDescDateAddedAsc(Pageable pageable);
-	Page<Cleaning> findAllByEmployeeOrderByPriorityDescDateAddedAsc(Employee employee,Pageable pageable);
+	Page<Cleaning> findAllByEmployeeOrderByPriorityDescDateAddedAsc(Employee employee, Pageable pageable);
 
 	Optional<Cleaning> findByRoom(Room room);
 }

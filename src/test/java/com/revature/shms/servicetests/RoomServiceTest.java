@@ -20,8 +20,8 @@ import org.springframework.data.domain.PageImpl;
 import java.util.ArrayList;
 import java.util.List;
 
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.ArgumentMatchers.anyBoolean;
+import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.ArgumentMatchers.*;
 import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
@@ -33,7 +33,7 @@ public class RoomServiceTest {
 	public void addRoomTest(){
 		Room room = new Room();
 		when(roomRepository.save(any())).thenReturn(room);
-		Assertions.assertEquals(room, roomService.addRoom(room));
+		assertEquals(room, roomService.addRoom(room));
 	}
 
 	@Test
@@ -46,16 +46,43 @@ public class RoomServiceTest {
 		rooms.add(new Room());
 		rooms.add(new Room());
 		when(roomRepository.saveAll(any())).thenReturn(rooms);
-		Assertions.assertEquals(rooms, roomService.addRooms(rooms));
+		assertEquals(rooms, roomService.addRooms(rooms));
 	}
 
 	@Test
-	public void isAvailableTest(){
+	public void isAvailableTestTrue(){
 		Room room = new Room();
 		room.setStatus(CleaningStatus.CLEAN);
 		room.setWorkStatus(WorkStatus.NO_ISSUES);
 		room.setOccupied(false);
-		Assertions.assertTrue(roomService.isAvailable(room));
+		assertTrue(roomService.isAvailable(room));
+	}
+
+	@Test
+	public void isAvailableTestWrongCleaning(){
+		Room room = new Room();
+		room.setStatus(CleaningStatus.NOT_SCHEDULED);
+		room.setWorkStatus(WorkStatus.NO_ISSUES);
+		room.setOccupied(false);
+		assertFalse(roomService.isAvailable(room));
+	}
+
+	@Test
+	public void isAvailableTestWrongWorking(){
+		Room room = new Room();
+		room.setStatus(CleaningStatus.CLEAN);
+		room.setWorkStatus(WorkStatus.SCHEDULED);
+		room.setOccupied(false);
+		assertFalse(roomService.isAvailable(room));
+	}
+
+	@Test
+	public void isAvailableTestWrongOccupied(){
+		Room room = new Room();
+		room.setStatus(CleaningStatus.CLEAN);
+		room.setWorkStatus(WorkStatus.NO_ISSUES);
+		room.setOccupied(true);
+		assertFalse(roomService.isAvailable(room));
 	}
 
 	@Test
@@ -69,15 +96,18 @@ public class RoomServiceTest {
 		roomList.add(room);
 		Page<Room> roomPage = new PageImpl<>(roomList);
 		when(roomRepository.findAllByStatusAndIsOccupiedAndWorkStatusOrderByRoomNumberDesc(any(), anyBoolean(), any(),any())).thenReturn(roomPage);
-		Assertions.assertEquals(roomList, roomService.findAllAvailable(null).getContent());
+		assertEquals(roomList, roomService.findAllAvailable(null).getContent());
 	}
 
 	@Test
-	public void setOccupationStatusTest(){
+	public void setOccupationStatusTest() throws NotFound {
+		int roomNumber = 1;
 		boolean isOccupied = true;
 		Room room = new Room();
+		room.setRoomNumber(roomNumber);
 		room.setOccupied(isOccupied);
-		Assertions.assertEquals(room, roomService.setOccupationStatus(room, isOccupied));
+		when(roomRepository.findByRoomNumber(anyInt())).thenReturn(java.util.Optional.of(room));
+		assertEquals(room, roomService.setOccupationStatus(roomNumber, isOccupied));
 	}
 
 	@Test
@@ -91,26 +121,74 @@ public class RoomServiceTest {
 			roomList.add(room);
 			Page<Room> roomPage = new PageImpl<>(roomList);
 			when(roomRepository.findAllByIsOccupied(anyBoolean(),any())).thenReturn(roomPage);
-			Assertions.assertEquals(roomList, roomService.findAllByIsOccupied(testing,null).getContent());
+			assertEquals(roomList, roomService.findAllByIsOccupied(testing,null).getContent());
 			testing = false;
 		}
 	}
 
 	@Test
-	public void OccupiedTest(){
-		Assertions.assertTrue(roomService.Occupied(new Room()).isOccupied());
+	public void OccupiedTest() throws NotFound {
+		int roomNumber = 1;
+		Room room = new Room();
+		room.setRoomNumber(roomNumber);
+		when(roomRepository.findByRoomNumber(anyInt())).thenReturn(java.util.Optional.of(room));
+		assertTrue(roomService.Occupied(roomNumber).isOccupied());
 	}
 
 	@Test
-	public void notOccupiedTest(){
-		Assertions.assertFalse(roomService.notOccupied(new Room()).isOccupied());
+	public void notOccupiedTest() throws NotFound {
+		int roomNumber = 1;
+		Room room = new Room();
+		room.setRoomNumber(roomNumber);
+		when(roomRepository.findByRoomNumber(anyInt())).thenReturn(java.util.Optional.of(room));
+		assertFalse(roomService.notOccupied(roomNumber).isOccupied());
 	}
 
 	@Test
-	public void setRoomStatusTest(){
+	public void setRoomStatusTest() throws NotFound {
+		int roomNumber = 1;
+		Room room = new Room();
+		room.setRoomNumber(roomNumber);
+		when(roomRepository.findByRoomNumber(anyInt())).thenReturn(java.util.Optional.of(room));
 		for (CleaningStatus cleaningStatus:CleaningStatus.values()) {
-			Assertions.assertEquals(cleaningStatus,roomService.setRoomStatus(new Room(),cleaningStatus).getStatus());
+			assertEquals(cleaningStatus, roomService.setRoomStatus(roomNumber, cleaningStatus).getStatus());
 		}
+	}
+
+	@Test
+	public void scheduleCleaningTest() throws NotFound {
+		int roomNumber = 1;
+		Room room = new Room();
+		room.setRoomNumber(roomNumber);
+		when(roomRepository.findByRoomNumber(anyInt())).thenReturn(java.util.Optional.of(room));
+		assertEquals(CleaningStatus.SCHEDULED, roomService.scheduleCleaning(roomNumber).getStatus());
+	}
+
+	@Test
+	public void notScheduleCleaningTest() throws NotFound {
+		int roomNumber = 1;
+		Room room = new Room();
+		room.setRoomNumber(roomNumber);
+		when(roomRepository.findByRoomNumber(anyInt())).thenReturn(java.util.Optional.of(room));
+		assertEquals(CleaningStatus.NOT_SCHEDULED, roomService.notScheduleCleaning(roomNumber).getStatus());
+	}
+
+	@Test
+	public void startCleaningTest() throws NotFound {
+		int roomNumber = 1;
+		Room room = new Room();
+		room.setRoomNumber(roomNumber);
+		when(roomRepository.findByRoomNumber(anyInt())).thenReturn(java.util.Optional.of(room));
+		assertEquals(CleaningStatus.IN_PROGRESS, roomService.startCleaning(roomNumber).getStatus());
+	}
+
+	@Test
+	public void finishCleaningTest() throws NotFound {
+		int roomNumber = 1;
+		Room room = new Room();
+		room.setRoomNumber(roomNumber);
+		when(roomRepository.findByRoomNumber(anyInt())).thenReturn(java.util.Optional.of(room));
+		assertEquals(CleaningStatus.CLEAN, roomService.finishCleaning(roomNumber).getStatus());
 	}
 
 	@Test
@@ -123,7 +201,7 @@ public class RoomServiceTest {
 			roomList.add(room);
 			Page<Room> roomPage = new PageImpl<>(roomList);
 			when(roomRepository.findAllByStatus(any(CleaningStatus.class),any())).thenReturn(roomPage);
-			Assertions.assertEquals(cleaningStatus, roomService.findAllByStatus(cleaningStatus,null).getContent().get(0).getStatus());
+			assertEquals(cleaningStatus, roomService.findAllByStatus(cleaningStatus, null).getContent().get(0).getStatus());
 		}
 	}
 
@@ -137,34 +215,14 @@ public class RoomServiceTest {
 			roomList.add(room);
 			Page<Room> roomPage = new PageImpl<>(roomList);
 			when(roomRepository.findAllByStatusNot(any(CleaningStatus.class),any())).thenReturn(roomPage);
-			Assertions.assertEquals(cleaningStatus, roomService.findAllByNotStatus(cleaningStatus,null).getContent().get(0).getStatus());
+			assertEquals(cleaningStatus, roomService.findAllByNotStatus(cleaningStatus, null).getContent().get(0).getStatus());
 		}
-	}
-
-	@Test
-	public void scheduleCleaningTest(){
-		Assertions.assertEquals(CleaningStatus.SCHEDULED,roomService.scheduleCleaning(new Room()).getStatus());
-	}
-
-	@Test
-	public void notScheduleCleaningTest(){
-		Assertions.assertEquals(CleaningStatus.NOT_SCHEDULED, roomService.notScheduleCleaning(new Room()).getStatus());
-	}
-
-	@Test
-	public void startCleaningTest(){
-		Assertions.assertEquals(CleaningStatus.IN_PROGRESS,roomService.startCleaning(new Room()).getStatus());
-	}
-
-	@Test
-	public void finishCleaningTest(){
-		Assertions.assertEquals(CleaningStatus.CLEAN, roomService.finishCleaning(new Room()).getStatus());
 	}
 
 	@Test
 	public void setWorkStatusTest(){
 		for(WorkStatus workStatus: WorkStatus.values()){
-			Assertions.assertEquals(workStatus, roomService.setWorkStatus(new Room(), workStatus).getWorkStatus());
+			assertEquals(workStatus, roomService.setWorkStatus(new Room(), workStatus).getWorkStatus());
 		}
 	}
 
@@ -178,7 +236,7 @@ public class RoomServiceTest {
 			roomList.add(room);
 			Page<Room> roomPage = new PageImpl<>(roomList);
 			when(roomRepository.findAllByWorkStatus(any(),any())).thenReturn(roomPage);
-			Assertions.assertEquals(roomList, roomService.findAllByWorkStatus(workStatus,null).getContent());
+			assertEquals(roomList, roomService.findAllByWorkStatus(workStatus, null).getContent());
 		}
 	}
 
@@ -192,28 +250,28 @@ public class RoomServiceTest {
 			roomList.add(room);
 			Page<Room> roomPage = new PageImpl<>(roomList);
 			when(roomRepository.findAllByWorkStatusNot(any(),any())).thenReturn(roomPage);
-			Assertions.assertEquals(roomList, roomService.findAllByNotWorkStatus(workStatus,null).getContent());
+			assertEquals(roomList, roomService.findAllByNotWorkStatus(workStatus, null).getContent());
 		}
 	}
 
 	@Test
 	public void startWorkingTest(){
-		Assertions.assertEquals(WorkStatus.IN_PROGRESS, roomService.startWorking(new Room()).getWorkStatus());
+		assertEquals(WorkStatus.IN_PROGRESS, roomService.startWorking(new Room()).getWorkStatus());
 	}
 
 	@Test
 	public void finishWorkingTest(){
-		Assertions.assertEquals(WorkStatus.NO_ISSUES, roomService.finishWorking(new Room()).getWorkStatus());
+		assertEquals(WorkStatus.NO_ISSUES, roomService.finishWorking(new Room()).getWorkStatus());
 	}
 
 	@Test
 	public void scheduleWorkingTest(){
-		Assertions.assertEquals(WorkStatus.SCHEDULED, roomService.scheduleWorking(new Room()).getWorkStatus());
+		assertEquals(WorkStatus.SCHEDULED, roomService.scheduleWorking(new Room()).getWorkStatus());
 	}
 
 	@Test
 	public void notScheduleWorkingTest(){
-		Assertions.assertEquals(WorkStatus.NOT_SCHEDULED, roomService.notScheduleWorking(new Room()).getWorkStatus());
+		assertEquals(WorkStatus.NOT_SCHEDULED, roomService.notScheduleWorking(new Room()).getWorkStatus());
 	}
 
 	@Test
@@ -223,7 +281,7 @@ public class RoomServiceTest {
 		roomList.add(new Room());
 		Page<Room> roomPage = new PageImpl<>(roomList);
 		when(roomRepository.findAllByOrderByRoomNumberDesc(any())).thenReturn(roomPage);
-		Assertions.assertEquals(roomList, roomService.findAllRooms(null ).getContent());
+		assertEquals(roomList, roomService.findAllRooms(null ).getContent());
 	}
 
 	@Test
@@ -240,8 +298,8 @@ public class RoomServiceTest {
 			roomList.add(room);
 			roomList.add(room);
 			Page<Room> roomPage = new PageImpl<>(roomList);
-			when(roomRepository.findAllByAmenitiesList_Amenity(amenities,null)).thenReturn(roomPage);
-			Assertions.assertEquals(roomList, roomService.findAllByAmenity(amenities,null).getContent());
+			when(roomRepository.findAllByAmenitiesList_Amenity(amenities, null)).thenReturn(roomPage);
+			assertEquals(roomList, roomService.findAllByAmenity(amenities, null).getContent());
 		}
 	}
 
@@ -251,7 +309,7 @@ public class RoomServiceTest {
 		Room room = new Room();
 		room.setRoomNumber(roomNumber);
 		when(roomRepository.findByRoomNumber(roomNumber)).thenReturn(java.util.Optional.of(room));
-		Assertions.assertEquals(room, roomService.findByRoomNumber(roomNumber));
+		assertEquals(room, roomService.findByRoomNumber(roomNumber));
 	}
 
 	@Test
@@ -259,9 +317,9 @@ public class RoomServiceTest {
 		RoomRepository roomRepository = null;
 		RoomService roomService = new RoomService();
 		roomService.setRoomRepository(roomRepository);
-		Assertions.assertNull(roomService.getRoomRepository());
+		assertNull(roomService.getRoomRepository());
 
 		roomService.setRoomRepository(null);
-		Assertions.assertNull(roomService.getRoomRepository());
+		assertNull(roomService.getRoomRepository());
 	}
 }

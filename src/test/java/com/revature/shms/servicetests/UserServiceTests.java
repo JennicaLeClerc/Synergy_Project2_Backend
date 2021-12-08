@@ -1,6 +1,5 @@
 package com.revature.shms.servicetests;
 
-import com.revature.shms.models.Room;
 import com.revature.shms.models.User;
 import com.revature.shms.repositories.UserRepository;
 import com.revature.shms.services.UserService;
@@ -21,10 +20,8 @@ import java.util.List;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
-
 @ExtendWith(MockitoExtension.class)
 public class UserServiceTests {
-
 	@Mock UserRepository userRepository;
 	@InjectMocks UserService userService;
 
@@ -32,7 +29,7 @@ public class UserServiceTests {
 	public void createNewUserTest(){
 		User user = new User();
 		when(userRepository.save(any())).thenReturn(user);
-		assertEquals(user,userService.createNewUser(user));
+		assertEquals(user, userService.createNewUser(user));
 	}
 	
 	@Test
@@ -41,17 +38,16 @@ public class UserServiceTests {
 		user.setUsername("Ryan");
 		user.setPassword("123123");
 		when(userRepository.findByUsername(any())).thenReturn(java.util.Optional.of(user));
-		assertEquals(user,userService.login("Ryan","123123"));
+		assertEquals(user, userService.login("Ryan","123123"));
 		try {
 			Exception e= assertThrows(AccessDeniedException.class, (Executable) userService.login("Ryan","1231234"));
 			assertTrue(e.getMessage().contains("Incorrect username/password"));
 		} catch (Exception ignored){}
-
 	}
 	
 	@Test
 	public void logoutTest(){
-		assertEquals("redirect:logoutPage",userService.logout());
+		assertEquals("redirect:logoutPage", userService.logout());
 	}
 	
 	@Test
@@ -59,8 +55,8 @@ public class UserServiceTests {
 		User user = new User();
 		user.setUsername("Ryan");
 		user.setPassword("123123");
-		when(userRepository.findByUsername(user.getUsername())).thenReturn(java.util.Optional.of(user));
-		assertEquals(user,userService.findUserByUsername("Ryan"));
+		when(userRepository.findByUsername(any())).thenReturn(java.util.Optional.of(user));
+		assertEquals(user, userService.findUserByUsername("Ryan"));
 	}
 	
 	@Test
@@ -74,21 +70,91 @@ public class UserServiceTests {
 		users.add(new User());
 		Page<User> usersPage = new PageImpl<>(users);
 		when(userRepository.findAllByOrderByUserIDDesc(any())).thenReturn(usersPage);
-		assertEquals(users,userService.findAllUsers(null).getContent());
+		assertEquals(users, userService.findAllUsers(null).getContent());
 	}
 	
 	@Test
 	public void getUserByUserId() throws NotFound {
 		User user = new User();
 		user.setUserID(123);
-		when(userRepository.findByUserID(user.getUserID())).thenReturn(java.util.Optional.of(user));
-		assertEquals(user,userService.findUserByUserID(123));
+		when(userRepository.findByUserID(anyInt())).thenReturn(java.util.Optional.of(user));
+		assertEquals(user, userService.findUserByUserID(123));
 	}
-	
+
+	@Test
+	public void updatePasswordTestTrue(){
+		String username = "jlecl";
+		String oldPassword = "Password";
+		String newPassword = "new";
+		User user = new User();
+		user.setUsername(username);
+		user.setPassword(oldPassword);
+		when(userRepository.findByUsername(any())).thenReturn(java.util.Optional.of(user));
+		assertTrue(userService.updatePassword(username, oldPassword, newPassword));
+	}
+
+	@Test
+	public void updatePasswordTestWrongPassword(){
+		String username = "jlecl";
+		String rightPassword = "Password";
+		String wrongPassword = "new";
+		User user = new User();
+		user.setUsername(username);
+		user.setPassword(rightPassword);
+		when(userRepository.findByUsername(any())).thenReturn(java.util.Optional.of(user));
+		assertFalse(userService.updatePassword(username, wrongPassword, rightPassword));
+	}
+
+	@Test
+	public void updatePasswordTestFalse(){
+		String username = "jlecl";
+		String oldPassword = "Password";
+		String newPassword = "new";
+		when(userRepository.findByUsername(any())).thenReturn(java.util.Optional.empty());
+		assertFalse(userService.updatePassword(username, oldPassword, newPassword));
+	}
+
+	@Test
+	public void updateFirstNameTestTrue(){
+		int userID = 1;
+		String firstName = "Jennica";
+		User user = new User();
+		user.setUserID(userID);
+		when(userRepository.findByUserID(anyInt())).thenReturn(java.util.Optional.of(user));
+		assertTrue(userService.updateFirstName(userID, firstName));
+	}
+
+	@Test
+	public void updateFirstNameTestFalse(){
+		int userID = 1;
+		String firstName = "Jennica";
+		when(userRepository.findByUserID(anyInt())).thenReturn(java.util.Optional.empty());
+		assertFalse(userService.updateFirstName(userID, firstName));
+	}
+
+	@Test
+	public void updateLastNameTestTrue(){
+		int userID = 1;
+		String lastName = "LeClerc";
+		User user = new User();
+		user.setUserID(userID);
+		when(userRepository.findByUserID(anyInt())).thenReturn(java.util.Optional.of(user));
+		assertTrue(userService.updateLastName(userID, lastName));
+	}
+
+	@Test
+	public void updateLastNameTestFalse(){
+		int userID = 1;
+		String lastName = "LeClerc";
+		when(userRepository.findByUserID(anyInt())).thenReturn(java.util.Optional.empty());
+		assertFalse(userService.updateLastName(userID, lastName));
+	}
+
 	@Test
 	public void gettersSetters(){
-		UserRepository repo = null;
-		userService.setUserRepository(repo);
+		UserService userService = new UserService();
+		UserRepository userRepository = null;
+		userService.setUserRepository(userRepository);
 		assertNull(userService.getUserRepository());
 	}
 }
