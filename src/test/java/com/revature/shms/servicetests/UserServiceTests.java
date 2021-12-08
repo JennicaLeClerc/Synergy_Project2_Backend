@@ -77,42 +77,35 @@ public class UserServiceTests {
 	}
 
 	@Test
-	public void updatePasswordTestTrue(){
+	public void updatePasswordTest(){
 		String username = "jlecl";
 		String oldPassword = "Password";
 		String newPassword = "new";
+
+		// no info
+		when(userRepository.findByUsername(any())).thenReturn(java.util.Optional.empty());
+		assertFalse(userService.updatePassword(username, oldPassword, newPassword));
+
 		User user = new User();
 		user.setUsername(username);
 		user.setPassword(oldPassword);
 		when(userRepository.findByUsername(any())).thenReturn(java.util.Optional.of(user));
+
+		// wrong password
+		assertFalse(userService.updatePassword(username, newPassword, oldPassword));
+
+		// right password
 		assertTrue(userService.updatePassword(username, oldPassword, newPassword));
 	}
 
 	@Test
-	public void updatePasswordTestWrongPassword(){
-		String username = "jlecl";
-		String rightPassword = "Password";
-		String wrongPassword = "new";
-		User user = new User();
-		user.setUsername(username);
-		user.setPassword(rightPassword);
-		when(userRepository.findByUsername(any())).thenReturn(java.util.Optional.of(user));
-		assertFalse(userService.updatePassword(username, wrongPassword, rightPassword));
-	}
-
-	@Test
-	public void updatePasswordTestFalse(){
-		String username = "jlecl";
-		String oldPassword = "Password";
-		String newPassword = "new";
-		when(userRepository.findByUsername(any())).thenReturn(java.util.Optional.empty());
-		assertFalse(userService.updatePassword(username, oldPassword, newPassword));
-	}
-
-	@Test
-	public void updateFirstNameTestTrue(){
+	public void updateFirstNameTest(){
 		int userID = 1;
 		String firstName = "Jennica";
+
+		when(userRepository.findByUserID(anyInt())).thenReturn(java.util.Optional.empty());
+		assertFalse(userService.updateFirstName(userID, firstName));
+
 		User user = new User();
 		user.setUserID(userID);
 		when(userRepository.findByUserID(anyInt())).thenReturn(java.util.Optional.of(user));
@@ -120,29 +113,17 @@ public class UserServiceTests {
 	}
 
 	@Test
-	public void updateFirstNameTestFalse(){
-		int userID = 1;
-		String firstName = "Jennica";
-		when(userRepository.findByUserID(anyInt())).thenReturn(java.util.Optional.empty());
-		assertFalse(userService.updateFirstName(userID, firstName));
-	}
-
-	@Test
-	public void updateLastNameTestTrue(){
+	public void updateLastNameTest(){
 		int userID = 1;
 		String lastName = "LeClerc";
+
+		when(userRepository.findByUserID(anyInt())).thenReturn(java.util.Optional.empty());
+		assertFalse(userService.updateLastName(userID, lastName));
+
 		User user = new User();
 		user.setUserID(userID);
 		when(userRepository.findByUserID(anyInt())).thenReturn(java.util.Optional.of(user));
 		assertTrue(userService.updateLastName(userID, lastName));
-	}
-
-	@Test
-	public void updateLastNameTestFalse(){
-		int userID = 1;
-		String lastName = "LeClerc";
-		when(userRepository.findByUserID(anyInt())).thenReturn(java.util.Optional.empty());
-		assertFalse(userService.updateLastName(userID, lastName));
 	}
 
 	@Test
