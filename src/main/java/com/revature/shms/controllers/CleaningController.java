@@ -12,12 +12,12 @@ import org.springframework.web.bind.annotation.*;
 @RestController()
 @RequestMapping(value = "/employee")
 public class CleaningController {
-	@Autowired
-	private CleaningService service;
 
+	@Autowired
+	private CleaningService cleaningService;
 
 	@GetMapping("/cleaning/list")
-	public Page<Cleaning> getCleaning(@RequestParam("id") int employeeID,@RequestParam("pageNumber") int pageNumber, @RequestParam("pageSize") int pageSize, @RequestParam("sortBy") String sortBy) throws NotFound {
-		return service.findAllCleaningsByEmployee(employeeID, PageRequest.of(pageNumber,  pageSize, Sort.by(sortBy).descending()));
+	public Page<Cleaning> getCleaning(@RequestParam("id") int employeeID, @RequestParam("pageNumber") int pageNumber, @RequestParam("pageSize") int pageSize, @RequestParam("sortBy") String sortBy) throws NotFound {
+		return cleaningService.findAllCleaningsByEmployee(employeeID, PageRequest.of(pageNumber,  pageSize, Sort.by(sortBy).descending()));
 	}
 }
