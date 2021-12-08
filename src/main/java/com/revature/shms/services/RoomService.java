@@ -1,6 +1,5 @@
 package com.revature.shms.services;
 
-
 import com.revature.shms.enums.*;
 import com.revature.shms.models.Room;
 import com.revature.shms.repositories.RoomRepository;
@@ -56,27 +55,7 @@ public class RoomService {
 				&& !room.isOccupied();
 	}
 
-	/**
-	 * Returns a room page by finding all or any rooms that are available
-	 * @param pageable the page information.
-	 * @return Page<Room> List of all rooms that are available (is clean, not occupied, and no work issues)
-	 */
-	public Page<Room> findAllAvailable(Pageable pageable){
-		return roomRepository.findAllByStatusAndIsOccupiedAndWorkStatusOrderByRoomNumberDesc(
-				CleaningStatus.CLEAN, false, WorkStatus.NO_ISSUES,pageable);
-	}
-
 	// --- isOccupied ---
-	/**
-	 * Gets all Rooms with the given Occupation status.
-	 * @param isOccupied is the room Occupied or not
-	 * @param pageable the page information.
-	 * @return List<Room> of all rooms that are the given occupation status.
-	 */
-	public Page<Room> findAllByIsOccupied(boolean isOccupied,Pageable pageable){
-		return roomRepository.findAllByIsOccupied(isOccupied, pageable);
-	}
-
 	/**
 	 * Sets the room Occupation status of the given room to the given status.
 	 * @param roomNumber the room to be worked on by room number.
@@ -130,7 +109,7 @@ public class RoomService {
 	 * @return Room with a scheduled cleaning status.
 	 * @throws NotFound is thrown if the room with the given room number does not exist.
 	 */
-	public Room scheduleCleaning(int roomNumber) throws NotFound {
+	public Room scheduledCleaning(int roomNumber) throws NotFound {
 		return setRoomStatus(roomNumber, CleaningStatus.SCHEDULED);
 	}
 
@@ -140,7 +119,7 @@ public class RoomService {
 	 * @return Room with no scheduled cleaning.
 	 * @throws NotFound is thrown if the room with the given room number does not exist.
 	 */
-	public Room notScheduleCleaning(int roomNumber) throws NotFound {
+	public Room notScheduledCleaning(int roomNumber) throws NotFound {
 		return setRoomStatus(roomNumber, CleaningStatus.NOT_SCHEDULED);
 	}
 
@@ -164,26 +143,6 @@ public class RoomService {
 		return setRoomStatus(roomNumber, CleaningStatus.CLEAN);
 	}
 
-	/**
-	 * Gets all Rooms with the given Cleaning Status.
-	 * @param status the Cleaning Status to be matched.
-	 * @param pageable the page information.
-	 * @return List<Room> of all rooms with the given Cleaning Status.
-	 */
-	public Page<Room> findAllByStatus(CleaningStatus status, Pageable pageable){
-		return roomRepository.findAllByStatus(status,pageable);
-	}
-
-	/**
-	 * Gets all Rooms without the given Cleaning status.
-	 * @param status the Cleaning Status to NOT be matched.
-	 * @param pageable the page information.
-	 * @return List<Room> of all rooms without the given Cleaning Status.
-	 */
-	public Page<Room> findAllByNotStatus(CleaningStatus status, Pageable pageable){
-		return roomRepository.findAllByStatusNot(status,pageable);
-	}
-
 	// --- WorkStatus ---
 	/**
 	 * Set the room with the given work status.
@@ -194,26 +153,6 @@ public class RoomService {
 	public Room setWorkStatus(Room room, WorkStatus workStatus){
 		room.setWorkStatus(workStatus);
 		return room;
-	}
-
-	/**
-	 * Gets all Rooms with the given Needs Service status.
-	 * @param workStatus the Work Status to be matched.
-	 * @param pageable the page information.
-	 * @return List<Room> of all rooms that are the given Needs Service status.
-	 */
-	public Page<Room> findAllByWorkStatus(WorkStatus workStatus,Pageable pageable){
-		return roomRepository.findAllByWorkStatus(workStatus,pageable);
-	}
-
-	/**
-	 * Gets all Rooms without the given Work Status.
-	 * @param workStatus the Work Status to NOT be matched.
-	 * @param pageable the page information.
-	 * @return List<Room> of all rooms without the given Work Status.
-	 */
-	public Page<Room> findAllByNotWorkStatus(WorkStatus workStatus,Pageable pageable){
-		return roomRepository.findAllByWorkStatusNot(workStatus,pageable);
 	}
 
 	/**
@@ -280,5 +219,65 @@ public class RoomService {
 	 */
 	public Room findByRoomNumber(int roomNumber) throws NotFound {
 		return roomRepository.findByRoomNumber(roomNumber).orElseThrow(NotFound::new);
+	}
+
+	/**
+	 * Returns a room page by finding all or any rooms that are available
+	 * @param pageable the page information.
+	 * @return Page<Room> List of all rooms that are available (is clean, not occupied, and no work issues)
+	 */
+	public Page<Room> findAllAvailable(Pageable pageable){
+		return roomRepository.findAllByStatusAndIsOccupiedAndWorkStatusOrderByRoomNumberDesc(
+				CleaningStatus.CLEAN, false, WorkStatus.NO_ISSUES,pageable);
+	}
+
+	/**
+	 * Gets all Rooms with the given Occupation status.
+	 * @param isOccupied is the room Occupied or not
+	 * @param pageable the page information.
+	 * @return List<Room> of all rooms that are the given occupation status.
+	 */
+	public Page<Room> findAllByIsOccupied(boolean isOccupied,Pageable pageable){
+		return roomRepository.findAllByIsOccupied(isOccupied, pageable);
+	}
+
+	/**
+	 * Gets all Rooms with the given Cleaning Status.
+	 * @param status the Cleaning Status to be matched.
+	 * @param pageable the page information.
+	 * @return List<Room> of all rooms with the given Cleaning Status.
+	 */
+	public Page<Room> findAllByStatus(CleaningStatus status, Pageable pageable){
+		return roomRepository.findAllByStatus(status,pageable);
+	}
+
+	/**
+	 * Gets all Rooms without the given Cleaning status.
+	 * @param status the Cleaning Status to NOT be matched.
+	 * @param pageable the page information.
+	 * @return List<Room> of all rooms without the given Cleaning Status.
+	 */
+	public Page<Room> findAllByNotStatus(CleaningStatus status, Pageable pageable){
+		return roomRepository.findAllByStatusNot(status,pageable);
+	}
+
+	/**
+	 * Gets all Rooms with the given Needs Service status.
+	 * @param workStatus the Work Status to be matched.
+	 * @param pageable the page information.
+	 * @return List<Room> of all rooms that are the given Needs Service status.
+	 */
+	public Page<Room> findAllByWorkStatus(WorkStatus workStatus,Pageable pageable){
+		return roomRepository.findAllByWorkStatus(workStatus,pageable);
+	}
+
+	/**
+	 * Gets all Rooms without the given Work Status.
+	 * @param workStatus the Work Status to NOT be matched.
+	 * @param pageable the page information.
+	 * @return List<Room> of all rooms without the given Work Status.
+	 */
+	public Page<Room> findAllByNotWorkStatus(WorkStatus workStatus,Pageable pageable){
+		return roomRepository.findAllByWorkStatusNot(workStatus,pageable);
 	}
 }

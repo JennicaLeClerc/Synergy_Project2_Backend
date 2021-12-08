@@ -54,7 +54,7 @@ public class CleaningService {
 	public Room scheduleCleaningRoom(Employee employee, Employee employeeTarget, Room room, int priority) throws NotFound {
 		if (employeeTarget.getEmployeeType().equals(EmployeeType.RECEPTIONIST)) return null;
 		createCleaning(new Cleaning(0,room,employeeTarget, Instant.now().toEpochMilli(),priority));
-		return roomService.scheduleCleaning(room.getRoomNumber());
+		return roomService.scheduledCleaning(room.getRoomNumber());
 	}
 
 	/**

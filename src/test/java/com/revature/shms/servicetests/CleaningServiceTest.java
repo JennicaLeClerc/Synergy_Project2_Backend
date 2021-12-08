@@ -51,7 +51,7 @@ public class CleaningServiceTest {
 		Room room = new Room();
 		employee.setEmployeeType(EmployeeType.MAINTENANCE);
 		room.setStatus(CleaningStatus.NOT_SCHEDULED);
-		when(roomService.scheduleCleaning(anyInt())).thenReturn(room);
+		when(roomService.scheduledCleaning(anyInt())).thenReturn(room);
 		assertEquals(room, cleaningService.scheduleCleaningRoom(null, employee, room, 0));
 	}
 
