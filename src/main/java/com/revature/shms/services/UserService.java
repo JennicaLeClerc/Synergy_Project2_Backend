@@ -51,9 +51,9 @@ public class UserService{
     /**
      * Update password by the provided username.
      * @param username the username that already exists on the repository.
-     * @param oldPassword the password that the employee currently uses.
-     * @param newPassword the password that the employee wants to switch to.
-     * Get the current username from the employee.
+     * @param oldPassword the password that the user currently uses.
+     * @param newPassword the password that the user wants to switch to.
+     * Get the current username from the user.
      * If the username is already in the database, then we can update the password
      */
     public boolean updatePassword(String username, String oldPassword, String newPassword) {
@@ -77,8 +77,8 @@ public class UserService{
     /**
      * Update password by the provided username.
      * @param userID the userID that already exists on the repository.
-     * @param oldPassword the password that the employee currently uses.
-     * @param newPassword the password that the employee wants to switch to.
+     * @param oldPassword the password that the user currently uses.
+     * @param newPassword the password that the user wants to switch to.
      * Get the current userID from the user.
      * If the userID is already in the database, then we can update the password
      */
