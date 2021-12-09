@@ -82,12 +82,11 @@ public class EmployeeService {
 	/**
 	 * Update password by the provided username.
 	 * @param employeeID the employeeID that already exists on the repository.
-	 * @param oldPassword the password that the user currently uses.
-	 * @param newPassword the password that the user wants to switch to.
+	 * @param oldPassword the password that the employee currently uses.
+	 * @param newPassword the password that the employee wants to switch to.
 	 * Get the current employeeID from the employee.
 	 * If the employeeID is already in the database, then we can update the password
 	 */
-
 	public boolean updatePassword(int employeeID, String oldPassword, String newPassword) {
 		Employee  employee = employeeRepository.findByEmployeeID(employeeID).orElse(null);
 		if(employee != null) {
