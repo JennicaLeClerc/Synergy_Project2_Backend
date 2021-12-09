@@ -19,8 +19,8 @@ public class UserController {
     private UserService userService;
 
     @GetMapping("/{userId}")
-    public ResponseEntity<?> findUserById(@PathVariable int userID) {
-        return ResponseEntity.ok(userRepository.findByUserID(userID));
+    public ResponseEntity<?> findUserById(@PathVariable int userId) {
+        return ResponseEntity.ok(userRepository.findByUserID(userId));
     }
 
     @PostMapping
