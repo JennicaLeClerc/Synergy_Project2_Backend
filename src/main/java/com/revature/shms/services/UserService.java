@@ -140,6 +140,26 @@ public class UserService{
         }
     }
 
+    /**
+     * Updating the last name of the user
+     * @param userID the user to be matched by userID
+     * @param email the email to be changed to.
+     * @return boolean if the userId exits then change the last name of the user
+     * Get the userId from the employee.
+     * If the last name is already in the database, then update the last name
+     */
+    public boolean updateEmail(int userID, String email){
+        User user = userRepository.findByUserID(userID).orElse(null);
+        if(user != null){
+            user.setEmail(email);
+            userRepository.save(user);
+            return true;
+        }
+        else{
+            return false;
+        }
+    }
+
     // -- Finds
     /**
      * Gets a list of all users.
