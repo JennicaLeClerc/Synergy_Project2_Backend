@@ -58,24 +58,29 @@ public class EmployeeServiceTests {
 	// -- Updates
 	@Test
 	public void updatePasswordTest(){
+		int employeeID = 1;
 		String username = "jlecl";
 		String oldPassword = "Password";
 		String newPassword = "new";
 
-		// no info
 		when(employeeRepository.findByUsername(any())).thenReturn(java.util.Optional.empty());
-		assertFalse(employeeService.updatePassword(username, oldPassword, newPassword));
+		assertFalse(employeeService.updatePassword(username, oldPassword, newPassword)); // no info
+
+		when(employeeRepository.findByEmployeeID(anyInt())).thenReturn(java.util.Optional.empty());
+		assertFalse(employeeService.updatePassword(employeeID, oldPassword, newPassword)); // no info
 
 		Employee employee = new Employee();
+		employee.setEmployeeID(employeeID);
 		employee.setUsername(username);
 		employee.setPassword(oldPassword);
-
-		// wrong password
 		when(employeeRepository.findByUsername(any())).thenReturn(java.util.Optional.of(employee));
-		assertFalse(employeeService.updatePassword(username, newPassword, oldPassword));
+		assertFalse(employeeService.updatePassword(username, newPassword, oldPassword)); // wrong password
+		assertTrue(employeeService.updatePassword(username, oldPassword, newPassword)); // right password
 
-		// right password
-		assertTrue(employeeService.updatePassword(username, oldPassword, newPassword));
+		employee.setPassword(oldPassword);
+		when(employeeRepository.findByEmployeeID(anyInt())).thenReturn(java.util.Optional.of(employee));
+		assertFalse(employeeService.updatePassword(employeeID, newPassword, oldPassword)); // wrong password
+		assertTrue(employeeService.updatePassword(employeeID, oldPassword, newPassword)); // right password
 	}
 
 	@Test
