@@ -96,6 +96,20 @@ public class UserServiceTests {
 		assertTrue(userService.updateLastName(userID, lastName));
 	}
 
+	@Test
+	public void updateEmailTest(){
+		int userID = 1;
+		String email = "email@email.com";
+
+		when(userRepository.findByUserID(anyInt())).thenReturn(java.util.Optional.empty());
+		assertFalse(userService.updateEmail(userID, email));
+
+		User user = new User();
+		user.setUserID(userID);
+		when(userRepository.findByUserID(anyInt())).thenReturn(java.util.Optional.of(user));
+		assertTrue(userService.updateEmail(userID, email));
+	}
+
 	// -- Finds
 	@Test
 	public void findAllUsersTest(){

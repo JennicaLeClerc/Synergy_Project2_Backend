@@ -17,6 +17,7 @@ public class User extends secUserDetails{
 
 	String firstName;
 	String lastName;
+	String email;
 
 	@Column(nullable = false, unique = true)
 	String username;
