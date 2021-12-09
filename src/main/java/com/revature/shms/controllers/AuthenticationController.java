@@ -25,6 +25,7 @@ public class AuthenticationController {
     private JwtUtil jwtUtil;
     @Autowired
     private UserService userService;
+
 	@CrossOrigin
     @RequestMapping(value = "/authenticate", method = RequestMethod.POST)
     public ResponseEntity<?> createAuthToken(@RequestBody AuthenticationRequest authRequest) throws Exception{
@@ -43,7 +44,5 @@ public class AuthenticationController {
         final String jwt = jwtUtil.generateToken(userDetails);
 
         return ResponseEntity.ok(new AuthenticationResponse(jwt));
-
     }
-
 }

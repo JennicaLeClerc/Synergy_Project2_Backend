@@ -31,15 +31,22 @@ public class CleaningService {
 	@Autowired
 	private RoomService roomService;
 
+	// -- Create/Delete
 	/**
-	 * Gets All Cleanings assigned to a specific employee by employeeID.
-	 * @param employeeID the employee to match by employeeID.
-	 * @param pageable the page information.
-	 * @return all Cleanings sorted that are assigned to employee.
-	 * @throws NotFound is thrown if the employee with the given ID does not exist.
+	 * Saves the cleaning information to the database and returns the original object
+	 * @param cleaning the cleaning information to match.
+	 * @return the cleaning information with it saved to the database.
 	 */
-	public Page<Cleaning> employeeCleaningToDo(int employeeID,Pageable pageable) throws NotFound {
-		return findAllCleaningsByEmployee(employeeService.findEmployeeByID(employeeID), pageable);
+	public Cleaning createCleaning(Cleaning cleaning){
+		return cleaningRepository.save(cleaning);
+	}
+
+	/**
+	 * Deletes the cleaning information from the database
+	 * @param cleaning the cleaning information to match
+	 */
+	public void removeCleaning(Cleaning cleaning){
+		cleaningRepository.delete(cleaning);
 	}
 
 	/**
@@ -54,9 +61,10 @@ public class CleaningService {
 	public Room scheduleCleaningRoom(Employee employee, Employee employeeTarget, Room room, int priority) throws NotFound {
 		if (employeeTarget.getEmployeeType().equals(EmployeeType.RECEPTIONIST)) return null;
 		createCleaning(new Cleaning(0,room,employeeTarget, Instant.now().toEpochMilli(),priority));
-		return roomService.scheduleCleaning(room.getRoomNumber());
+		return roomService.scheduledCleaning(room.getRoomNumber());
 	}
 
+	// -- Cleaning Start/Stop
 	/**
 	 * If you aren't a Receptionist, then you delete the previous Cleaning ID for that room number and start another
 	 * with the Cleaning status of In Progress.
@@ -86,6 +94,7 @@ public class CleaningService {
 		return roomService.finishCleaning(roomNumber);
 	}
 
+	// -- Finds
 	/**
 	 * Gets All Cleanings by Priority then DateAdded.
 	 * @param pageable the page information.
@@ -96,13 +105,14 @@ public class CleaningService {
 	}
 
 	/**
-	 * Gets All Cleanings assigned to a specific employee.
-	 * @param employee the employee to match.
+	 * Gets All Cleanings assigned to a specific employee by employeeID.
+	 * @param employeeID the employee to match by employeeID.
 	 * @param pageable the page information.
 	 * @return all Cleanings sorted that are assigned to employee.
+	 * @throws NotFound is thrown if the employee with the given ID does not exist.
 	 */
-	public Page<Cleaning> findAllCleaningsByEmployee(Employee employee, Pageable pageable){
-		return cleaningRepository.findAllByEmployeeOrderByPriorityDescDateAddedAsc(employee, pageable);
+	public Page<Cleaning> findAllCleaningsByEmployee(int employeeID, Pageable pageable) throws NotFound {
+		return cleaningRepository.findAllByEmployeeOrderByPriorityDescDateAddedAsc(employeeService.findEmployeeByID(employeeID), pageable);
 	}
 
 	/**
@@ -113,22 +123,5 @@ public class CleaningService {
 	 */
 	public Cleaning findByRoom(Room room) throws NotFound {
 		return cleaningRepository.findByRoom(room).orElseThrow(NotFound::new);
-	}
-
-	/**
-	 * Saves the cleaning information to the database and returns the original object
-	 * @param cleaning the cleaning information to match.
-	 * @return the cleaning information with it saved to the database.
-	 */
-	public Cleaning createCleaning(Cleaning cleaning){
-		return cleaningRepository.save(cleaning);
-	}
-
-	/**
-	 * Deletes the cleaning information from the database
-	 * @param cleaning the cleaning information to match
-	 */
-	public void removeCleaning(Cleaning cleaning){
-		cleaningRepository.delete(cleaning);
 	}
 }

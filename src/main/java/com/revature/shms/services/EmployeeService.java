@@ -14,8 +14,6 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.stereotype.Service;
 
-import java.util.*;
-
 @Service
 @Getter
 @Setter
@@ -56,45 +54,7 @@ public class EmployeeService {
 		throw new AccessDeniedException("Incorrect username/password");
 	}
 
-	/**
-	 * List of All Employees ordered by Employee Type.
-	 * @param pageable the page information.
-	 * @return List<Employee> of All employees.
-	 */
-	public Page<Employee> findAllEmployees(Pageable pageable){
-		return employeeRepository.findAllByOrderByEmployeeType(pageable);
-	}
-
-	/**
-	 * List of All Employees with the given Employee Type.
-	 * @param employeeType the employeeType to be matched.
-	 * @param pageable the page information.
-	 * @return List<Employee> of All employees with the given employeeType.
-	 */
-	public Page<Employee> findAllEmployeesByType(EmployeeType employeeType, Pageable pageable){
-		return employeeRepository.findByEmployeeType(employeeType, pageable);
-	}
-
-	/**
-	 * Gets the Employee with the matching employeeID.
-	 * @param employeeID the employeeID to match.
-	 * @return Employee with the given employeeID.
-	 * @throws NotFound is thrown if the employee with the given ID does not exist.
-	 */
-	public Employee findEmployeeByID(int employeeID) throws NotFound {
-		return employeeRepository.findByEmployeeID(employeeID).orElseThrow(NotFound::new);
-	}
-
-	/**
-	 * Gets the Employee with the matching userName.
-	 * @param userName the username to match.
-	 * @return Employee with the given username.
-	 * @throws NotFound is thrown if the employee with the given username does not exist.
-	 */
-	public Employee findEmployeeByUserName(String userName) throws NotFound {
-		return employeeRepository.findByUsername(userName).orElseThrow(NotFound::new);
-	}
-
+	// -- Updates
 	/**
 	 * Update password by the provided username.
 	 * @param username the username that already exists on the repository.
@@ -177,5 +137,45 @@ public class EmployeeService {
 		} else{
 			return false;
 		}
+	}
+
+	// -- Finds
+	/**
+	 * List of All Employees ordered by Employee Type.
+	 * @param pageable the page information.
+	 * @return List<Employee> of All employees.
+	 */
+	public Page<Employee> findAllEmployees(Pageable pageable){
+		return employeeRepository.findAllByOrderByEmployeeType(pageable);
+	}
+
+	/**
+	 * List of All Employees with the given Employee Type.
+	 * @param employeeType the employeeType to be matched.
+	 * @param pageable the page information.
+	 * @return List<Employee> of All employees with the given employeeType.
+	 */
+	public Page<Employee> findAllEmployeesByType(EmployeeType employeeType, Pageable pageable){
+		return employeeRepository.findByEmployeeType(employeeType, pageable);
+	}
+
+	/**
+	 * Gets the Employee with the matching employeeID.
+	 * @param employeeID the employeeID to match.
+	 * @return Employee with the given employeeID.
+	 * @throws NotFound is thrown if the employee with the given ID does not exist.
+	 */
+	public Employee findEmployeeByID(int employeeID) throws NotFound {
+		return employeeRepository.findByEmployeeID(employeeID).orElseThrow(NotFound::new);
+	}
+
+	/**
+	 * Gets the Employee with the matching userName.
+	 * @param userName the username to match.
+	 * @return Employee with the given username.
+	 * @throws NotFound is thrown if the employee with the given username does not exist.
+	 */
+	public Employee findEmployeeByUserName(String userName) throws NotFound {
+		return employeeRepository.findByUsername(userName).orElseThrow(NotFound::new);
 	}
 }

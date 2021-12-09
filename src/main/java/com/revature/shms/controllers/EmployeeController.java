@@ -24,8 +24,8 @@ public class EmployeeController {
     }
 
     @RequestMapping("/{employeeId}")
-    public ResponseEntity<?> getEmployeeById(@PathVariable String employeeId){
-        return ResponseEntity.ok( employeeRepository.findByEmployeeID(Integer.parseInt(employeeId)));
+    public ResponseEntity<?> getEmployeeById(@PathVariable int employeeID){
+        return ResponseEntity.ok( employeeRepository.findByEmployeeID(employeeID));
     }
 
     @PutMapping("/{employeeId}")

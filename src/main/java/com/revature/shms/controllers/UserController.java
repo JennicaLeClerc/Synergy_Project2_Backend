@@ -1,4 +1,5 @@
 package com.revature.shms.controllers;
+
 import com.revature.shms.models.User;
 import com.revature.shms.repositories.UserRepository;
 import com.revature.shms.services.UserService;
