@@ -23,16 +23,16 @@ public class EmployeeController {
         return ResponseEntity.ok(employeeService.createEmployee(employee));
     }
 
-    @RequestMapping("/{employeeId}")
+    @RequestMapping("/{employeeID}")
     public ResponseEntity<?> getEmployeeById(@PathVariable int employeeID){
         return ResponseEntity.ok( employeeRepository.findByEmployeeID(employeeID));
     }
 
-    @PutMapping("/{employeeId}")
-    public ResponseEntity<?> updatePassword(@PathVariable int employeeId,
+    @PutMapping("/{employeeID}")
+    public ResponseEntity<?> updatePassword(@PathVariable int employeeID,
                                             @RequestBody HashMap<String, String> password)
     {
-        return ResponseEntity.ok(employeeService.updatePassword(employeeId, password.get("old"),
+        return ResponseEntity.ok(employeeService.updatePassword(employeeID, password.get("old"),
                 password.get("new")));
     }
 }
