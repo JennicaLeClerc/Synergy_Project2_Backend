@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.HashMap;
 import java.util.Optional;
 
 @RestController
@@ -17,23 +18,20 @@ public class UserController {
     @Autowired
     private UserService userService;
 
-
     @GetMapping("/{userId}")
     public ResponseEntity<?> findUserById(@PathVariable String userId) {
-        return ResponseEntity.ok( userRepository.findByUserID(Integer.parseInt(userId)));
+        return ResponseEntity.ok(userRepository.findByUserID(Integer.parseInt(userId)));
     }
 
     @PostMapping
     public ResponseEntity<?> createNewUser(@RequestBody User user) {
-		return ResponseEntity.ok( userService.createNewUser(user));
+        return ResponseEntity.ok(userService.createNewUser(user));
     }
 
-    /**
-     * Logs out the user and redirect them to the logout page.
-     * @return String that redirects the user to the logout page.
-     */
-    //@RequestMapping(value = "/logout", method = RequestMethod.GET)
-    //public String logout(){
-      //  return "redirect:logoutPage";
-    //}
+    @PutMapping("/{userID}")
+    public ResponseEntity<?> updatePassword(@PathVariable int userID,
+                                            @RequestBody HashMap<String, String> password) {
+        return ResponseEntity.ok(userService.updatePassword(userID, password.get("old"),
+                password.get("new")));
+    }
 }
