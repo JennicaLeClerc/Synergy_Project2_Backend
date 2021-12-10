@@ -51,9 +51,9 @@ public class UserService{
     /**
      * Update password by the provided username.
      * @param username the username that already exists on the repository.
-     * @param oldPassword the password that the employee currently uses.
-     * @param newPassword the password that the employee wants to switch to.
-     * Get the current username from the employee.
+     * @param oldPassword the password that the user currently uses.
+     * @param newPassword the password that the user wants to switch to.
+     * Get the current username from the user.
      * If the username is already in the database, then we can update the password
      */
     public boolean updatePassword(String username, String oldPassword, String newPassword) {
@@ -75,11 +75,37 @@ public class UserService{
     }
 
     /**
+     * Update password by the provided username.
+     * @param userID the userID that already exists on the repository.
+     * @param oldPassword the password that the user currently uses.
+     * @param newPassword the password that the user wants to switch to.
+     * Get the current userID from the user.
+     * If the userID is already in the database, then we can update the password
+     */
+    public boolean updatePassword(int userID, String oldPassword, String newPassword) {
+        User user = userRepository.findByUserID(userID).orElse(null);
+        if(user != null) {
+            if(user.getPassword().equals(oldPassword)){
+                user.setPassword(newPassword);
+                userRepository.save(user);
+                return true;
+            }
+            else{
+                // Username/Password invalid.
+                return false;
+            }
+        }
+        else{
+            return false;
+        }
+    }
+
+    /**
      * Updating the first name of the user
      * @param userID the user to be matched by userID
      * @param firstName the first name to be changed to
      * @return boolean if the userId exits then change the firstname of the user
-     * Get the userId from the employee.
+     * Get the userID from the user.
      * If the first name is already in the database, then update the first name
      */
     public boolean updateFirstName(int userID, String firstName){
@@ -99,13 +125,33 @@ public class UserService{
      * @param userID the user to be matched by userID
      * @param lastName the last name to be changed to.
      * @return boolean if the userId exits then change the last name of the user
-     * Get the userId from the employee.
+     * Get the userID from the user.
      * If the last name is already in the database, then update the last name
      */
     public boolean updateLastName(int userID, String lastName){
         User user = userRepository.findByUserID(userID).orElse(null);
         if(user != null){
             user.setLastName(lastName);
+            userRepository.save(user);
+            return true;
+        }
+        else{
+            return false;
+        }
+    }
+
+    /**
+     * Updating the last name of the user
+     * @param userID the user to be matched by userID
+     * @param email the email to be changed to.
+     * @return boolean if the userId exits then change the last name of the user
+     * Get the userId from the employee.
+     * If the last name is already in the database, then update the last name
+     */
+    public boolean updateEmail(int userID, String email){
+        User user = userRepository.findByUserID(userID).orElse(null);
+        if(user != null){
+            user.setEmail(email);
             userRepository.save(user);
             return true;
         }
