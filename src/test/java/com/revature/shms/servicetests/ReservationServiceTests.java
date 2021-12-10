@@ -120,8 +120,10 @@ public class ReservationServiceTests {
 		int reservationID = 1;
 		Reservation reservation = new Reservation();
 		reservation.setReservationID(reservationID);
-		when(reservationRepository.findByUserReserve_UserID(anyInt())).thenReturn(java.util.Optional.of(reservation));
-		assertEquals(reservationID, reservationService.findReservationByUserID(reservationID).getReservationID());
+		List<Reservation> reservations = new ArrayList<>();
+		reservations.add(reservation);
+		when(reservationRepository.findByUserReserve_UserID(anyInt())).thenReturn(java.util.Optional.of(reservations));
+		assertEquals(reservationID, reservationService.findReservationByUserID(reservationID));
 	}
 
 	@Test
@@ -137,9 +139,7 @@ public class ReservationServiceTests {
 	@Test
 	public void gettersSetters() {
 		ReservationService reservationService = new ReservationService();
-
 		ReservationRepository reservationRepository = null;
-
 		reservationService.setReservationRepository(reservationRepository);
 		assertEquals(reservationRepository, reservationService.getReservationRepository());
 	}

@@ -14,6 +14,8 @@ import org.springframework.data.domain.Sort;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.text.ParseException;
+
 @RestController
 @RequestMapping("/reservations")
 public class ReservationController {
@@ -45,4 +47,25 @@ public class ReservationController {
     public ResponseEntity<?> setDateReservation(@PathVariable("id") int reservationID, @RequestParam("startDate") String startDate, @RequestParam("startDate") String endDate) throws NotFound {
         return ResponseEntity.ok(reservationService.changeDateOfReservation(reservationID, startDate, endDate));
     }
+
+    @PostMapping("/username")
+    public ResponseEntity<?> getReservationsByUsername(@PathVariable("username") String username) {
+        return ResponseEntity.ok(reservationService.getAllReservationsOfUser(username));
+    }
+
+    @GetMapping("/status/pending")
+    public ResponseEntity<?> getAllPending(){
+        return ResponseEntity.ok(reservationService.getAllPendingStatus());
+    }
+
+    @GetMapping("/start")
+    public ResponseEntity<?> startDateLessToday() throws ParseException {
+        return ResponseEntity.ok(reservationService.getAllApprovedAndStartDate());
+    }
+
+    @GetMapping("/startend")
+    public ResponseEntity<?> startDateAndEndDate() throws ParseException {
+        return ResponseEntity.ok(reservationService.getAllApprovedAndStartandEnd());
+    }
+
 }

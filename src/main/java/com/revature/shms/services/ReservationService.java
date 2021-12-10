@@ -2,7 +2,9 @@ package com.revature.shms.services;
 
 import com.revature.shms.enums.ReservationStatus;
 import com.revature.shms.models.Reservation;
+import com.revature.shms.models.User;
 import com.revature.shms.repositories.ReservationRepository;
+import com.revature.shms.repositories.UserRepository;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -11,6 +13,12 @@ import org.omg.CosNaming.NamingContextPackage.NotFound;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 @Service
@@ -22,6 +30,8 @@ public class  ReservationService {
 
     @Autowired
 	ReservationRepository reservationRepository;
+    @Autowired
+    UserRepository userRepository;
 
     // -- Create/Delete
     /**
@@ -131,7 +141,7 @@ public class  ReservationService {
      * @return Reservation object of the specific user.
      * @throws NotFound exception if reservation not found.
      */
-    public Reservation findReservationByUserID(int userID) throws NotFound {
+    public List<Reservation> findReservationByUserID(int userID) throws NotFound {
         return reservationRepository.findByUserReserve_UserID(userID).orElseThrow(NotFound::new);
     }
 
@@ -144,4 +154,63 @@ public class  ReservationService {
     public Reservation findReservationByReservationID(int reservationId) throws NotFound {
         return reservationRepository.findByReservationID(reservationId).orElseThrow(NotFound::new);
     }
+
+
+    public List<Reservation> getAllReservationsOfUser (String username){
+        User user = userRepository.findByUsername(username).get();
+        return reservationRepository.findByUserReserve_UserID(user.getUserID()).get();
+    }
+
+    public List<Reservation> getAllPendingStatus(){
+        return reservationRepository.findAllByStatus(ReservationStatus.PENDING).get();
+    }
+
+    public List<Reservation> getAllApprovedAndStartDate() throws ParseException {
+        List<Reservation> reservations;
+        DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy/MM/dd");
+        LocalDateTime now = LocalDateTime.now();
+        now.plusDays(5);
+        Date todayPlusFive = new SimpleDateFormat("yyyy/MM/dd").parse(dtf.format(now));
+        reservations = reservationRepository.findAllByStatus(ReservationStatus.APPROVED).get();
+        List<Reservation> correctReservations = new ArrayList<>();
+        reservations.forEach(
+                reservation -> {
+                    try {
+                        Date date1 = new SimpleDateFormat("yyyy/MM/dd").parse(reservation.getStartDate());
+                        if (date1.compareTo(todayPlusFive) < 0){
+                            correctReservations.add(reservation);
+                        }
+                    } catch (ParseException e) {
+                        e.printStackTrace();
+                    }
+                }
+        );
+    return correctReservations;
+    }
+
+    public List<Reservation> getAllApprovedAndStartandEnd() throws ParseException {
+        List<Reservation> reservations;
+        DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy/MM/dd");
+        LocalDateTime now = LocalDateTime.now();
+        Date today = new SimpleDateFormat("yyyy/MM/dd").parse(dtf.format(now));
+        reservations = reservationRepository.findAllByStatus(ReservationStatus.APPROVED).get();
+        List<Reservation> correctReservations = new ArrayList<>();
+        reservations.forEach(
+                reservation -> {
+                    try {
+                        Date start = new SimpleDateFormat("yyyy/MM/dd").parse(reservation.getStartDate());
+                        Date end = new SimpleDateFormat("yyyy/MM/dd").parse(reservation.getEndDate());
+                        if (start.compareTo(today) < 0 && end.compareTo(today) > 0 ){
+                            correctReservations.add(reservation);
+                        }
+                    } catch (ParseException e) {
+                        e.printStackTrace();
+                    }
+                }
+        );
+        return correctReservations;
+    }
+
+
+
 }
