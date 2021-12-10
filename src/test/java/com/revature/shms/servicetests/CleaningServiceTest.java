@@ -53,15 +53,13 @@ public class CleaningServiceTest {
 	@Test
 	public void scheduleCleaningRoomTest() throws NotFound {
 		Employee employee = new Employee();
-		employee.setEmployeeType(EmployeeType.RECEPTIONIST);
-		when(cleaningRepository.save(any())).thenReturn(new Cleaning());
-		assertNull(cleaningService.scheduleCleaningRoom(null, employee, null, 0));
-
 		Room room = new Room();
 		employee.setEmployeeType(EmployeeType.MAINTENANCE);
 		room.setStatus(CleaningStatus.NOT_SCHEDULED);
+		Cleaning c = new Cleaning();
 		when(roomService.scheduledCleaning(anyInt())).thenReturn(room);
-		assertEquals(room, cleaningService.scheduleCleaningRoom(null, employee, room, 0));
+		when(cleaningRepository.save(any())).thenReturn(c);
+		assertEquals(c, cleaningService.scheduleCleaningRoom( employee.getEmployeeID(), room.getRoomNumber(), 0));
 	}
 
 	// -- Cleaning Start/Stop
