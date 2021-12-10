@@ -14,8 +14,6 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.stereotype.Service;
 
-import java.util.*;
-
 @Service
 @Getter
 @Setter
@@ -56,6 +54,91 @@ public class EmployeeService {
 		throw new AccessDeniedException("Incorrect username/password");
 	}
 
+	// -- Updates
+	/**
+	 * Update password by the provided username.
+	 * @param username the username that already exists on the repository.
+	 * @param oldPassword the password that the user currently uses.
+	 * @param newPassword the password that the user wants to switch to.
+	 * Get the current username from the employee.
+	 * If the username is already in the database, then we can update the password
+	 */
+	public boolean updatePassword(String username, String oldPassword, String newPassword) {
+		Employee  employee = employeeRepository.findByUsername(username).orElse(null);
+		if(employee != null) {
+			if(employee.getPassword().equals(oldPassword)){
+				employee.setPassword(newPassword);
+				createEmployee(employee);
+				return true;
+			} else{
+				// Username/Password invalid.
+				return false;
+			}
+		} else{
+			return false;
+		}
+	}
+
+	/**
+	 * Update password by the provided username.
+	 * @param employeeID the employeeID that already exists on the repository.
+	 * @param oldPassword the password that the employee currently uses.
+	 * @param newPassword the password that the employee wants to switch to.
+	 * Get the current employeeID from the employee.
+	 * If the employeeID is already in the database, then we can update the password
+	 */
+	public boolean updatePassword(int employeeID, String oldPassword, String newPassword) {
+		Employee  employee = employeeRepository.findByEmployeeID(employeeID).orElse(null);
+		if(employee != null) {
+			if(employee.getPassword().equals(oldPassword)){
+				employee.setPassword(newPassword);
+				createEmployee(employee);
+				return true;
+			} else{
+				// Username/Password invalid.
+				return false;
+			}
+		} else{
+			return false;
+		}
+	}
+
+
+	/**
+	 * Updating the first name of the employee
+	 * @param employeeID the employee to be matched witht the given employeeID
+	 * @param firstName the first name to be changed to
+	 * @return boolean if the em exits then change the first name of the employee
+	 */
+	public boolean updateFirstName(int employeeID, String firstName){
+		Employee employee = employeeRepository.findByEmployeeID(employeeID).orElse(null);
+		if(employee != null){
+			employee.setFirstName(firstName);
+			createEmployee(employee);
+			return true;
+		} else{
+			return false;
+		}
+	}
+
+	/**
+	 * Updating the last name of the employee
+	 * @param employeeID the employee to be matched witht the given employeeID
+	 * @param lastName the last name to be changed to
+	 * @return boolean if the employeeId exits then change the last name of the employee
+	 */
+	public boolean updateLastName(int employeeID, String lastName){
+		Employee employee = employeeRepository.findByEmployeeID(employeeID).orElse(null);
+		if(employee != null){
+			employee.setLastName(lastName);
+			createEmployee(employee);
+			return true;
+		} else{
+			return false;
+		}
+	}
+
+	// -- Finds
 	/**
 	 * List of All Employees ordered by Employee Type.
 	 * @param pageable the page information.
@@ -93,63 +176,5 @@ public class EmployeeService {
 	 */
 	public Employee findEmployeeByUserName(String userName) throws NotFound {
 		return employeeRepository.findByUsername(userName).orElseThrow(NotFound::new);
-	}
-
-	/**
-	 * Update password by the provided username.
-	 * @param username the username that already exists on the repository.
-	 * @param oldPassword the password that the user currently uses.
-	 * @param newPassword the password that the user wants to switch to.
-	 * Get the current username from the employee.
-	 * If the username is already in the database, then we can update the password
-	 */
-	public boolean updatePassword(String username, String oldPassword, String newPassword) {
-		Employee  employee = employeeRepository.findByUsername(username).orElse(null);
-		if(employee != null) {
-			if(employee.getPassword().equals(oldPassword)){
-				employee.setPassword(newPassword);
-				createEmployee(employee);
-				return true;
-			} else{
-				// Username/Password invalid.
-				return false;
-			}
-		} else{
-			return false;
-		}
-	}
-
-	/**
-	 * Updating the first name of the employee
-	 * @param employeeID the employee to be matched witht the given employeeID
-	 * @param firstName the first name to be changed to
-	 * @return boolean if the em exits then change the first name of the employee
-	 */
-	public boolean updateFirstName(int employeeID, String firstName){
-		Employee employee = employeeRepository.findByEmployeeID(employeeID).orElse(null);
-		if(employee != null){
-			employee.setFirstName(firstName);
-			createEmployee(employee);
-			return true;
-		} else{
-			return false;
-		}
-	}
-
-	/**
-	 * Updating the last name of the employee
-	 * @param employeeID the employee to be matched witht the given employeeID
-	 * @param lastName the last name to be changed to
-	 * @return boolean if the employeeId exits then change the last name of the employee
-	 */
-	public boolean updateLastName(int employeeID, String lastName){
-		Employee employee = employeeRepository.findByEmployeeID(employeeID).orElse(null);
-		if(employee != null){
-			employee.setLastName(lastName);
-			createEmployee(employee);
-			return true;
-		} else{
-			return false;
-		}
 	}
 }

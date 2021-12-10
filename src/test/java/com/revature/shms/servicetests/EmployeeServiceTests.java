@@ -55,62 +55,32 @@ public class EmployeeServiceTests {
 		} catch (Exception ignored){}
 	}
 
-	@Test
-	public void getAllEmployeesTest(){
-		List<Employee> employeeList = new ArrayList<>();
-		employeeList.add(new Employee());
-		employeeList.add(new Employee());
-		Page<Employee> employeePage = new PageImpl<>(employeeList);
-		when(employeeRepository.findAllByOrderByEmployeeType(any())).thenReturn(employeePage);
-		assertEquals(employeeList, employeeService.findAllEmployees(null).getContent());
-	}
-
-	@Test
-	public void getAllEmployeesByTypeTest(){
-		EmployeeType employeeType = EmployeeType.RECEPTIONIST;
-		List<Employee> employeeList = new ArrayList<>();
-		employeeList.add(new Employee());
-		employeeList.add(new Employee());
-		Page<Employee> employeePage = new PageImpl<>(employeeList);
-		when(employeeRepository.findByEmployeeType(any(), any())).thenReturn(employeePage);
-		assertEquals(employeeList, employeeService.findAllEmployeesByType(employeeType,null).getContent());
-	}
-
-	@Test
-	public void getEmployeeByIDTest() throws NotFound {
-		Employee employee = new Employee();
-		when(employeeRepository.findByEmployeeID(anyInt())).thenReturn(java.util.Optional.of(employee));
-		assertEquals(employee, employeeService.findEmployeeByID(0));
-	}
-
-	@Test
-	public void getEmployeeByUserNameTest() throws NotFound {
-		String username = "username";
-		Employee employee = new Employee();
-		when(employeeRepository.findByUsername(any())).thenReturn(java.util.Optional.of(employee));
-		assertEquals(employee, employeeService.findEmployeeByUserName(username));
-	}
-
+	// -- Updates
 	@Test
 	public void updatePasswordTest(){
+		int employeeID = 1;
 		String username = "jlecl";
 		String oldPassword = "Password";
 		String newPassword = "new";
 
-		// no info
 		when(employeeRepository.findByUsername(any())).thenReturn(java.util.Optional.empty());
-		assertFalse(employeeService.updatePassword(username, oldPassword, newPassword));
+		assertFalse(employeeService.updatePassword(username, oldPassword, newPassword)); // no info
+
+		when(employeeRepository.findByEmployeeID(anyInt())).thenReturn(java.util.Optional.empty());
+		assertFalse(employeeService.updatePassword(employeeID, oldPassword, newPassword)); // no info
 
 		Employee employee = new Employee();
+		employee.setEmployeeID(employeeID);
 		employee.setUsername(username);
 		employee.setPassword(oldPassword);
-
-		// wrong password
 		when(employeeRepository.findByUsername(any())).thenReturn(java.util.Optional.of(employee));
-		assertFalse(employeeService.updatePassword(username, newPassword, oldPassword));
+		assertFalse(employeeService.updatePassword(username, newPassword, oldPassword)); // wrong password
+		assertTrue(employeeService.updatePassword(username, oldPassword, newPassword)); // right password
 
-		// right password
-		assertTrue(employeeService.updatePassword(username, oldPassword, newPassword));
+		employee.setPassword(oldPassword);
+		when(employeeRepository.findByEmployeeID(anyInt())).thenReturn(java.util.Optional.of(employee));
+		assertFalse(employeeService.updatePassword(employeeID, newPassword, oldPassword)); // wrong password
+		assertTrue(employeeService.updatePassword(employeeID, oldPassword, newPassword)); // right password
 	}
 
 	@Test
@@ -141,6 +111,44 @@ public class EmployeeServiceTests {
 		assertTrue(employeeService.updateLastName(userID, lastName));
 	}
 
+	// -- Finds
+	@Test
+	public void findAllEmployeesTest(){
+		List<Employee> employeeList = new ArrayList<>();
+		employeeList.add(new Employee());
+		employeeList.add(new Employee());
+		Page<Employee> employeePage = new PageImpl<>(employeeList);
+		when(employeeRepository.findAllByOrderByEmployeeType(any())).thenReturn(employeePage);
+		assertEquals(employeeList, employeeService.findAllEmployees(null).getContent());
+	}
+
+	@Test
+	public void findAllEmployeesByTypeTest(){
+		EmployeeType employeeType = EmployeeType.RECEPTIONIST;
+		List<Employee> employeeList = new ArrayList<>();
+		employeeList.add(new Employee());
+		employeeList.add(new Employee());
+		Page<Employee> employeePage = new PageImpl<>(employeeList);
+		when(employeeRepository.findByEmployeeType(any(), any())).thenReturn(employeePage);
+		assertEquals(employeeList, employeeService.findAllEmployeesByType(employeeType,null).getContent());
+	}
+
+	@Test
+	public void findEmployeeByIDTest() throws NotFound {
+		Employee employee = new Employee();
+		when(employeeRepository.findByEmployeeID(anyInt())).thenReturn(java.util.Optional.of(employee));
+		assertEquals(employee, employeeService.findEmployeeByID(0));
+	}
+
+	@Test
+	public void findEmployeeByUserNameTest() throws NotFound {
+		String username = "username";
+		Employee employee = new Employee();
+		when(employeeRepository.findByUsername(any())).thenReturn(java.util.Optional.of(employee));
+		assertEquals(employee, employeeService.findEmployeeByUserName(username));
+	}
+
+	// -- Getter/Setter
 	@Test
 	public void settersGettersTest(){
 		EmployeeService employeeService = new EmployeeService();

@@ -1,6 +1,5 @@
 package com.revature.shms.services;
 
-
 import com.revature.shms.enums.*;
 import com.revature.shms.models.Room;
 import com.revature.shms.repositories.RoomRepository;
@@ -12,7 +11,6 @@ import org.omg.CosNaming.NamingContextPackage.NotFound;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
-import org.springframework.security.core.parameters.P;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -56,27 +54,7 @@ public class RoomService {
 				&& !room.isOccupied();
 	}
 
-	/**
-	 * Returns a room page by finding all or any rooms that are available
-	 * @param pageable the page information.
-	 * @return Page<Room> List of all rooms that are available (is clean, not occupied, and no work issues)
-	 */
-	public Page<Room> findAllAvailable(Pageable pageable){
-		return roomRepository.findAllByStatusAndIsOccupiedAndWorkStatusOrderByRoomNumberDesc(
-				CleaningStatus.CLEAN, false, WorkStatus.NO_ISSUES,pageable);
-	}
-
 	// --- isOccupied ---
-	/**
-	 * Gets all Rooms with the given Occupation status.
-	 * @param isOccupied is the room Occupied or not
-	 * @param pageable the page information.
-	 * @return List<Room> of all rooms that are the given occupation status.
-	 */
-	public Page<Room> findAllByIsOccupied(boolean isOccupied,Pageable pageable){
-		return roomRepository.findAllByIsOccupied(isOccupied, pageable);
-	}
-
 	/**
 	 * Sets the room Occupation status of the given room to the given status.
 	 * @param roomNumber the room to be worked on by room number.
@@ -130,7 +108,7 @@ public class RoomService {
 	 * @return Room with a scheduled cleaning status.
 	 * @throws NotFound is thrown if the room with the given room number does not exist.
 	 */
-	public Room scheduleCleaning(int roomNumber) throws NotFound {
+	public Room scheduledCleaning(int roomNumber) throws NotFound {
 		return setRoomStatus(roomNumber, CleaningStatus.SCHEDULED);
 	}
 
@@ -140,7 +118,7 @@ public class RoomService {
 	 * @return Room with no scheduled cleaning.
 	 * @throws NotFound is thrown if the room with the given room number does not exist.
 	 */
-	public Room notScheduleCleaning(int roomNumber) throws NotFound {
+	public Room notScheduledCleaning(int roomNumber) throws NotFound {
 		return setRoomStatus(roomNumber, CleaningStatus.NOT_SCHEDULED);
 	}
 
@@ -164,6 +142,110 @@ public class RoomService {
 		return setRoomStatus(roomNumber, CleaningStatus.CLEAN);
 	}
 
+	// --- WorkStatus ---
+	/**
+	 * Set the room with the given work status.
+	 * @param roomNumber the room to be worked on by room number.
+	 * @param workStatus the status of the work on the room.
+	 * @return the room with the selected work status.
+	 * @throws NotFound is thrown if the room with the given room number does not exist.
+	 */
+	public Room setWorkStatus(int roomNumber, WorkStatus workStatus) throws NotFound {
+		Room room = findByRoomNumber(roomNumber);
+		room.setWorkStatus(workStatus);
+		return room;
+	}
+
+	/**
+	 * Sets the Work Status of the given room to In Progress.
+	 * @param roomNumber the room to be worked on by room number.
+	 * @return the room with an In Progress work status.
+	 * @throws NotFound is thrown if the room with the given room number does not exist.
+	 */
+	public Room startWorking(int roomNumber) throws NotFound {
+		return setWorkStatus(roomNumber, WorkStatus.IN_PROGRESS);
+	}
+
+	/**
+	 * Sets the Work Status of the given room to Scheduled.
+	 * @param roomNumber the room to be worked on by room number.
+	 * @return the room with a Scheduled work status.
+	 * @throws NotFound is thrown if the room with the given room number does not exist.
+	 */
+	public Room scheduleWorking(int roomNumber) throws NotFound {
+		return setWorkStatus(roomNumber, WorkStatus.SCHEDULED);
+	}
+
+	/**
+	 * Sets the Work Status of the given room to Not Scheduled.
+	 * @param roomNumber the room to be worked on by room number.
+	 * @return the room with a Not Scheduled work status.
+	 * @throws NotFound is thrown if the room with the given room number does not exist.
+	 */
+	public Room notScheduleWorking(int roomNumber) throws NotFound {
+		return setWorkStatus(roomNumber, WorkStatus.NOT_SCHEDULED);
+	}
+
+	/**
+	 * Sets the Work Status of the given room to No Issues.
+	 * @param roomNumber the room to be worked on by room number.
+	 * @return the room with a No Issues work status.
+	 * @throws NotFound is thrown if the room with the given room number does not exist.
+	 */
+	public Room finishWorking(int roomNumber) throws NotFound {
+		return setWorkStatus(roomNumber, WorkStatus.NO_ISSUES);
+	}
+
+	// --- Finds ---
+	/**
+	 *
+	 * @param pageable the page information.
+	 * @return List<Room> Ordered by Room Number in descending order.
+	 */
+	public Page<Room> findAllRooms(Pageable pageable){
+		return roomRepository.findAllByOrderByRoomNumberDesc(pageable);
+	}
+
+	/**
+	 * A Room with the given Room Number.
+	 * @param roomNumber the Room Number to be matched.
+	 * @return Room with the given Room Number.
+	 * @throws NotFound is thrown if the room number does not exist.
+	 */
+	public Room findByRoomNumber(int roomNumber) throws NotFound {
+		return roomRepository.findByRoomNumber(roomNumber).orElseThrow(NotFound::new);
+	}
+
+	/**
+	 * Gets all Rooms with the given Amenity.
+	 * @param amenity the Amenity to be matched.
+	 * @param pageable the page information.
+	 * @return List<Room> of all rooms that have the given Amenity.
+	 */
+	public Page<Room> findAllByAmenity(Amenities amenity, Pageable pageable){
+		return roomRepository.findAllByAmenitiesList_Amenity(amenity,pageable);
+	}
+
+	/**
+	 * Returns a room page by finding all or any rooms that are available
+	 * @param pageable the page information.
+	 * @return Page<Room> List of all rooms that are available (is clean, not occupied, and no work issues)
+	 */
+	public Page<Room> findAllAvailable(Pageable pageable){
+		return roomRepository.findAllByStatusAndIsOccupiedAndWorkStatusOrderByRoomNumberDesc(
+				CleaningStatus.CLEAN, false, WorkStatus.NO_ISSUES,pageable);
+	}
+
+	/**
+	 * Gets all Rooms with the given Occupation status.
+	 * @param isOccupied is the room Occupied or not
+	 * @param pageable the page information.
+	 * @return List<Room> of all rooms that are the given occupation status.
+	 */
+	public Page<Room> findAllByIsOccupied(boolean isOccupied,Pageable pageable){
+		return roomRepository.findAllByIsOccupied(isOccupied, pageable);
+	}
+
 	/**
 	 * Gets all Rooms with the given Cleaning Status.
 	 * @param status the Cleaning Status to be matched.
@@ -184,18 +266,6 @@ public class RoomService {
 		return roomRepository.findAllByStatusNot(status,pageable);
 	}
 
-	// --- WorkStatus ---
-	/**
-	 * Set the room with the given work status.
-	 * @param room the room to be worked on.
-	 * @param workStatus the status of the work on the room.
-	 * @return the room with the selected work status.
-	 */
-	public Room setWorkStatus(Room room, WorkStatus workStatus){
-		room.setWorkStatus(workStatus);
-		return room;
-	}
-
 	/**
 	 * Gets all Rooms with the given Needs Service status.
 	 * @param workStatus the Work Status to be matched.
@@ -214,71 +284,5 @@ public class RoomService {
 	 */
 	public Page<Room> findAllByNotWorkStatus(WorkStatus workStatus,Pageable pageable){
 		return roomRepository.findAllByWorkStatusNot(workStatus,pageable);
-	}
-
-	/**
-	 * Sets the Work Status of the given room to In Progress.
-	 * @param room the room to be worked on.
-	 * @return the room with an In Progress work status.
-	 */
-	public Room startWorking(Room room){
-		return setWorkStatus(room, WorkStatus.IN_PROGRESS);
-	}
-
-	/**
-	 * Sets the Work Status of the given room to Scheduled.
-	 * @param room the room to be worked on.
-	 * @return the room with a Scheduled work status.
-	 */
-	public Room scheduleWorking(Room room){
-		return setWorkStatus(room, WorkStatus.SCHEDULED);
-	}
-
-	/**
-	 * Sets the Work Status of the given room to Not Scheduled.
-	 * @param room the room to be worked on.
-	 * @return the room with a Not Scheduled work status.
-	 */
-	public Room notScheduleWorking(Room room){
-		return setWorkStatus(room, WorkStatus.NOT_SCHEDULED);
-	}
-
-	/**
-	 * Sets the Work Status of the given room to No Issues.
-	 * @param room the room to be worked on.
-	 * @return the room with a No Issues work status.
-	 */
-	public Room finishWorking(Room room){
-		return setWorkStatus(room, WorkStatus.NO_ISSUES);
-	}
-
-	// --- Finds ---
-	/**
-	 *
-	 * @param pageable the page information.
-	 * @return List<Room> Ordered by Room Number in descending order.
-	 */
-	public Page<Room> findAllRooms(Pageable pageable){
-		return roomRepository.findAllByOrderByRoomNumberDesc(pageable);
-	}
-
-	/**
-	 * Gets all Rooms with the given Amenity.
-	 * @param amenity the Amenity to be matched.
-	 * @param pageable the page information.
-	 * @return List<Room> of all rooms that have the given Amenity.
-	 */
-	public Page<Room> findAllByAmenity(Amenities amenity, Pageable pageable){
-		return roomRepository.findAllByAmenitiesList_Amenity(amenity,pageable);
-	}
-
-	/**
-	 * A Room with the given Room Number.
-	 * @param roomNumber the Room Number to be matched.
-	 * @return Room with the given Room Number.
-	 * @throws NotFound is thrown if the room number does not exist.
-	 */
-	public Room findByRoomNumber(int roomNumber) throws NotFound {
-		return roomRepository.findByRoomNumber(roomNumber).orElseThrow(NotFound::new);
 	}
 }

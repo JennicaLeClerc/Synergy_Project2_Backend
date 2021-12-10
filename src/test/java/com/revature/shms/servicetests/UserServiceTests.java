@@ -44,58 +44,33 @@ public class UserServiceTests {
 			assertTrue(e.getMessage().contains("Incorrect username/password"));
 		} catch (Exception ignored){}
 	}
-	
-	@Test
-	public void getUserByUserNameTest() throws NotFound {
-		User user = new User();
-		user.setUsername("Ryan");
-		user.setPassword("123123");
-		when(userRepository.findByUsername(any())).thenReturn(java.util.Optional.of(user));
-		assertEquals(user, userService.findUserByUsername("Ryan"));
-	}
-	
-	@Test
-	public void getAllUsersTest(){
-		List<User> users = new ArrayList<>();
-		users.add(new User());
-		users.add(new User());
-		users.add(new User());
-		users.add(new User());
-		users.add(new User());
-		users.add(new User());
-		Page<User> usersPage = new PageImpl<>(users);
-		when(userRepository.findAllByOrderByUserIDDesc(any())).thenReturn(usersPage);
-		assertEquals(users, userService.findAllUsers(null).getContent());
-	}
-	
-	@Test
-	public void getUserByUserId() throws NotFound {
-		User user = new User();
-		user.setUserID(123);
-		when(userRepository.findByUserID(anyInt())).thenReturn(java.util.Optional.of(user));
-		assertEquals(user, userService.findUserByUserID(123));
-	}
 
+	// -- Update
 	@Test
 	public void updatePasswordTest(){
+		int userID = 1;
 		String username = "jlecl";
 		String oldPassword = "Password";
 		String newPassword = "new";
 
-		// no info
 		when(userRepository.findByUsername(any())).thenReturn(java.util.Optional.empty());
-		assertFalse(userService.updatePassword(username, oldPassword, newPassword));
+		assertFalse(userService.updatePassword(username, oldPassword, newPassword)); // no info
+
+		when(userRepository.findByUserID(anyInt())).thenReturn(java.util.Optional.empty());
+		assertFalse(userService.updatePassword(userID, oldPassword, newPassword)); // no info
 
 		User user = new User();
+		user.setUserID(userID);
 		user.setUsername(username);
 		user.setPassword(oldPassword);
 		when(userRepository.findByUsername(any())).thenReturn(java.util.Optional.of(user));
+		assertFalse(userService.updatePassword(username, newPassword, oldPassword)); // wrong password
+		assertTrue(userService.updatePassword(username, oldPassword, newPassword)); // right password
 
-		// wrong password
-		assertFalse(userService.updatePassword(username, newPassword, oldPassword));
-
-		// right password
-		assertTrue(userService.updatePassword(username, oldPassword, newPassword));
+		user.setPassword(oldPassword);
+		when(userRepository.findByUserID(anyInt())).thenReturn(java.util.Optional.of(user));
+		assertFalse(userService.updatePassword(userID, newPassword, oldPassword)); // wrong password
+		assertTrue(userService.updatePassword(userID, oldPassword, newPassword)); // right password
 	}
 
 	@Test
@@ -126,6 +101,53 @@ public class UserServiceTests {
 		assertTrue(userService.updateLastName(userID, lastName));
 	}
 
+	@Test
+	public void updateEmailTest(){
+		int userID = 1;
+		String email = "email@email.com";
+
+		when(userRepository.findByUserID(anyInt())).thenReturn(java.util.Optional.empty());
+		assertFalse(userService.updateEmail(userID, email));
+
+		User user = new User();
+		user.setUserID(userID);
+		when(userRepository.findByUserID(anyInt())).thenReturn(java.util.Optional.of(user));
+		assertTrue(userService.updateEmail(userID, email));
+	}
+
+	// -- Finds
+	@Test
+	public void findAllUsersTest(){
+		List<User> users = new ArrayList<>();
+		users.add(new User());
+		users.add(new User());
+		users.add(new User());
+		users.add(new User());
+		users.add(new User());
+		users.add(new User());
+		Page<User> usersPage = new PageImpl<>(users);
+		when(userRepository.findAllByOrderByUserIDDesc(any())).thenReturn(usersPage);
+		assertEquals(users, userService.findAllUsers(null).getContent());
+	}
+
+	@Test
+	public void findUserByUserNameTest() throws NotFound {
+		User user = new User();
+		user.setUsername("Ryan");
+		user.setPassword("123123");
+		when(userRepository.findByUsername(any())).thenReturn(java.util.Optional.of(user));
+		assertEquals(user, userService.findUserByUsername("Ryan"));
+	}
+
+	@Test
+	public void findUserByUserId() throws NotFound {
+		User user = new User();
+		user.setUserID(123);
+		when(userRepository.findByUserID(anyInt())).thenReturn(java.util.Optional.of(user));
+		assertEquals(user, userService.findUserByUserID(123));
+	}
+
+	// -- Getter/Setter
 	@Test
 	public void gettersSetters(){
 		UserService userService = new UserService();
