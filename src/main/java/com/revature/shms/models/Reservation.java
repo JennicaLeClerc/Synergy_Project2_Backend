@@ -36,7 +36,8 @@ public class Reservation {
     @Column
     String accommodations;
 
-    @ManyToOne(cascade = CascadeType.ALL)
-    @JsonBackReference
-    private User userReserve;
+
+    @ManyToOne(cascade = CascadeType.MERGE)
+	@JsonBackReference
+    User userReserve;
 }
