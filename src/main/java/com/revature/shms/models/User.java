@@ -24,7 +24,7 @@ public class User extends secUserDetails{
 	String password;
 
 
-  	@OneToMany(mappedBy = "userReserve")
+  	@OneToMany(mappedBy = "userReserve", cascade = CascadeType.MERGE)
 	@JsonManagedReference
-	private List<Reservation> reservations;
+	List<Reservation> reservations;
 }

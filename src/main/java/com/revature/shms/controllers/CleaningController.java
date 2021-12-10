@@ -13,13 +13,13 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController()
-@RequestMapping(value = "/employee")
+@RequestMapping(value = "/cleaning")
 public class CleaningController {
 	@Autowired
 	private CleaningService service;
 
 
-	@GetMapping("/cleaning/list")
+	@GetMapping("/list")
 	public Page<Cleaning> getCleaning(@RequestParam("id") int employeeID,@RequestParam("pageNumber") int pageNumber, @RequestParam("pageSize") int pageSize, @RequestParam("sortBy") String sortBy) throws NotFound {
 		return service.employeeCleaningToDo(employeeID, PageRequest.of(pageNumber,  pageSize, Sort.by(sortBy).descending()));
 	}
