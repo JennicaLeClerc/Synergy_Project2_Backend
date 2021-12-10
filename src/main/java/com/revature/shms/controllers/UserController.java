@@ -20,8 +20,8 @@ public class UserController {
     private UserService userService;
 
     @GetMapping("/{userID}")
-    public ResponseEntity<?> findUserById(@PathVariable String userID) {
-        return ResponseEntity.ok(userRepository.findByUserID(Integer.parseInt(userID)));
+    public ResponseEntity<?> findUserById(@PathVariable int userID) {
+        return ResponseEntity.ok(userRepository.findByUserID(userID));
     }
 
     @PostMapping
