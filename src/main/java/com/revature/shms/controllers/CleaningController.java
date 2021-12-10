@@ -10,14 +10,14 @@ import org.springframework.data.domain.Sort;
 import org.springframework.web.bind.annotation.*;
 
 @RestController()
-@RequestMapping(value = "/employee")
+@RequestMapping(value = "/cleaning")
 public class CleaningController {
 
 	@Autowired
 	private CleaningService cleaningService;
 
-	@GetMapping("/cleaning/list")
+	@GetMapping("/list")
 	public Page<Cleaning> getCleaning(@RequestParam("id") int employeeID, @RequestParam("pageNumber") int pageNumber, @RequestParam("pageSize") int pageSize, @RequestParam("sortBy") String sortBy) throws NotFound {
 		return cleaningService.findAllCleaningsByEmployee(employeeID, PageRequest.of(pageNumber,  pageSize, Sort.by(sortBy).descending()));
-	}
+  }
 }
