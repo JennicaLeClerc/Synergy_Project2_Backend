@@ -24,8 +24,12 @@ public class User extends secUserDetails{
 	@Column(nullable = false)
 	String password;
 
+	@Override
+	public Integer getID() {
+		return userID;
+	}
 
-  	@OneToMany(mappedBy = "userReserve", cascade = CascadeType.MERGE)
+	@OneToMany(mappedBy = "userReserve", cascade = CascadeType.MERGE)
 	@JsonManagedReference
 	List<Reservation> reservations;
 }
