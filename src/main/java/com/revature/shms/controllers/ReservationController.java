@@ -44,12 +44,12 @@ public class ReservationController {
     }
 
     @PostMapping("/update/dates/{id}")
-    public ResponseEntity<?> setDateReservation(@PathVariable("id") int reservationID, @RequestParam("startDate") String startDate, @RequestParam("startDate") String endDate) throws NotFound {
+    public ResponseEntity<?> setDateReservation(@PathVariable("id") int reservationID, @RequestParam("startDate") String startDate, @RequestParam("endDate") String endDate) throws NotFound {
         return ResponseEntity.ok(reservationService.changeDateOfReservation(reservationID, startDate, endDate));
     }
 
     @PostMapping("/username")
-    public ResponseEntity<?> getReservationsByUsername(@PathVariable("username") String username) {
+    public ResponseEntity<?> getReservationsByUsername(@RequestParam("username") String username) {
         return ResponseEntity.ok(reservationService.getAllReservationsOfUser(username));
     }
 

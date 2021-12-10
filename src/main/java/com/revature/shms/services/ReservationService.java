@@ -142,7 +142,7 @@ public class  ReservationService {
      * @throws NotFound exception if reservation not found.
      */
     public List<Reservation> findReservationByUserID(int userID) throws NotFound {
-        return reservationRepository.findByUserReserve_UserID(userID).orElseThrow(NotFound::new);
+        return reservationRepository.findAllByUserReserve_UserID(userID).orElseThrow(NotFound::new);
     }
 
     /**
@@ -155,10 +155,10 @@ public class  ReservationService {
         return reservationRepository.findByReservationID(reservationId).orElseThrow(NotFound::new);
     }
 
-
     public List<Reservation> getAllReservationsOfUser (String username){
         User user = userRepository.findByUsername(username).get();
-        return reservationRepository.findByUserReserve_UserID(user.getUserID()).get();
+        System.out.println(user.getUserID());
+        return reservationRepository.findAllByUserReserve_UserID(user.getUserID()).get();
     }
 
     public List<Reservation> getAllPendingStatus(){

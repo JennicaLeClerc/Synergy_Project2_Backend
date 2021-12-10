@@ -10,7 +10,7 @@ import java.util.Optional;
 
 @Repository
 public interface ReservationRepository extends JpaRepository<Reservation,Integer > {
-	Optional<List<Reservation>>  findByUserReserve_UserID(int userID);
+	Optional<List<Reservation>>  findAllByUserReserve_UserID(int userID);
 	Optional<Reservation> findByReservationID(int reservationID);
 
 	void deleteByUserReserve_UserID(int userID);

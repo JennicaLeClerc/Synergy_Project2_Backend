@@ -122,7 +122,7 @@ public class ReservationServiceTests {
 		reservation.setReservationID(reservationID);
 		List<Reservation> reservations = new ArrayList<>();
 		reservations.add(reservation);
-		when(reservationRepository.findByUserReserve_UserID(anyInt())).thenReturn(java.util.Optional.of(reservations));
+		when(reservationRepository.findAllByUserReserve_UserID(anyInt())).thenReturn(java.util.Optional.of(reservations));
 		assertEquals(reservationID, reservationService.findReservationByUserID(reservationID));
 	}
 
