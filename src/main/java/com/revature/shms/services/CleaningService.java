@@ -51,17 +51,16 @@ public class CleaningService {
 
 	/**
 	 * Ryan wanted to still work on this
-	 * @param employee ?
 	 * @param employeeTarget ?
 	 * @param room the room being worked on.
 	 * @param priority how quickly should the room be cleaned.
 	 * @return Room scheduled to be cleaned.
 	 * @throws NotFound is thrown if the room with the given roomNumber does not exist.
 	 */
-	public Room scheduleCleaningRoom(Employee employee, Employee employeeTarget, Room room, int priority) throws NotFound {
-		if (employeeTarget.getEmployeeType().equals(EmployeeType.RECEPTIONIST)) return null;
-		createCleaning(new Cleaning(0,room,employeeTarget, Instant.now().toEpochMilli(),priority));
-		return roomService.scheduledCleaning(room.getRoomNumber());
+	public Cleaning scheduleCleaningRoom(int employeeTarget, int room, int priority) throws NotFound {
+		Cleaning c = createCleaning(new Cleaning(0,roomService.findByRoomNumber(room),employeeService.findEmployeeByID(employeeTarget), Instant.now().toEpochMilli(),priority));
+		roomService.scheduledCleaning(room);
+		return c;
 	}
 
 	// -- Cleaning Start/Stop
