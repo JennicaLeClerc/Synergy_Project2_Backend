@@ -12,8 +12,12 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.omg.CosNaming.NamingContextPackage.NotFound;
+import org.springframework.data.domain.*;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
@@ -50,15 +54,15 @@ public class ReservationServiceTests {
 		verify(reservationRepository, times(1)).deleteByReservationID(anyInt());
 	}
 
-	// -- Sets
 	@Test
-	public void setReservationTest(){
+	public void setReservationTest() throws ParseException {
 		Reservation reservation = new Reservation();
 		Reservation customReservation = new Reservation();
 		User user = new User();
 		customReservation.setUserReserve(user);
-		customReservation.setStartDate("1");
-		customReservation.setEndDate("1");
+		Date date = new SimpleDateFormat("yyyy-MM-dd").parse("1990-12-12");
+		customReservation.setStartDate(date);
+		customReservation.setEndDate(date);
 		when(reservationRepository.save(any())).thenReturn(reservation);
 		assertEquals(reservation, reservationService.setReservation(customReservation));
 	}
@@ -91,7 +95,7 @@ public class ReservationServiceTests {
 	}
 
 	@Test
-	public void changeDateOfReservationTest() throws NotFound {
+	public void changeDateOfReservationTest() throws NotFound, ParseException {
 		int reservationID = 1;
 		Reservation reservation = new Reservation();
 		reservation.setReservationID(reservationID);
@@ -101,7 +105,7 @@ public class ReservationServiceTests {
 		update.setStatus(ReservationStatus.CANCELLED);
 		when(reservationRepository.findByReservationID(anyInt())).thenReturn(java.util.Optional.of(reservation));
 		when(reservationRepository.save(any())).thenReturn(reservation);
-		assertEquals(reservation, reservationService.changeDateOfReservation(reservationID,"1", "1"));
+		assertEquals(reservation, reservationService.changeDateOfReservation(reservationID,"1990/12/12", "1990/12/12"));
 	}
 
 	// -- Finds
@@ -117,13 +121,18 @@ public class ReservationServiceTests {
 
 	@Test
 	public void findReservationByUserID() throws NotFound {
-		int reservationID = 1;
+		int reservationID = 0;
 		Reservation reservation = new Reservation();
 		reservation.setReservationID(reservationID);
-		List<Reservation> reservations = new ArrayList<>();
-		reservations.add(reservation);
-		when(reservationRepository.findAllByUserReserve_UserID(anyInt())).thenReturn(java.util.Optional.of(reservations));
-		assertEquals(reservationID, reservationService.findReservationByUserID(reservationID));
+		User user = new User();
+		reservation.setUserReserve(user);
+		reservation.setUserReserve(user);
+		List<Reservation> reservations1 = new ArrayList<>();
+		reservations1.add(new Reservation());
+		reservations1.add(new Reservation());
+		Page<Reservation> reservations = new PageImpl<>(reservations1);
+		when(reservationRepository.findAllByUserReserve_UserID(anyInt(), any())).thenReturn(reservations);
+		assertEquals(reservationID, reservationService.findReservationByUserID( reservationID, PageRequest.of(0, 10, Sort.by(String.valueOf(reservationID)))).getContent().get(1).getReservationID());
 	}
 
 	@Test

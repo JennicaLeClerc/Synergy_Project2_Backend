@@ -11,13 +11,14 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.omg.CosNaming.NamingContextPackage.NotFound;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -29,64 +30,59 @@ import java.util.List;
 public class  ReservationService {
 
     @Autowired
-	ReservationRepository reservationRepository;
+    ReservationRepository reservationRepository;
     @Autowired
     UserRepository userRepository;
 
     // -- Create/Delete
+
     /**
      * This creates or saves a reservation
+     *
      * @param reservation object that will be created.
      * @return Reservation object that was created .
      */
-    public Reservation createReservation(Reservation reservation){
+    public Reservation createReservation(Reservation reservation) {
         return reservationRepository.save(reservation);
     }
 
     /**
      * This deletes a reservation by a userID.
+     *
      * @param userID of user that will have their reservation deleted.
      */
     public void deleteReservationByUserID(int userID) {
-		reservationRepository.deleteByUserReserve_UserID(userID);
+        reservationRepository.deleteByUserReserve_UserID(userID);
     }
 
     /**
      * This deletes a reservation by a reservationID.
+     *
      * @param reservationID of the reservation to be deleted.
      */
-    public void deleteReservationByReservationID(int reservationID){
+    public void deleteReservationByReservationID(int reservationID) {
         reservationRepository.deleteByReservationID(reservationID);
     }
 
     // -- Sets
+
     /**
      * Handles the creation of a reservation and sets the default status as pending
+     *
      * @param reservation object that will be created
      * @return Reservation object that was created with a Pending status.
      */
-    public Reservation setReservation(Reservation reservation){
+    public Reservation setReservation(Reservation reservation) {
         reservation.setStatus(ReservationStatus.PENDING);
         return reservationRepository.save(reservation);
     }
 
-    /*public Reservation setReservation(User user, String startDate, String endDate) {
-        //System.out.println(" start date is: " + startDate);
-        Reservation reservation = new Reservation();
-        reservation.setUserReserve(user);
-        reservation.setStatus(ReservationStatus.PENDING.toString());
-        //System.out.println(reservation.getUserReserve().getUsername());
 
-        reservation.setStartDate(startDate);
-        reservation.setEndDate(endDate);
-        //System.out.println(reservation.getStartDate());
-        //System.out.println(reservation.getEndDate());
-        return createReservation(reservation);
-    }*/
 
     /**
      * Sets the accommodations of the given reservation to the given accommodations string.
-     * @param reservationID of reservation that will be changed.
+     *
+     * @param reservationID  of reservation that will be changed.
      * @param accommodations the accommodations that are being added or changed to.
      * @return a Reservation with the given accommodations.
      * @throws NotFound exception if a reservation with the given reservationID was not found.
@@ -98,10 +94,12 @@ public class  ReservationService {
     }
 
     // -- Change
+
     /**
      * This toggles the reservation status for employees or users that cancel a reservation
+     *
      * @param reservationID of reservation that will be changed.
-     * @param status that will be used to update
+     * @param status        that will be used to update
      * @return Reservation object that was updated
      * @throws NotFound exception if a reservation with the given reservationID was not found.
      */
@@ -113,40 +111,47 @@ public class  ReservationService {
 
     /**
      * This toggles the date
+     *
      * @param reservationID of reservation that will be changed.
-     * @param startDate start date that will be updated
-     * @param endDate end date that will be updated
+     * @param startDate     start date that will be updated
+     * @param endDate       end date that will be updated
      * @return Reservation object with updated fields
      * @throws NotFound exception if a reservation with the given reservationID was not found.
      */
-    public Reservation changeDateOfReservation(int reservationID, String startDate, String endDate) throws NotFound {
+    public Reservation changeDateOfReservation(int reservationID, String startDate, String endDate) throws NotFound, ParseException {
         Reservation reservation = findReservationByReservationID(reservationID);
-        reservation.setStartDate(startDate);
-        reservation.setEndDate(endDate);
+        Date start = new SimpleDateFormat("yyyy/MM/dd").parse(startDate);
+        Date end = new SimpleDateFormat("yyyy/MM/dd").parse(endDate);
+        reservation.setStartDate(start);
+        reservation.setEndDate(end);
         return reservationRepository.save(reservation);
     }
 
     // -- Finds
+
     /**
      * Get all reservations
+     *
      * @return a list of reservations
      */
-    public List<Reservation> findAll(){
+    public List<Reservation> findAll() {
         return reservationRepository.findAll();
     }
 
     /**
      * Get a reservation with a userId
+     *
      * @param userID of user that created a reservation.
      * @return Reservation object of the specific user.
      * @throws NotFound exception if reservation not found.
      */
-    public List<Reservation> findReservationByUserID(int userID) throws NotFound {
-        return reservationRepository.findAllByUserReserve_UserID(userID).orElseThrow(NotFound::new);
+    public Page<Reservation> findReservationByUserID(int userID, Pageable pageable) throws NotFound {
+        return reservationRepository.findAllByUserReserve_UserID(userID, pageable);
     }
 
     /**
      * Get a reservation with a reservation Id
+     *
      * @param reservationId specific to a reservation
      * @return Reservation object of the reservation id.
      * @throws NotFound exception id reservation not found.
@@ -155,62 +160,50 @@ public class  ReservationService {
         return reservationRepository.findByReservationID(reservationId).orElseThrow(NotFound::new);
     }
 
-    public List<Reservation> getAllReservationsOfUser (String username){
+    /**
+     * This method gets all reservations of a user
+     * @param username of the user.
+     * @param pageable of the request
+     * @return A page of reservations of the user.
+     */
+    public Page<Reservation> getAllReservationsOfUser(String username, Pageable pageable) {
         User user = userRepository.findByUsername(username).get();
-        System.out.println(user.getUserID());
-        return reservationRepository.findAllByUserReserve_UserID(user.getUserID()).get();
+        return reservationRepository.findAllByUserReserve_UserID(user.getUserID(), pageable);
     }
 
-    public List<Reservation> getAllPendingStatus(){
-        return reservationRepository.findAllByStatus(ReservationStatus.PENDING).get();
+    /**
+     * This method gets all the reservations that are pending.
+     * @param pageable of the request.
+     * @return A page of the reservations.
+     */
+    public Page<Reservation> getAllPendingStatus(Pageable pageable) {
+        return reservationRepository.findAllByStatus(ReservationStatus.PENDING, pageable);
     }
 
-    public List<Reservation> getAllApprovedAndStartDate() throws ParseException {
-        List<Reservation> reservations;
+    /**
+     *This method gets all methos that are approved and that have a start date that is less than five days from today
+     * @param pageable of the request
+     * @return A page of the reservations
+     * @throws ParseException if the date is in wrong format
+     */
+    public Page<Reservation> getAllApprovedAndStartDate(Pageable pageable) throws ParseException {
         DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy/MM/dd");
         LocalDateTime now = LocalDateTime.now();
         now.plusDays(5);
         Date todayPlusFive = new SimpleDateFormat("yyyy/MM/dd").parse(dtf.format(now));
-        reservations = reservationRepository.findAllByStatus(ReservationStatus.APPROVED).get();
-        List<Reservation> correctReservations = new ArrayList<>();
-        reservations.forEach(
-                reservation -> {
-                    try {
-                        Date date1 = new SimpleDateFormat("yyyy/MM/dd").parse(reservation.getStartDate());
-                        if (date1.compareTo(todayPlusFive) < 0){
-                            correctReservations.add(reservation);
-                        }
-                    } catch (ParseException e) {
-                        e.printStackTrace();
-                    }
-                }
-        );
-    return correctReservations;
+        return reservationRepository.findAllByStatusAndStartDateBefore(ReservationStatus.APPROVED, todayPlusFive, pageable);
     }
 
-    public List<Reservation> getAllApprovedAndStartandEnd() throws ParseException {
-        List<Reservation> reservations;
+    /**
+     *This method gets all methods that are approved and that have a start date before today and a end date after today
+     * @param pageable of the request
+     * @return A page of the reservations
+     * @throws ParseException if the date is in wrong format
+     */
+    public Page<Reservation> getAllApprovedAndStartandEnd(Pageable pageable) throws ParseException {
         DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy/MM/dd");
         LocalDateTime now = LocalDateTime.now();
         Date today = new SimpleDateFormat("yyyy/MM/dd").parse(dtf.format(now));
-        reservations = reservationRepository.findAllByStatus(ReservationStatus.APPROVED).get();
-        List<Reservation> correctReservations = new ArrayList<>();
-        reservations.forEach(
-                reservation -> {
-                    try {
-                        Date start = new SimpleDateFormat("yyyy/MM/dd").parse(reservation.getStartDate());
-                        Date end = new SimpleDateFormat("yyyy/MM/dd").parse(reservation.getEndDate());
-                        if (start.compareTo(today) < 0 && end.compareTo(today) > 0 ){
-                            correctReservations.add(reservation);
-                        }
-                    } catch (ParseException e) {
-                        e.printStackTrace();
-                    }
-                }
-        );
-        return correctReservations;
+        return reservationRepository.findAllByStatusAndStartDateBeforeAndEndDateAfter(ReservationStatus.APPROVED, today, today, pageable);
     }
-
-
-
 }

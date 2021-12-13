@@ -44,28 +44,28 @@ public class ReservationController {
     }
 
     @PostMapping("/update/dates/{id}")
-    public ResponseEntity<?> setDateReservation(@PathVariable("id") int reservationID, @RequestParam("startDate") String startDate, @RequestParam("endDate") String endDate) throws NotFound {
+    public ResponseEntity<?> setDateReservation(@PathVariable("id") int reservationID, @RequestParam("startDate") String startDate, @RequestParam("endDate") String endDate) throws NotFound, ParseException {
         return ResponseEntity.ok(reservationService.changeDateOfReservation(reservationID, startDate, endDate));
     }
 
     @PostMapping("/username")
-    public ResponseEntity<?> getReservationsByUsername(@RequestParam("username") String username) {
-        return ResponseEntity.ok(reservationService.getAllReservationsOfUser(username));
+    public Page<Reservation> getReservationsByUsername(@RequestParam("username") String username, @RequestParam("pageNumber") int pageNumber, @RequestParam("pageSize") int pageSize, @RequestParam("sortBy") String sortBy) {
+        return reservationService.getAllReservationsOfUser(username, PageRequest.of(pageNumber, pageSize, Sort.by(sortBy)));
     }
 
     @GetMapping("/status/pending")
-    public ResponseEntity<?> getAllPending(){
-        return ResponseEntity.ok(reservationService.getAllPendingStatus());
+    public Page<Reservation> getAllPending(@RequestParam("pageNumber") int pageNumber, @RequestParam("pageSize") int pageSize, @RequestParam("sortBy") String sortBy){
+        return reservationService.getAllPendingStatus(PageRequest.of(pageNumber, pageSize, Sort.by(sortBy)));
     }
 
     @GetMapping("/start")
-    public ResponseEntity<?> startDateLessToday() throws ParseException {
-        return ResponseEntity.ok(reservationService.getAllApprovedAndStartDate());
+    public Page<Reservation> startDateLessToday(@RequestParam("pageNumber") int pageNumber, @RequestParam("pageSize") int pageSize, @RequestParam("sortBy") String sortBy) throws ParseException {
+        return reservationService.getAllApprovedAndStartDate(PageRequest.of(pageNumber, pageSize, Sort.by(sortBy)));
     }
 
     @GetMapping("/startend")
-    public ResponseEntity<?> startDateAndEndDate() throws ParseException {
-        return ResponseEntity.ok(reservationService.getAllApprovedAndStartandEnd());
+    public Page<Reservation> startDateAndEndDate(@RequestParam("pageNumber") int pageNumber, @RequestParam("pageSize") int pageSize, @RequestParam("sortBy") String sortBy) throws ParseException {
+        return reservationService.getAllApprovedAndStartandEnd(PageRequest.of(pageNumber, pageSize, Sort.by(sortBy)));
     }
 
 }
