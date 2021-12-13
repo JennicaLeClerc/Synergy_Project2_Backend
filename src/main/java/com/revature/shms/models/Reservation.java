@@ -29,9 +29,9 @@ public class Reservation {
     ReservationStatus status;
 
     @Column
-    String startDate;
+    Date startDate;
     @Column
-    String endDate;
+    Date endDate;
 
     @Column
     String accommodations;
