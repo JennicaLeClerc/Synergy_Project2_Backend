@@ -1,8 +1,12 @@
 package com.revature.shms.controllers;
 import com.revature.shms.models.Employee;
+import com.revature.shms.models.Reservation;
 import com.revature.shms.repositories.EmployeeRepository;
 import com.revature.shms.services.EmployeeService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -17,6 +21,11 @@ public class EmployeeController {
     private EmployeeService employeeService;
     @Autowired
     private EmployeeRepository employeeRepository;
+
+    @GetMapping
+    public Page<Employee> returnAllEmployee(@RequestParam("pageNumber") int pageNumber, @RequestParam("pageSize") int pageSize, @RequestParam("sortBy") String sortBy){
+        return employeeRepository.findAll(PageRequest.of(pageNumber, pageSize, Sort.by(sortBy)));
+    }
 
     @PostMapping
     public ResponseEntity<?> createNewEmployee(@RequestBody Employee employee){
