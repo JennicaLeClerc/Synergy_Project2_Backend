@@ -32,7 +32,7 @@ public class EmployeeController {
         return ResponseEntity.ok(employeeService.createEmployee(employee));
     }
 
-    @RequestMapping("/{employeeID}")
+    @GetMapping("/{employeeID}")
     public ResponseEntity<?> getEmployeeById(@PathVariable int employeeID){
         return ResponseEntity.ok( employeeRepository.findByEmployeeID(employeeID));
     }
