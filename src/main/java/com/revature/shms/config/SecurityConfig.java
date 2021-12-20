@@ -46,8 +46,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 			return cors;
 		});
 		http.authorizeRequests()
-			.antMatchers("/employee/*").hasAnyAuthority("EMPLOYEE","MANAGER").and().authorizeRequests()
-			.antMatchers("/user/*").hasAuthority("USER");
+			.antMatchers("/employee/*","/reservations","/reservations/*","/rooms/*").hasAnyAuthority("EMPLOYEE","MANAGER").and().authorizeRequests()
+			.antMatchers("/user/*","/reservations/save").hasAuthority("USER");
 
         http.csrf().disable().authorizeRequests()
                 .antMatchers("/authenticate","/users","/employee", "/u")
