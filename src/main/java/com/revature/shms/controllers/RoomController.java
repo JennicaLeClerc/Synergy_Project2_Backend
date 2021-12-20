@@ -29,23 +29,23 @@ public class RoomController {
 		}
 	}
 	@PostMapping
-	public ResponseEntity<?> getAllRooms(@RequestBody Room room){
+	public ResponseEntity<?> saveRoom(@RequestBody Room room){
 		return ResponseEntity.ok(roomService.addRoom(room));
 	}
-//	@GetMapping("/{id}")
-//	public ResponseEntity<?> getRoom(@PathVariable int id) throws NotFound {
-//		return  ResponseEntity.ok(roomService.findByRoomNumber(id));
-//	}
-//	@PutMapping("/{id}/changeOccupation")
-//	public ResponseEntity<?> editRoom(@PathVariable int id,@RequestParam("value") boolean value) throws NotFound {
-//		return  ResponseEntity.ok(roomService.setOccupationStatus(id,value));
-//	}
-//	@PutMapping("/{id}/addUser")
-//	public ResponseEntity<?> editRoom(@PathVariable int id,@RequestParam("userID") int uid) throws NotFound {
-//		Room room = roomService.findByRoomNumber(id);
-//		room.setCurrentUser(userService.findUserByUserID(uid));
-//		return  ResponseEntity.ok(roomService.addRoom(room));
-//	}
+	@GetMapping("/{id}")
+	public ResponseEntity<?> getRoom(@PathVariable int id) throws NotFound {
+		return  ResponseEntity.ok(roomService.findByRoomNumber(id));
+	}
+	@PutMapping("/{id}/changeOccupation")
+	public ResponseEntity<?> editRoom(@PathVariable int id,@RequestParam("value") boolean value) throws NotFound {
+		return  ResponseEntity.ok(roomService.setOccupationStatus(id,value));
+	}
+	@PutMapping("/{id}/addUser")
+	public ResponseEntity<?> editRoom(@PathVariable int id,@RequestParam("userID") int uid) throws NotFound {
+		Room room = roomService.findByRoomNumber(id);
+		room.setCurrentUser(userService.findUserByUserID(uid));
+		return  ResponseEntity.ok(roomService.addRoom(room));
+	}
 
 
 
