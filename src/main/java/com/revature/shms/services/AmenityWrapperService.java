@@ -80,4 +80,5 @@ public class AmenityWrapperService {
 		return amenityWrapperRepository.findAll(pageable);
 	}
 
+
 }

@@ -26,12 +26,10 @@ public class Room {
 	@OneToOne(cascade = CascadeType.ALL)
 	User CurrentUser;
 
-	@Column(nullable = false)
-	CleaningStatus status;
+
 	@Column(nullable = false)
 	boolean isOccupied;
-	@Column(nullable = false)
-	WorkStatus workStatus;
+
 
 	@OneToMany(cascade = CascadeType.ALL)
 	List<AmenityWrapper> amenitiesList;

@@ -16,12 +16,7 @@ import java.util.Optional;
 @Repository
 public interface RoomRepository extends JpaRepository<Room,Integer> {
     Page<Room> findAllByOrderByRoomNumberDesc(Pageable pageable);
-    Page<Room> findAllByStatus(CleaningStatus status, Pageable pageable);
-    Page<Room> findAllByStatusNot(CleaningStatus status,Pageable pageable);
     Page<Room> findAllByIsOccupied(boolean isOccupied,Pageable pageable);
-    Page<Room> findAllByWorkStatus(WorkStatus workStatus,Pageable pageable);
-    Page<Room> findAllByWorkStatusNot(WorkStatus workStatus,Pageable pageable);
-    Page<Room> findAllByStatusAndIsOccupiedAndWorkStatusOrderByRoomNumberDesc(CleaningStatus status, boolean isOccupied, WorkStatus workStatus,Pageable pageable);
     Page<Room> findAllByAmenitiesList_Amenity(Amenities amenity,Pageable pageable);
     Page<Room> findAllByAmenitiesList_AmenityIn(Collection<Amenities> amenities,Pageable pageable);
 
