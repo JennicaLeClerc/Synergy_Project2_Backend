@@ -1,8 +1,6 @@
 package com.revature.shms.servicetests;
 
 import com.revature.shms.enums.Amenities;
-import com.revature.shms.enums.CleaningStatus;
-import com.revature.shms.enums.WorkStatus;
 import com.revature.shms.models.AmenityWrapper;
 import com.revature.shms.models.Room;
 import com.revature.shms.repositories.RoomRepository;
