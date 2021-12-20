@@ -31,7 +31,7 @@ public class Room {
 	boolean isOccupied;
 
 
-	@OneToMany(cascade = CascadeType.ALL)
+	@OneToMany(cascade = CascadeType.MERGE)
 	List<AmenityWrapper> amenitiesList;
 
 	/*

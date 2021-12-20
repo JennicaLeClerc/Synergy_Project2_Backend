@@ -4,6 +4,7 @@ import com.revature.shms.enums.Amenities;
 import com.revature.shms.services.AmenityWrapperService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -18,7 +19,7 @@ public class AmenityWrapperController {
 	@GetMapping("/generate")
 	public ResponseEntity<?> generate(){
 		service.GenerateAllAmenityWrappers();
-		return ResponseEntity.ok().build();
+		return ResponseEntity.ok(service.findAllAmenities(Pageable.unpaged()));
 	}
 	@PutMapping("/{ID}")
 	public ResponseEntity<?> update(@PathVariable int ID,@RequestParam("price") float price){
