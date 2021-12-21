@@ -17,6 +17,8 @@ import org.springframework.data.domain.*;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -204,6 +206,48 @@ public class ReservationServiceTests {
 
 		when(reservationRepository.findAllByStatus(any(),any())).thenReturn(reservations);
 		assertEquals(reservations, reservationService.getAllPendingStatus(PageRequest.of(0, 10, Sort.by(String.valueOf(reservations)))));
+	}
+
+	@Test
+	public void getAllApprovedAndStartDateTest() throws ParseException {
+		DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy/MM/dd");
+		LocalDateTime now = LocalDateTime.now();
+		Date todayPlusThree = new SimpleDateFormat("yyyy/MM/dd").parse(dtf.format(now.plusDays(3)));
+
+		Reservation reservation = new Reservation();
+		reservation.setStatus(ReservationStatus.APPROVED);
+		reservation.setStartDate(todayPlusThree);
+
+		List<Reservation> reservations1 = new ArrayList<>();
+		reservations1.add(reservation);
+		reservations1.add(reservation);
+
+		Page<Reservation> reservations = new PageImpl<>(reservations1);
+
+		when(reservationRepository.findAllByStatusAndStartDateBeforeAndStartDateAfter(any(),any(),any(), any())).thenReturn(reservations);
+		assertEquals(reservations, reservationService.getAllApprovedAndStartDate(PageRequest.of(0, 10, Sort.by(String.valueOf(reservations)))));
+	}
+
+	@Test
+	public void getAllApprovedAndStartandEndTest() throws ParseException {
+		DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy/MM/dd");
+		LocalDateTime now = LocalDateTime.now();
+		Date todayPlusThree = new SimpleDateFormat("yyyy/MM/dd").parse(dtf.format(now.plusDays(3)));
+		Date todayMinusThree = new SimpleDateFormat("yyyy/MM/dd").parse(dtf.format(now.minusDays(3)));
+
+		Reservation reservation = new Reservation();
+		reservation.setStatus(ReservationStatus.APPROVED);
+		reservation.setStartDate(todayMinusThree);
+		reservation.setEndDate(todayPlusThree);
+
+		List<Reservation> reservations1 = new ArrayList<>();
+		reservations1.add(reservation);
+		reservations1.add(reservation);
+
+		Page<Reservation> reservations = new PageImpl<>(reservations1);
+
+		when(reservationRepository.findAllByStatusAndStartDateBeforeAndEndDateAfter(any(),any(),any(), any())).thenReturn(reservations);
+		assertEquals(reservations, reservationService.getAllApprovedAndStartandEnd(PageRequest.of(0, 10, Sort.by(String.valueOf(reservations)))));
 	}
 
 	// -- Getter/Setters
