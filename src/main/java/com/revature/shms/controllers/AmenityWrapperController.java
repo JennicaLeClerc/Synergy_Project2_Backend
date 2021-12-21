@@ -27,7 +27,7 @@ public class AmenityWrapperController {
 	}
 	@GetMapping("/{ID}")
 	public ResponseEntity<?> get(@PathVariable int ID){
-		return ResponseEntity.ok(service.getAmenityWrapper(Amenities.values()[ID]));
+		return ResponseEntity.ok(service.getAmenityWrapper(ID));
 	}
 	@GetMapping
 	public ResponseEntity<?> getAll(@RequestParam("pageNumber") int pageNumber, @RequestParam("pageSize") int pageSize, @RequestParam("sortBy") String sortBy){
