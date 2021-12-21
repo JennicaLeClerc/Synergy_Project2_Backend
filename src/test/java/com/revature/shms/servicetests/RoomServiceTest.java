@@ -54,10 +54,9 @@ public class RoomServiceTest {
 		boolean isOccupied = true;
 		Room room = new Room();
 		room.setRoomNumber(roomNumber);
-		room.setOccupied(isOccupied);
 		when(roomRepository.findByRoomNumber(anyInt())).thenReturn(java.util.Optional.of(room));
 		when(roomRepository.save(any())).thenReturn(room);
-		assertFalse(roomService.setOccupationStatus(roomNumber, false).isOccupied());
+		assertTrue(roomService.setOccupationStatus(roomNumber, isOccupied).isOccupied());
 	}
 
 	@Test
