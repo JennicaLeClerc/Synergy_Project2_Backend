@@ -62,7 +62,7 @@ public class RoomService {
 	public Room setOccupationStatus(int roomNumber, boolean isOccupied) throws NotFound {
 		Room room = findByRoomNumber(roomNumber);
 		room.setOccupied(isOccupied);
-		return room;
+		return addRoom(room);
 	}
 
 	/**
