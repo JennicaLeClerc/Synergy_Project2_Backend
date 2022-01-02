@@ -56,3 +56,4 @@ Bonus goals:
 - Java API will be adequately documented (Java Docs and web endpoint documentation [Swagger/OpenAPI])
  
 ## Front End
+https://github.com/JennicaLeClerc/Synergy_FrontEnd_React.git
