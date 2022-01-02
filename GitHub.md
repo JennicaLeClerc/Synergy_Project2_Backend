@@ -24,7 +24,7 @@ Synergy's Project 2 Repository
    ```
 7. Pull the current GitHub main branch to your local main branch:
    ```
-   $ git pull https://github.com/JennicaLeClerc/Synergy_Project2.git main
+   $ git pull
    ```
 8. Go to your local new branch:
    ```
