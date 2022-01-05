@@ -42,7 +42,11 @@ Technology framework requirements:
 
 Other requirements: 
 - Application will demonstrate at least ten individual user stories 
-- Application will leverage at least one external API 
+- Application will leverage at least one external API
+  - [Full Calendar API](https://fullcalendar.io/)
+    - Used to view bookings on a full calendar 
+  - [Weather API](https://openweathermap.org/api)
+    - Used to view the weather in your current location 
 - Application's own data model must be sufficiently complex (i.e. >2 tables) 
 - RDBMS will be deployed to the cloud (AWS RDS) 
 - Java API will be deployed to the cloud (AWS EC2) 
