@@ -26,6 +26,12 @@ Manager
 - Change room prices by changing amenity prices
 - Add rooms to the system
 
+## Extermal APIs
+- [Full Calendar API](https://fullcalendar.io/)
+  - Used to view bookings on a full calendar 
+- [Weather API](https://openweathermap.org/api)
+  - Used to view the weather in your current location 
+
 ## High-Level Requirements
 
 Application must leverage the full stack: 
@@ -43,10 +49,6 @@ Technology framework requirements:
 Other requirements: 
 - Application will demonstrate at least ten individual user stories 
 - Application will leverage at least one external API
-  - [Full Calendar API](https://fullcalendar.io/)
-    - Used to view bookings on a full calendar 
-  - [Weather API](https://openweathermap.org/api)
-    - Used to view the weather in your current location 
 - Application's own data model must be sufficiently complex (i.e. >2 tables) 
 - RDBMS will be deployed to the cloud (AWS RDS) 
 - Java API will be deployed to the cloud (AWS EC2) 
@@ -54,7 +56,7 @@ Other requirements:
 - Java API will have >=80% test coverage for service layer
 - Java API will leverage Spring's MockMvc for integration/e2e tests of controller endpoints
 
-Bonus goals:
+Bonus goals (completed):
 - Deploy API using ECS w/ Docker (instead of Elastic Beanstalk)
 - Secure your Java API using Spring Security
 - Java API will be adequately documented (Java Docs and web endpoint documentation [Swagger/OpenAPI])
